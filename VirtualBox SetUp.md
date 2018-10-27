@@ -32,7 +32,7 @@ sudo spctl --master-disable # disables gatekeeping, allows everything
 <p> After allow apps to be downloaded from anywhere, install VirtualBox. **Exit the root user account. Go to Settings and Preferences, in Security and Privacy, change allowed apps to be apps downloaded from AppStore/Apple and from known developers** </p>
 
 <h3> Folder sharing </h3>
-<p> Once the folder being mounted is created, it may be able to be mounted via VirtualBox app in the settings of whatever VM the folder is being mounted onto. For the options, check off: _auto-mount_ and _make permanent_. The folder should appear on the desktop as a drive or in the ~/media folder. </p>
+<p> Once the folder being mounted is created, it may be able to be mounted via VirtualBox app in the settings of whatever VM the folder is being mounted onto. For the options, check: <b> auto-mount </b> and <b>make permanent</b>. The folder should appear on the desktop as a drive and in the <i>~/media</i> folder. </p>
 
 __If the folder doesn't appear but is mounted in VM's settings:__
 ```bash 
