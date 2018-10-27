@@ -1,8 +1,6 @@
-<title> VirtualBox Set Up Troubleshooting </title>
-
 VirtualBox Set Up and Troubleshooting
 =============================
-Host MacOS, Guest Linux (Ubuntu)
+_On: Host MacOS, Guest Linux (Ubuntu)_
 </br>
 
 VirtualMachine SetUp
@@ -25,20 +23,23 @@ VirtualBox/VirtualMachine Troubleshooting
 --------------------------------------------------------
 <h3> Gatekeeping On MacOS </h3>
 <p> Mac OSX security has gatekeeping to block kernels from unknown developers and downloaded/outside kernels. An error message saying that the .kext file is corrupted, .kext can't be run may be displayed </p>
-<ul> 
-<li> sudo su #goes into root user account </li>
-<li> sudo spctl --master-disable #disables gatekeeping, allows all apps from anywhere</li>
-</ul>
+
+__Follow steps below in host (Mac) terminal:__
+```bash
+sudo su # goes into root user account
+sudo spctl --master-disable # disables gatekeeping, allows everything
+```
 <p> After allow apps to be downloaded from anywhere, install VirtualBox. **Exit the root user account. Go to Settings and Preferences, in Security and Privacy, change allowed apps to be apps downloaded from AppStore/Apple and from known developers** </p>
 
 <h3> Folder sharing </h3>
-<p> Once the folder being mounted is created, it may be able to be mounted via VirtualBox app in the settings of whatever VM the folder is being mounted onto. For the options, check off: *auto-mount* and *make permanent*. The folder should appear on the desktop as a drive or in the ~/media folder. </p>
-**If the folder doesn't appear but is mounted in VM's settings:**
+<p> Once the folder being mounted is created, it may be able to be mounted via VirtualBox app in the settings of whatever VM the folder is being mounted onto. For the options, check off: _auto-mount_ and _make permanent_. The folder should appear on the desktop as a drive or in the ~/media folder. </p>
+
+__If the folder doesn't appear but is mounted in VM's settings:__
 ```bash 
-id g #\ check groups that the user is in
-sudo usermod -a -G vboxsf $USER #\ to add user to necessary group for the VBox Shared Folder
+id g # check groups that the user is in
+sudo usermod -a -G vboxsf $USER # to add user to necessary group for the VBox Shared Folder
 ```
-**If folder is not appearing even though user is in vboxsf group:**
+__If folder is not appearing even though user is in vboxsf group:__
 ```bash
 #turn on rc.local in ubuntu
 printf '%s\n' '#!/bin/bash' 'exit 0' | sudo tee -a /etc/rc.local
@@ -46,8 +47,10 @@ sudo chmod +x /etc/rc.local
 sudo reboot
 
 sudo systemctl edit --full rc-local
-#add to rc.local: sudo mount -t vboxsf <Shared Folder specified in VB setting> <mount point path in guest system>
+# add to rc.local: 
+# sudo mount -t vboxsf <Shared Folder specified in VB setting> <mount point path in guest system>
 sudo reboot
+```
 
 
 
