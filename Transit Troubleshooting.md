@@ -83,6 +83,7 @@ The entire tnseq-transit package can be reinstalled with this command (replace [
 <h3> Troubleshooting on Linux: </h3>
 
 __Error:__ contains a line similar to _def getDefaultPublisher() -> Publisher:_
+
 If installed through Linux's package manager (_apt-get install_), there is a versioning error within the package for PyPubSub. 
 You can either:
 * Delete the Transit folder that was created upon installation and follow the above instructions for installation.
