@@ -64,4 +64,4 @@ __Error Message:__ _ValueError: invalid literal for int() with base 10: '>129734
 
 This is caused by incorrect parsing of the genome bank (.gbk) file for the prot table (.prot_table file) which leaves ">" or "<" signs in which cannot later on be converted to numbers. As long as all of the "<" and ">" are removed, this error should no longer occur. 
 
-The prot table (.prot_table file) can be remade using the make_prot_table.py on this Github Repository.   
+The prot table (.prot_table file) can be remade using the [make_prot_table.py on this Github Repository](https://github.com/tang-amy/GeisingerLab/blob/wip/TnSeqProcessing/src/make_prot_table.py).   
