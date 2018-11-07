@@ -25,7 +25,7 @@ pip install tnseq-transit
 
 Running Transit
 -------------------------------
-<i> The following for running Transit is taken from their website. If the above instructions were followed for installation, because Transit was installed as Python package, it can be called from the command line/terminal. If the installation method was different, please see [Transit's official documentation](https://transit.readthedocs.io/en/latest/transit_running.html). </i>
+<i> The following for running Transit is taken from their website. If the above instructions were followed for installation, Transit should be installed as Python package, so Transit can be called from the command line/terminal. If the installation method was different, please see [Transit's official documentation](https://transit.readthedocs.io/en/latest/transit_running.html). </i>
 
 ### Running in GUI Mode: ###
 Use command line/terminal and type the following command:
