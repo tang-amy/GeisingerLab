@@ -1,5 +1,5 @@
 ## Amy Tang
-## Nov 1, 2018
+## Nov 1 2018
 
 # for all map files (bowtie1 default output files) within a directory, make wig files for each map file
 
