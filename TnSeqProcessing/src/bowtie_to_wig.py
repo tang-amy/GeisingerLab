@@ -1,8 +1,8 @@
 ## Amy Tang
-## Oct 28, 2018
+## Oct 28 2018
 
+# original code from Defne Surujon
 # make a wig file from a genbank and default bowtie1 output file
-# contains code from base
 
 from Bio import SeqIO
 from optparse import OptionParser
