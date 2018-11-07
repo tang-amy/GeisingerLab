@@ -43,7 +43,11 @@ To avoid typing in or copy-and-pasting in all of the files, create a directory o
 
 Run the following code in the command line/terminal:
 ```bash
-for f in PATH/*.wig; do  full_path=`pwd`/$f; all_inputs="${all_inputs}${all_inputs:+,}$full_path"; done
+for f in PATH/*.wig;
+do
+	full_path=`pwd`/$f;
+	all_inputs="${all_inputs}${all_inputs:+,}$full_path";
+done
 # check that the variable is set correctly
 echo $all_inputs 
 ```
@@ -86,17 +90,19 @@ You can either:
     ```bash
 	sudo -H pip uninstall PyPubSub
 	sudo -H pip install PyPubSub==3.3.0
-    ```z
+    ```
 
 Troubleshooting Running Transit
 -------------------------------
 <h3> Specific errors not mentioned on Transit's official documentation: </h3>
+
 
 __Error Message:__ _ValueError: invalid literal for int() with base 10: '>129734'_ 
 
 This is caused by incorrect parsing of the genome bank (.gbk) file for the prot table (.prot_table file) which leaves ">" or "<" signs in which cannot later on be converted to numbers. As long as all of the "<" and ">" are removed, this error should no longer occur. 
 
 The prot table (.prot_table file) can be remade using this [make_prot_table.py script](https://github.com/tang-amy/GeisingerLab/blob/wip/TnSeqProcessing/src/make_prot_table.py).   
+
 
 __Error Message:__ _IOError: [Errno 2] No such file or directory:..._
 
