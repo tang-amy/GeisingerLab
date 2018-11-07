@@ -1,6 +1,6 @@
 Transit Installation and Troubleshooting
 =============================
-_On: MacOS, Ubuntu Linux_
+_On: MacOS, Linux_
 </br>
 
 MacOS/Linux Installation
@@ -16,7 +16,6 @@ Install pip with the following command:
 ```bash
 sudo easy install pip 
 ``` 
-</br>
 
 Use pip to install Transit (this should install of the necessary dependencies):
 ```bash
