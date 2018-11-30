@@ -1,8 +1,10 @@
 ## Amy Tang
-## Oct 28, 2018
+## Oct 28 2018
 
+# original code from Defne Surujon
 # make a wig file from a genbank and default bowtie1 output file
-# contains code from base
+
+#!/home/bin/python
 
 from Bio import SeqIO
 from optparse import OptionParser
@@ -34,7 +36,7 @@ def make_read_counter(bowtiefile):
         if strand == "-":
             coordinate += length + 2
         elif strand == "+":
-            coordinate -= 2 # shift the coordinate to the beginning of the TA site
+            coordinate -= 2  # shift the coordinate to the beginning of the TA site
         reads_counter[coordinate] += 1
     return dict(reads_counter)
 
@@ -47,40 +49,35 @@ def get_ta(strain):
     return {i: 0 for i in ta_ALL}
 
 
-def main():
-    opts, args = options.parse_args()
-    genomefile = opts.genomefile
-    infile = opts.inputfile
-    outfile = opts.outputfile
-    # get all TA sites
-    mystrain = SeqIO.read(genomefile, "genbank")
-    ta_table = get_ta(mystrain)
-
+def write_wig(f, outfile, ta_table, mystrain):
     # get occupied TA sited
-    mdict = make_read_counter(infile)
+    mdict = make_read_counter(f)
     print(len(ta_table), len(mdict))
+
     # add occupied ta sites to the master list
-    q = 0 # not matched within error range (+-2)
-    q1 = 0 # matched within +- 1 error
-    q2 = 0 # matched within +- 2 error
+    q = 0
+    q1 = 0
+    q2 = 0
     for tasite in mdict:
-        site = tasite + 1 # account for 0-indexing vs 1-indexing
         try:
-            ta_table[site] += mdict[tasite]
+            # seems like the positions on the map files were 0-indexed,
+            # which is why the +1 correction is there.
+            ta_table[tasite + 1] += mdict[tasite]
         except KeyError:
-            if site-1 in ta_table.keys():
-                ta_table[site - 1] += mdict[tasite]
+            if tasite in ta_table.keys():
+                ta_table[tasite] += mdict[tasite]
                 q1 += 1
-            elif site + 1 in ta_table.keys():
-                ta_table[site + 1] += mdict[tasite]
+            elif tasite + 2 in ta_table.keys():
+                ta_table[tasite + 2] += mdict[tasite]
                 q1 += 1
-            elif site - 2 in ta_table.keys():
-                ta_table[site - 2] += mdict[tasite]
+            elif tasite - 1 in ta_table.keys():
+                ta_table[tasite - 1] += mdict[tasite]
                 q2 += 1
-            elif site + 2 in ta_table.keys():
-                ta_table[site + 2] += mdict[tasite]
+            elif tasite + 3 in ta_table.keys():
+                ta_table[tasite + 3] += mdict[tasite]
                 q2 += 1
             else:
+                # ta_table[tasite+1] = mdict[tasite]
                 q += 1
             # print("WARNING: Site "+str(tasite)+"does not appear in the genome!!")
     print(len(ta_table), q, q1, q2)
@@ -93,6 +90,18 @@ def main():
         linestr = [str(tasite[0]), str(tasite[1])]
         g.write("\t".join(linestr) + "\n")
     g.close()
+
+
+def main():
+    opts, args = options.parse_args()
+    genomefile = opts.genomefile
+    infile = opts.inputfile
+    outfile = opts.outputfile
+    # get all TA sites
+    mystrain = SeqIO.read(genomefile, "genbank")
+    ta_table = get_ta(mystrain)
+
+    write_wig(infile, outfile, ta_table, mystrain)
 
 
 if __name__ == '__main__':
