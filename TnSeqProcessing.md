@@ -40,7 +40,9 @@ bash tnseq-process.sh -i [input folder containing gunzipped files] -g [genbank f
 * (If no reference indices are given, the script will ask for a FASTA file to provided in order to create the reference indices for Bowtie processing.) 
 
 4. Folder structure/outputs:
+
 <b> For best results, nest the folder containing the gunzipped FASTQ files inside of another folder for all of the outputs/directories made by the script to reside in. </b>
+
 ```bash
 +-- TnSeq_Data
 |   +-- clipped_fastq_files
