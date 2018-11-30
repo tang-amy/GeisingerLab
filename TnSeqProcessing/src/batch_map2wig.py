@@ -3,7 +3,9 @@
 
 # for all map files (bowtie1 default output files) within a directory, make wig files for each map file
 
-import bowtie_to_wig as btw
+#!/home/bin/python
+
+import bowtie_to_wig2 as btw
 from optparse import OptionParser
 import os
 from Bio import SeqIO
@@ -22,8 +24,7 @@ options.add_option("-o", "--outfolder", dest="outDir",
 
 def main():
     opts, args = options.parse_args()
-    os.chdir(opts.inDir)
-    map_dir = os.getcwd()
+    map_dir = opts.inDir
     genomefile = opts.genomefile
     mystrain = SeqIO.read(genomefile, "genbank")
     ta_table = btw.get_ta(mystrain)
@@ -33,10 +34,10 @@ def main():
         os.mkdir(opts.outDir)
     wig_dir = opts.outDir
 
-    for file in map_dir:
-        if file.endswith(".map"):
-            outfile = wig_dir + os.path.splitext(os.path.basename(file))[0] + ".wig"
-            btw.write_wig(file, outfile, ta_table, mystrain)
+    for f in os.listdir(map_dir):
+        if f.endswith(".map"):
+            outfile = wig_dir + os.path.splitext(os.path.basename(f))[0] + ".wig"
+            btw.write_wig(map_dir + f, outfile, ta_table, mystrain)
 
 
 if __name__ == '__main__':

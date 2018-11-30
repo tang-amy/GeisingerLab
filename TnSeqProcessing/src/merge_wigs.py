@@ -4,9 +4,13 @@
 # creates a wig file that contains all of the insertions at each TA site
 # the merged wig file can be used for viewing results on IGV
 
+#!/home/bin/python
+
 import os
 from collections import Counter
 from optparse import OptionParser
+
+from Bio import SeqIO
 
 options = OptionParser(usage='%prog input output',
                        description="Specify input directory and output file")
@@ -15,19 +19,20 @@ options.add_option("-i", "--infolder", dest="inDir",
                    help="directory where .wig files being merged located (.wig)")
 options.add_option("-o", "--outfile", dest="outfile",
                    help="output file (.wig)")
+options.add_option("-g", "--genbank", dest="genbank",
+                   help="genbank file for strain name (.gbk)")
 
 
 def main():
     opts, args = options.parse_args()
     merged_reads = Counter()
-    os.chdir(opts.inDir)
-    wig_dir = os.getcwd()
+    wig_dir = opts.inDir
     outfile = opts.outfile
 
     # reading the files to create table of all reads per coordinate summed together
-    for file in wig_dir:
+    for file in os.listdir(wig_dir):
         if file.endswith(".wig"):
-            f = open(file)
+            f = open(wig_dir + file)
             lines = f.readlines()[1:]
             for line in lines:
                 coordinate = int(line.split('\t')[0])
@@ -35,11 +40,9 @@ def main():
                 merged_reads[coordinate] += read_count
 
     # get wig header
-    for file in wig_dir:
-        if file.endswith(".wig"):
-            f = open(file)
-            header = f.readline()
-            break
+    genomefile = opts.genbank
+    strain = SeqIO.read(genomefile, "genbank")
+    header = 'variableStep chrom=' + strain.name + '\n'
 
     # outputting the table to output file
     talist = [[key, merged_reads[key]] for key in sorted(merged_reads.keys())]

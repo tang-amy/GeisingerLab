@@ -7,9 +7,8 @@
 # 9 columns without headers: gene annotation, start, end,
 # strand, protein length, nothing, nothing, nothing, locus_tag
 
-#!~/usr/bin/python
+#!/home/bin/python
 
-import Bio
 from Bio import SeqIO
 from optparse import OptionParser
 
@@ -53,7 +52,8 @@ def main():
                     thisline[2] = fixed
 
                 prot_table.append(thisline)
-            except KeyError: pass
+            except KeyError:
+                pass
 
     g = open(outfile,'w')
     for line in prot_table:
@@ -62,7 +62,5 @@ def main():
     g.close()
 
 
-
 if __name__ == '__main__':
     main()
-		

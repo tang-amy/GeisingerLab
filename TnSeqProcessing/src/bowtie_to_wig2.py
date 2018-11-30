@@ -36,7 +36,7 @@ def make_read_counter(bowtiefile):
         if strand == "-":
             coordinate += length + 2
         elif strand == "+":
-            coordinate -= 2  # shift the coordinate to the beginning of the TA site
+            coordinate -= 2 # shift the coordinate to the beginning of the TA site
         reads_counter[coordinate] += 1
     return dict(reads_counter)
 

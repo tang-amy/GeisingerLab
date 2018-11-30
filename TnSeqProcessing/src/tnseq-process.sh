@@ -3,6 +3,7 @@
 # user input should give the directory name of the zipped fastq files
 # script will create directories as necessary in parent directory for organization of files
 
+
 # assumed var
 DIR=${PWD}
 
@@ -67,14 +68,16 @@ then
     bowtie-build "${FASTA}" "${REF}"
 fi
 
+
+
 #make prot table if it does not exist
 echo "Does a prot_table need to be created with this genbank file? Type Y/N and then [ENTER]: "
 read answer
-if ["${answer}" == "Y"]
+if [ "${answer}" == "Y" ]
 then
     echo "Type in location and name to save the prot_table (include .prot_table) to followed by [ENTER]: "
     read PROT_TABLE
-    make_prot_table.py -i ${GENBANK} -o ${PROT_TABLE}
+    python make_prot_table.py -i ${GENBANK} -o ${PROT_TABLE}
     echo "Finished creating prot_table for Transit analysis."
 fi
 
@@ -82,17 +85,28 @@ fi
 PDIR=$(dirname ${DIR})
 
 # unzipping and clipping fastq.gz files
-process_zipped_fastq.sh "${DIR}"
+bash process_zipped_fastq.sh "${DIR}"
 
 # running bowtie on clipped files
-run_bowtie_batch.sh "${PDIR}/clipped_fastq_files/"
+bash run_bowtie_batch.sh "${PDIR}/clipped_fastq_files" "$REF"
+
+# python requires absolute paths to be given, force genbank's path into an absolute path
+GENBANK=$(realpath $GENBANK)
+PDIR=$(realpath $PDIR)
 
 # create the wig files
-batch_map2wig.py -i "${PDIR}/map_files/" -o "${PDIR}/wig_files"
-echo "Finished processing map files into wig files."
+python batch_map2wig.py -i "${PDIR}/map_files/" -o "${PDIR}/wig_files/" -g "$GENBANK"
+
+#mkdir -p "${PDIR}/wig_files"
+#for file in ${PDIR}/map_files/*.map
+#do
+#    python bowtie_to_wig.py -g "$GENBANK" -i "$file" -o "${PDIR}/wig_files/$(basename ${file/%map/wig})"
+#done
+#echo "Finished processing map files into wig files."
+
 
 # create the merged wig file
-merge_wigs.py -i "${PDIR}/wig_files" -o "${PDIR}/merged_wig.wig"
+python merge_wigs.py -i "${PDIR}/wig_files/" -o "${PDIR}/merged_wig.wig" -g "$GENBANK"
 echo "Created a merged .wig file of all reads."
 
 echo "Done."
