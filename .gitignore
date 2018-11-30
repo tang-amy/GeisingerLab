@@ -16,4 +16,6 @@ var/
 *.egg-info/
 .installed.cfg
 *.egg
-.idea/
+/.idea/
+/venv
+TnSeqProcessing/venv
