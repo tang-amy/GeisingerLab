@@ -22,7 +22,7 @@ Installing BowTie
 
 Running TnSeqProcessing Script
 -------------------------------
-<i> Before starting, install and build FastX-Tools and Bowtie accordingly. <i>
+<i> Before starting, install and build FastX-Tools and Bowtie accordingly. </i>
 
 <p> This script processes gunzipped FastQ files into Wiggle files that can be used in the Transit pipeline as well as a merged Wiggle file named "merged_wig.wig" containing all of the reads from every processed file. The merged-wig file can be used to view the read counts on IGV. </p>
 
@@ -35,9 +35,9 @@ sudo chmod 777 *
 ```bash
 bash tnseq-process.sh -i [input folder containing gunzipped files] -g [genbank file for the genome (.gbk) file] -r [reference indices for Bowtie]
 ```
-The required inputs are the folder containing gunzipped FASTQ files and the Genbank genome file (.gbk). The reference indices should be provided as PATH/reference-index-folder/reference-index-name (skipping the .ebwt portion of the name). 
+* The required inputs are the folder containing gunzipped FASTQ files and the Genbank genome file (.gbk). The reference indices should be provided as PATH/reference-index-folder/reference-index-name (skipping the .ebwt portion of the name). 
 
-(If no reference indices are given, the script will ask for a FASTA file to provided in order to create the reference indices for Bowtie processing.) 
+* (If no reference indices are given, the script will ask for a FASTA file to provided in order to create the reference indices for Bowtie processing.) 
 
 4. Folder structure/outputs:
 <b> For best results, nest the folder containing the gunzipped FASTQ files inside of another folder for all of the outputs/directories made by the script to reside in. </b>
