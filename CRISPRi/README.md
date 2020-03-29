@@ -2,7 +2,7 @@
 
 ## Requirements
 + Python3 with the following packages installed:
-  + Bio (biopython)
+  + biopython (Bio)
   + pandas 
 + Reference files:
   + Genomic FASTA file (eg. NZ_CP012004.fasta)
