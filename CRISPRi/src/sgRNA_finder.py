@@ -17,12 +17,15 @@ The output is a tab delimited txt file with 5 columns.
     Column 3: sgRNA start position
     Column 4: sgRNA end position
     Column 5: sgRNA sequence
-    Column 6: ACX60_ locus_tag
+    Column 6: ACX60_ locus_tag (could be multiple for one sgRNA)
 
+[mandatory options]
     -i input file (.bed)
     -t TSS list (.csv)
     -g reference genome file (.fasta)
     -o output file
+
+[optional]
     -u acceptable upstream range to tss (default is 50)
     -d acceptable downstream range to tss (default is 100)
 
@@ -139,6 +142,7 @@ def sgRNA_finder(sg_candidate, tss, reference, up_range, down_range, sg_outfile)
     print("Finished recording sgRNA candidates: ", format((t4 - t3), '.2f'), " seconds." + "\n")
     print("Recorded ", len(candidate_seq), "sgRNA sequences." + "\n")
     print("sgRNA sequences saved as: ", sg_outfile, ".", "\n")
+
 
 def binary_search(arr_tss, l, r, p, up, down):
     if r >= l:
