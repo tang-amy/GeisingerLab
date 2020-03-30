@@ -1,21 +1,20 @@
-.git 
+# ignores all files by default
+*.*
 
-# Distribution / packaging
-.Python
-env/
-build/
-develop-eggs/
-dist/
-downloads/
-eggs/
-.eggs/
-lib64/
-parts/
-sdist/
-var/
-*.egg-info/
-.installed.cfg
-*.egg
-/.idea/
-/venv
-TnSeqProcessing/venv
+# EXCEPTIONS
+
+# languages
+!*.R
+!*.py
+!*.sh
+!*.Rmd
+!*.md
+
+# reference files
+!*.txt
+!*.fasta
+!*.gb
+!*gbk
+!*.tsv
+
+!.gitignore
