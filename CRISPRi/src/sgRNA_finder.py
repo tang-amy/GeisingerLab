@@ -43,12 +43,14 @@ options.add_option("-i", "--infile", dest="infile",
                    help="input list of PAM in .bed format)")
 options.add_option("-t", "--tss", dest="tss",
                    help="input tss list (tab delimited)")
-options.add_option("-g", "--reference", dest="reference",
+options.add_option("-r", "--reference", dest="reference",
                    help="reference genome in .fasta format")
+options.add_option("-g", "--genebank", dest="gb",
+                   help='genome genebank file')
 options.add_option("-u", "--up_range", dest="up_range", default="50")
 options.add_option("-d", "--down_range", dest="down_range", default="100"),
 options.add_option("-o", "--output_name", dest="outfile")
-
+gb = ""
 
 # Reads in pam_list.bed and TSS list.
 # Identify pam sequences in proximity to at least one TSS.
@@ -98,6 +100,9 @@ def sgRNA_finder(sg_candidate, tss, reference, up_range, down_range, sg_outfile)
     df_TSS = pd.read_csv(tss, sep='\t')
     tss_index = df_TSS.index.tolist()[:-1]
     tss_locus = df_TSS["Locus_tag"][:-1].tolist()
+    for l in tss_index:
+        # update old locus tag to new locus tag
+        tss_locus[l] = locus_to_new(tss_locus[l])
     tss_coordinate = [int(i) for i in df_TSS["TSS coordinate"].tolist()[:-1]]
 
     # screen seed regions to avoid off-target effect (12 bp seed regions of the sgRNAs are screened)
@@ -165,6 +170,26 @@ def reverse_complement(seq):
     return ''.join(seq_list)
 
 
+def locus_to_new(locus_old):
+    global gb
+    recs = [rec for rec in SeqIO.parse(gb, "genbank")]
+    dic = {}
+    for rec in recs:
+        feats = [feat for feat in rec.features if feat.type == "CDS"]
+        for feat in feats:
+            if 'old_locus_tag' in feat.qualifiers:
+                old = ''.join((feat.qualifiers['old_locus_tag']))
+                new = ''.join((feat.qualifiers['locus_tag']))
+                dic.update({old: new})
+
+    if dic.get(locus_old) == None:
+        print("Locus tag \"" + locus_old + "\" cannot be found in gb file, original tag recorded.")
+        locus_new = locus_old
+    else:
+        locus_new = dic.get(locus_old)
+    return locus_new
+
+
 def main():
     opts, args = options.parse_args()
     pam = opts.infile
@@ -173,6 +198,8 @@ def main():
     pam_filename = os.path.basename(pam_path)
     tss = opts.tss
     reference = opts.reference
+    global gb
+    gb = opts.gb
     up_range = int(opts.up_range)
     down_range = int(opts.down_range)
     sg_outfile = opts.outfile

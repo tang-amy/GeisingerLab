@@ -14,7 +14,7 @@ Usage: python3 PAM_finder.py -i [input_directory] -n [PAM_length] -o [output_dir
 
 """
 
-# !/home/bin/python
+# !/home/bin/python3
 
 from optparse import OptionParser
 from Bio import SeqIO
