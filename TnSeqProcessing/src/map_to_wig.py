@@ -55,9 +55,9 @@ def write_wig(f, outfile, ta_table, mystrain):
     print(len(ta_table), len(mdict))
 
     # add occupied ta sites to the master list
-    q = 0
-    q1 = 0
-    q2 = 0
+    q = 0 # not matched within error range (+-2)
+    q1 = 0 # matched within +- 1 error
+    q2 = 0 # matched within +- 2 error
     for tasite in mdict:
         try:
             # seems like the positions on the map files were 0-indexed,
@@ -77,9 +77,8 @@ def write_wig(f, outfile, ta_table, mystrain):
                 ta_table[tasite + 3] += mdict[tasite]
                 q2 += 1
             else:
-                # ta_table[tasite+1] = mdict[tasite]
                 q += 1
-            # print("WARNING: Site "+str(tasite)+"does not appear in the genome!!")
+
     print(len(ta_table), q, q1, q2)
 
     talist = [[key, ta_table[key]] for key in sorted(ta_table.keys())]
