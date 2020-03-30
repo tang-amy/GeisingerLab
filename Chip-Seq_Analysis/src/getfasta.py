@@ -6,7 +6,6 @@
 # The package "pybedtools" is required. If not already installed, execute the following command in terminal:
 # pip3 install pybedtools
 
-# !/home/bin/python3
 
 from optparse import OptionParser
 from pybedtools import BedTool
