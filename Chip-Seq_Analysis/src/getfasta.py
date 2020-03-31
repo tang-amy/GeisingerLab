@@ -1,12 +1,23 @@
 ## Yunfei Dai
 ## 03/20/2020
 
-# This script generates .fasta files as input for MEME suite, using .narrowPeak files generated from macs2 peak calling.
+'''
 
-# The package "pybedtools" is required. If not already installed, execute the following command in terminal:
-# pip3 install pybedtools
+This script generates .fasta files as input for MEME suite, using .narrowPeak files generated from macs2 peak calling.
 
-# !/home/bin/python3
+The package "pybedtools" is required. If not already installed, execute the following command in terminal:
+pip3 install pybedtools
+
+Usage:
+
+python3 [path to getfasta.py] -i [input.narrowPeak] -g [genome.fasta] -o [output.fasta]
+
+Optional:
+
+-l [integer] this is the length of resulting sequence region included for meme analysis (default is 500)
+
+'''
+
 
 from optparse import OptionParser
 from pybedtools import BedTool
@@ -19,7 +30,7 @@ def main():
                        help="provide input .narrowPeak file")
     options.add_option("-g", "--reference", dest="reference",
                        help="provide genome reference file (in .fasta)")
-    options.add_option("-l", "--sequence_length", dest="seq_length", type="int", default=250,
+    options.add_option("-l", "--sequence_length", dest="seq_length", type="int", default=500,
                        help="length of resulting sequence region included for meme analysis")
     options.add_option("-o", "--output", dest="outfile",
                        help="name of the output file")

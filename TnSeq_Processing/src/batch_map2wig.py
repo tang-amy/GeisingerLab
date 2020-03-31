@@ -5,7 +5,7 @@
 
 #!/home/bin/python
 
-import bowtie_to_wig2 as btw
+import map_to_wig as btw
 from optparse import OptionParser
 import os
 from Bio import SeqIO

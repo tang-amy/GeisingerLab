@@ -11,6 +11,3 @@ for file in $DIR/*.fastq
 do
 bowtie -m 1 -n 1 --best -y $REF $file "$ODIR/$(basename ${file/%fastq/map})"
 done
-# parallel 'bowtie -m 1 -n 1 --best -y Ab17978 {} ${ODIR}/{}/%fastq/map' ::: ${DIR}/*.fastq.gz
-
-# ${file/%fastq/map}"'
