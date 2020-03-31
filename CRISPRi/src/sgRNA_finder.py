@@ -143,8 +143,9 @@ def sgRNA_finder(sg_candidate, tss, reference, up_range, down_range, sg_outfile)
                         tss_pos = tss_coordinate[t]
                         sg_start = candidate_start[m]
                         sg_end = candidate_end[m]
+                        pam_pos = candidate_coordinate[m]
                         sg_seq = ''.join(['5\'-', candidate_seq[m], '-3\''])
-                        sgRNA.append([strand, old_tag, new_locus, pro_id, tss_pos, sg_start, sg_end, sg_seq])
+                        sgRNA.append([strand, old_tag, new_locus, pro_id, pam_pos, tss_pos, sg_start, sg_end, sg_seq])
 
             # Assign ids to each unique sgRNA in sgRNA
             sg_start_list = []
@@ -158,7 +159,7 @@ def sgRNA_finder(sg_candidate, tss, reference, up_range, down_range, sg_outfile)
                 entry.insert(0, ''.join(['SGR_Ab', str(label[entry[5]]+1).zfill(4)]))
 
             df = pd.DataFrame(sgRNA, columns=['SGR_Ab ID', 'Strand', 'Locus tag (old)', 'Locus tag (new)', 'Protein ID',
-                                       'PAM_pos, ''TSS coordinate', 'SGR start', 'SGR end', 'SGR sequence'])
+                                              'PAM_pos', 'TSS coordinate', 'SGR start', 'SGR end', 'SGR sequence'])
             df.to_csv(sg_outfile, sep='\t', index=False)
     t4 = timeit.default_timer()
     print("Finished recording sgRNA candidates: ", format((t4 - t3), '.2f'), " seconds." + "\n")
