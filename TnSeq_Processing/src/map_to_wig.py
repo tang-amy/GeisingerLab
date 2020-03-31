@@ -19,7 +19,7 @@ options.add_option("-g", "--genome", dest="genomefile",
 options.add_option("-i", "--infile", dest="inputfile",
                    help="input map file (.map)")
 options.add_option("-o", "--outfile", dest="outputfile",
-                   help="output file (.prot_table)")
+                   help="output file (.wig)")
 
 
 def make_read_counter(bowtiefile):
