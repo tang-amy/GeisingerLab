@@ -42,7 +42,7 @@ bowtie-build -f reference.fasta GenomeName/GenomeName
 # to run on a single file
 bowtie -m 1 -n 1 --best -y -S BowtieReference/BowtieReference yourfastqfile.fastq outputFile.map
 ```
-4. Create the WIG files from the MAP files using either [map_to_wig.py](https://github.com/tang-amy/GeisingerLab/blob/master/TnSeq_Processing/src/map_to_wig.py) or [batch_map2wig.py](https://github.com/tang-amy/GeisingerLab/blob/master/TnSeq_Processing/src/batch_map2wig.py). Use full names for the pathing to the input/output files/directories or run in the appropriate directory. __Note:batch_map2wig.py requries map_to_wig.py.__
+4. Create the WIG files from the MAP files using either [map_to_wig.py](https://github.com/tang-amy/GeisingerLab/blob/master/TnSeq_Processing/src/map_to_wig.py) or [batch_map2wig.py](https://github.com/tang-amy/GeisingerLab/blob/master/TnSeq_Processing/src/batch_map2wig.py). Use full names for the pathing to the input/output files/directories or run in the appropriate directory. Note: batch_map2wig.py requries map_to_wig.py.
 ```bash
 # to run the batch script
 ./batch_map2wig.py -g reference.gbk -i mapped_files_dir -o wig_files
