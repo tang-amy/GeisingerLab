@@ -1,6 +1,6 @@
 # Tn-Seq Processing README
 
-Includes scripts for processing FASTQ sequencing files into WIG (wiggle) files.Scripts written in Bash (shell scripting) and Python 3
+Includes scripts for processing FASTQ sequencing files into WIG (wiggle) files. Scripts written in Bash (shell scripting) and Python 3. For running TRANSIT (DeJesus, M. A., et al, 2015), please see their [documentation](https://transit.readthedocs.io/en/latest/tpp.html).
 
 ## Requirements
 - Command Line Modules/Tools
