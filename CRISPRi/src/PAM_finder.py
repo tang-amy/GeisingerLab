@@ -12,6 +12,13 @@ Usage: python3 PAM_finder.py -i [input_directory] -n [PAM_length] -o [output_dir
 
 -i input file in fasta format, multiple-chromosome is supported
 
+Output
+    column 1: ID
+    column 2: Strand
+    column 3: Start position (SGR)
+    column 4: End position (SGR)
+    column 5: PAM coordinate (position of "N")
+
 """
 
 # !/home/bin/python3
@@ -48,22 +55,21 @@ def find_pam(sequence, length=20, outfile="pam_list"):
                     GG_pos = PAM_NGG.start() + 1                # position of GG
                     pam_start_plus = GG_pos - length - 2        # start position of the PAM sequence
                     pam_end_plus = GG_pos - 2                   # end position of the PAM sequence
-                    POS_PAM_plus.update({pam_start_plus: [seq_ID, pam_end_plus, plus_strand]})
+                    POS_PAM_plus.update({pam_start_plus: [seq_ID, plus_strand, pam_end_plus, GG_pos-1]})
                     counter1 += 1
             for key in POS_PAM_plus:
-                PAM_list_plus.append([POS_PAM_plus[key][0], key, POS_PAM_plus[key][1], POS_PAM_plus[key][2]])
-            df = pd.DataFrame(PAM_list_plus, columns=['ID', 'start_pos', 'end_pos', 'strand'])
+                PAM_list_plus.append([POS_PAM_plus[key][0], POS_PAM_plus[key][1], key, POS_PAM_plus[key][2], POS_PAM_plus[key][3]])
+            df = pd.DataFrame(PAM_list_plus, columns=['ID', 'Strand', 'Start_pos', 'End_pos', 'PAM_pos'])
             print("Found " + str(counter1) + " PAM sequences on \"+\" strand")
-
 
             for PAM_CCN in re.finditer("CC", str(record.seq)):  # search PAM in minus strand following "CCN..."
                 CC_pos = PAM_CCN.start() + 1
                 pam_start_minus = CC_pos + 2
                 pam_end_minus = CC_pos + length + 2
-                POS_PAM_minus.update({pam_start_minus: [seq_ID, pam_end_minus, minus_strand]})
+                POS_PAM_minus.update({pam_start_minus: [seq_ID , minus_strand, pam_end_minus, CC_pos+2]})
                 counter2 += 1
             for key in POS_PAM_minus:
-                PAM_list_minus.append([POS_PAM_minus[key][0], key, POS_PAM_minus[key][1], POS_PAM_minus[key][2]])
+                PAM_list_minus.append([POS_PAM_minus[key][0], POS_PAM_minus[key][1], key, POS_PAM_minus[key][2], POS_PAM_minus[key][3]])
             print("Found " + str(counter2) + " PAM sequences on \"-\" strand")
             print("Found " + str(counter1+counter2) + " PAM sequences in total from both strands")
             counter1 = 0
