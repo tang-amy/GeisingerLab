@@ -76,7 +76,7 @@ def find_pam(sequence, length=20, outfile="pam_list"):
             counter2 = 0
             to_append = pd.DataFrame(PAM_list_minus, columns=df.columns)
             df = df.append(to_append, ignore_index=True)
-            df = df.sort_values(by=['start_pos'])
+            df = df.sort_values(by=['Start_pos'])
             df.to_csv(outfile, sep='\t', index=False, header=None)
 
 def main():

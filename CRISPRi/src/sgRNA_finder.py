@@ -143,7 +143,7 @@ def sgRNA_finder(sg_candidate, tss, reference, up_range, down_range, sg_outfile)
                         tss_pos = tss_coordinate[t]
                         sg_start = candidate_start[m]
                         sg_end = candidate_end[m]
-                        sg_seq = ''.join(['5-', candidate_seq[m], '-3'])
+                        sg_seq = ''.join(['5-\'', candidate_seq[m], '-3\''])
                         sgRNA.append([strand, old_tag, new_locus, pro_id, tss_pos, sg_start, sg_end, sg_seq])
 
             # Assign ids to each unique sgRNA in sgRNA
