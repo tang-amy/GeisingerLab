@@ -4,8 +4,8 @@ Includes scripts for processing FASTQ sequencing files into WIG (wiggle) files. 
 
 ## Requirements
 - Command Line Modules/Tools
-  - FASTX_ToolKit from Hannon Lab (from Gordon, A. & Hannon, G. J., 2010 (http://hannonlab.cshl.edu/fastx_toolkit/))
-  - Bowtie (from Langmead, B., et al, 2010 (http://bowtie-bio.sourceforge.net/index.shtml))
+  - FASTX_ToolKit from Hannon Lab (from [Gordon, A. & Hannon, G. J., 2010](http://hannonlab.cshl.edu/fastx_toolkit/))
+  - Bowtie (from [Langmead, B., et al, 2010](http://bowtie-bio.sourceforge.net/index.shtml))
 - Python 3 with biopython (Bio) package installed
 - Reference files
   - Genomic FASTA file (eg. NZ_CP012004.fasta)
