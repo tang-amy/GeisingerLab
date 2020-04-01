@@ -59,16 +59,17 @@ gkb = ""
 # Output shortlist as "sg_candidate_[infile].bed"
 
 def tss_pam(pam, tss, up_range, down_range, shortlist):
-    df_PAM = pd.read_csv(pam, sep='\t', names=["ID", "Strand", "Start_pos", "End_pos", "PAM_pos"])
+    df_PAM = pd.read_csv(pam, sep='\t')
     df_TSS = pd.read_csv(tss, sep='\t')
     pam_index = df_PAM.index.tolist()  # index for all pam sequences
     all_pam = df_PAM["Start_pos"].tolist()  # start_pos of pam sequences
     pam_chrom = df_PAM["ID"].tolist()
     pam_end = df_PAM["End_pos"].tolist()
-    pam_strand = df_PAM["Strand"].tolist()
+    pam_type = df_PAM["Type"].tolist()
     pam_coordinate = df_PAM["PAM_pos"].tolist()
     tss_coordinate = [int(i) for i in df_TSS["TSS coordinate"].tolist()[:-1]]
-
+    print(type(len(tss_coordinate)), 'tss_coordinate\n')
+    print(all_pam[0], '', type(all_pam[0]), 'all_pam\n')
     close_pam_index = []
     for m in pam_index:
         pam_to_search = all_pam[m]
@@ -81,10 +82,10 @@ def tss_pam(pam, tss, up_range, down_range, shortlist):
         chrom_id = pam_chrom[i]
         pam_start = all_pam[i]
         pam_end_pos = pam_end[i]
-        strand = pam_strand[i]
+        pam_t = pam_type[i]
         coordinate = pam_coordinate[i]
-        short_list.append([chrom_id, strand, pam_start, pam_end_pos, coordinate])
-    df = pd.DataFrame(short_list, columns=['ID', "Strand", "Start_pos", "End_pos", "PAM_pos"])
+        short_list.append([chrom_id, pam_t, pam_start, pam_end_pos, coordinate])
+    df = pd.DataFrame(short_list, columns=['ID', "Type", "Start_pos", "End_pos", "PAM_pos"])
     print("Found " + str(len(short_list)) + " PAM sequences in proximity to at least one tss" + "\n")
 
     df.to_csv(shortlist, sep='\t', index=False, header=False)
@@ -94,16 +95,17 @@ def tss_pam(pam, tss, up_range, down_range, shortlist):
 
 def sgRNA_finder(sg_candidate, tss, reference, up_range, down_range, sg_outfile):
     global gbk
-    df_candidate = pd.read_csv(sg_candidate, sep='\t', names=['ID', "Strand", "Start_pos", "End_pos", "PAM_pos"])
+    df_candidate = pd.read_csv(sg_candidate, sep='\t', names=['ID', "Type", "Start_pos", "End_pos", "PAM_pos"])
     candidate_start = df_candidate["Start_pos"].tolist()  # start_pos of pam sequences
     candidate_end = df_candidate["End_pos"].tolist()
-    candidate_strand = df_candidate["Strand"].tolist()
+    candidate_type = df_candidate["Type"].tolist()
     candidate_coordinate = df_candidate["PAM_pos"].tolist()
     pam_index = df_candidate.index.tolist()
     t2 = timeit.default_timer()
     df_TSS = pd.read_csv(tss, sep='\t')
     tss_index = df_TSS.index.tolist()[:-1]
     tss_coordinate = [int(i) for i in df_TSS["TSS coordinate"].tolist()[:-1]]
+    tss_strand = df_TSS["Strand"][:-1].tolist()
     old_locus = df_TSS["Locus_tag"][:-1].tolist()
     dic_locus = locus_dic(gbk)
     dic_protein = pro_dic(gbk)
@@ -115,20 +117,23 @@ def sgRNA_finder(sg_candidate, tss, reference, up_range, down_range, sg_outfile)
         for record in SeqIO.parse(f, "fasta"):  # read sequence(s) from fasta
             gDNA = str(record.seq)
             candidate_seq = {}
-            sg_list = []
             for n in pam_index:
                 sequence = str(record.seq[candidate_start[n]:candidate_end[n]])  # sgRNA sequence (default 20 bp)
                 seed = sequence[0:12]  # seed region of the sgRNA (12bp)
                 rc_sequence = reverse_complement(sequence)
                 rc_seed = rc_sequence[0:12]
-                if candidate_strand[n] == '+':  # if NGG, keep original sequence
+                if candidate_type[n] == 'NGG':  # if NGG, keep original sequence
                     if gDNA.count(seed) == 1:
                         if gDNA.count(reverse_complement(seed)) == 1:
-                            candidate_seq.update({n: sequence})
+                            p_seq = str(record.seq[(candidate_coordinate[n]-1):(candidate_coordinate[n]+2)])
+                            candidate_seq.update({n: [sequence, p_seq]})
+
                 else:  # if CCN, keep reverse complementary
                     if gDNA.count(rc_seed) == 1:
                         if gDNA.count(reverse_complement(rc_seed)) == 1:
-                            candidate_seq.update({n: rc_sequence})
+                            p_seq = str(record.seq[(candidate_coordinate[n]-3):candidate_coordinate[n]])
+                            candidate_seq.update({n: [rc_sequence, p_seq]})
+
             t3 = timeit.default_timer()
             print("Finished screening seed regions in: ", format((t3 - t2), '.2f'), " seconds." + "\n")
 
@@ -136,30 +141,49 @@ def sgRNA_finder(sg_candidate, tss, reference, up_range, down_range, sg_outfile)
             for t in tss_index:
                 for m in candidate_seq:
                     if -up_range < candidate_start[m] - tss_coordinate[t] < down_range - 20:
-                        strand = candidate_strand[m]
+                        strand = tss_strand[t]
                         old_tag = old_locus[t]
                         new_locus = locus_to_new(old_tag, dic_locus)
                         pro_id = locus_to_protein(old_tag, dic_protein)
                         tss_pos = tss_coordinate[t]
-                        sg_start = candidate_start[m]
+                        sg_start = candidate_start[m] + 1   # converted to 1-based index in output
                         sg_end = candidate_end[m]
                         pam_pos = candidate_coordinate[m]
-                        sg_seq = ''.join(['5\'-', candidate_seq[m], '-3\''])
-                        sgRNA.append([strand, old_tag, new_locus, pro_id, pam_pos, tss_pos, sg_start, sg_end, sg_seq])
+                        p_seq = candidate_seq[m][1]
+                        if strand == '+':
+                            t_strand = '+'
+                            if pam_pos < sg_start < sg_end:
+                                p_type = "T"
+                            elif sg_start < sg_end < pam_pos:
+                                p_type = "NT"
+                        else:
+                            t_strand = '-'
+                            if pam_pos < sg_start < sg_end:
+                                p_type = "NT"
+                            elif sg_start < sg_end < pam_pos:
+                                p_type = "T"
+                        if sg_start <= tss_pos:
+                            distance = sg_start - tss_pos
+                        else:
+                            distance = sg_end - tss_pos
+                        sg_seq = ''.join(['5\'-', candidate_seq[m][0], '-3\''])
+                        sgRNA.append([new_locus, old_tag, pro_id, t_strand, tss_pos,
+                                      pam_pos, p_seq, sg_start, sg_end, p_type, distance, sg_seq])
 
-            # Assign ids to each unique sgRNA in sgRNA
-            sg_start_list = []
-            label = {}
-            for entry in sgRNA:
-                sg_start_list.append(entry[5])
-            temp = defaultdict(lambda: len(temp))
-            for ele in sg_start_list:
-                label.update({ele: temp[ele]})
-            for entry in sgRNA:
-                entry.insert(0, ''.join(['SGR_Ab', str(label[entry[5]]+1).zfill(4)]))
+# [Not executed] Assign ids to each unique sgRNA in sgRNA
+# sg_start_list = []
+# label = {}
+# for entry in sgRNA:
+#     sg_start_list.append(entry[8])
+# temp = defaultdict(lambda: len(temp))
+# for ele in sg_start_list:
+#     label.update({ele: temp[ele]})
+# for entry in sgRNA:
+#     entry.insert(0, ''.join(['SGR_Ab', str(label[entry[8]]+1).zfill(4)]))
 
-            df = pd.DataFrame(sgRNA, columns=['SGR_Ab ID', 'Strand', 'Locus tag (old)', 'Locus tag (new)', 'Protein ID',
-                                              'PAM_pos', 'TSS coordinate', 'SGR start', 'SGR end', 'SGR sequence'])
+            df = pd.DataFrame(sgRNA, columns=['Locus tag (new)', 'Locus tag (old)', 'Protein ID', 'TSS Strand', 'TSS coordinate',
+                                              'PAM coordinate', 'PAM sequence', 'SGR start', 'SGR end', 'Target strand',
+                                              'Distance to nearest TSS', 'SGR sequence'])
             df.to_csv(sg_outfile, sep='\t', index=False)
     t4 = timeit.default_timer()
     print("Finished recording sgRNA candidates: ", format((t4 - t3), '.2f'), " seconds." + "\n")
@@ -169,7 +193,7 @@ def sgRNA_finder(sg_candidate, tss, reference, up_range, down_range, sg_outfile)
 
 def binary_search(arr_tss, l, r, p, up, down):
     if r >= l:
-        mid = l + (r - l) // 2;
+        mid = l + (r - l) // 2
         if -up <= p - arr_tss[mid] <= down - 20:
             return mid
         elif p - arr_tss[mid] < -up:

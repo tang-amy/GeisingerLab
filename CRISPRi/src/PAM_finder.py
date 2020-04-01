@@ -39,8 +39,8 @@ options.add_option("-o", "--output_name", dest="outfile", default="pam_list",
 
 def find_pam(sequence, length=20, outfile="pam_list"):
     length = int(length)
-    plus_strand = "+"
-    minus_strand = "-"
+    NGG = "NGG"
+    CCN = "CCN"
     with open(sequence, "r") as f:
         for record in SeqIO.parse(f, "fasta"):                  # read each sequence (chromosome)
             seq_ID = record.id
@@ -55,29 +55,29 @@ def find_pam(sequence, length=20, outfile="pam_list"):
                     GG_pos = PAM_NGG.start() + 1                # position of GG
                     pam_start_plus = GG_pos - length - 2        # start position of the PAM sequence
                     pam_end_plus = GG_pos - 2                   # end position of the PAM sequence
-                    POS_PAM_plus.update({pam_start_plus: [seq_ID, plus_strand, pam_end_plus, GG_pos-1]})
+                    POS_PAM_plus.update({pam_start_plus: [seq_ID, NGG, pam_end_plus, GG_pos-1]})
                     counter1 += 1
             for key in POS_PAM_plus:
                 PAM_list_plus.append([POS_PAM_plus[key][0], POS_PAM_plus[key][1], key, POS_PAM_plus[key][2], POS_PAM_plus[key][3]])
-            df = pd.DataFrame(PAM_list_plus, columns=['ID', 'Strand', 'Start_pos', 'End_pos', 'PAM_pos'])
-            print("Found " + str(counter1) + " PAM sequences on \"+\" strand")
+            df = pd.DataFrame(PAM_list_plus, columns=['ID', 'Type', 'Start_pos', 'End_pos', 'PAM_pos'])
+            print("Found " + str(counter1) + " -NGG")
 
             for PAM_CCN in re.finditer("CC", str(record.seq)):  # search PAM in minus strand following "CCN..."
                 CC_pos = PAM_CCN.start() + 1
                 pam_start_minus = CC_pos + 2
                 pam_end_minus = CC_pos + length + 2
-                POS_PAM_minus.update({pam_start_minus: [seq_ID , minus_strand, pam_end_minus, CC_pos+2]})
+                POS_PAM_minus.update({pam_start_minus: [seq_ID, CCN, pam_end_minus, CC_pos+2]})
                 counter2 += 1
             for key in POS_PAM_minus:
                 PAM_list_minus.append([POS_PAM_minus[key][0], POS_PAM_minus[key][1], key, POS_PAM_minus[key][2], POS_PAM_minus[key][3]])
-            print("Found " + str(counter2) + " PAM sequences on \"-\" strand")
-            print("Found " + str(counter1+counter2) + " PAM sequences in total from both strands")
+            print("Found " + str(counter2) + " -CCN")
+            print("Found " + str(counter1+counter2) + " PAM sequences in total")
             counter1 = 0
             counter2 = 0
             to_append = pd.DataFrame(PAM_list_minus, columns=df.columns)
             df = df.append(to_append, ignore_index=True)
             df = df.sort_values(by=['Start_pos'])
-            df.to_csv(outfile, sep='\t', index=False, header=None)
+            df.to_csv(outfile, sep='\t', index=False)
 
 def main():
     opts, args = options.parse_args()
