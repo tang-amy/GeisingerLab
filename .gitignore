@@ -1,6 +1,9 @@
 # ignores all files by default
 *.*
 
+# folders to ignore
+/.idea
+
 # EXCEPTIONS
 
 # languages
@@ -9,6 +12,7 @@
 !*.sh
 !*.Rmd
 !*.md
+!*.bash
 
 # reference files
 !*.txt
@@ -16,5 +20,7 @@
 !*.gb
 !*gbk
 !*.tsv
+!*.csv
+!.bash
 
 !.gitignore
