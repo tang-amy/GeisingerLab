@@ -1,4 +1,22 @@
+## Yunfei Dai
+## 04/01/2020
 
+"""
+
+This script extracts all the primary TSSs from the Kroger TSS list.
+
+The output only keeps the 3 crucial columns needed for sgRNA_finder.py
+    Column 1: TSS coordinate
+    Column 2: Locus tag (old)
+    Column 3: Strand
+
+
+[mandatory options]
+    -i input file (.txt)
+    -o output list
+
+
+"""
 
 
 from optparse import OptionParser
