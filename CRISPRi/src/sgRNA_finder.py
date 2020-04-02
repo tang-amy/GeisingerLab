@@ -74,15 +74,23 @@ def tss_pam(pam, tss, up_range, down_range, shortlist, sg_length):
     pam_chrom = df_PAM["ID"].tolist()
     pam_end = df_PAM["End_pos"].tolist()
     pam_type = df_PAM["Type"].tolist()
+    tss_index = df_TSS.index.tolist()[:-1]
     pam_coordinate = df_PAM["PAM_pos"].tolist()
     tss_coordinate = [int(i) for i in df_TSS["TSS coordinate"].tolist()[:-1]]
-    print(type(len(tss_coordinate)), 'tss_coordinate\n')
-    print(all_pam[0], '', type(all_pam[0]), 'all_pam\n')
+    tss_strand = df_TSS["Strand"][:-1].tolist()
     close_pam_index = []
+    tss_plus = []
+    tss_minus = []
+    for t in tss_index:
+        if tss_strand[t] == '+':
+            tss_plus.append(tss_coordinate[t])
+        else:
+            tss_minus.append(tss_coordinate[t])
     for m in pam_index:
         pam_to_search = all_pam[m]
-        v = binary_search(tss_coordinate, 0, len(tss_coordinate) - 1, pam_to_search, up_range, down_range, sg_length)
-        if v != -1:
+        v = binary_search(tss_plus, 0, len(tss_plus) - 1, pam_to_search, up_range, down_range, sg_length)
+        w = binary_search(tss_minus, 0, len(tss_minus) - 1, pam_to_search, down_range, up_range, sg_length)
+        if v != -1 or w != -1:
             close_pam_index.append(m)
 
     short_list = []
@@ -161,19 +169,25 @@ def sgRNA_finder(sg_candidate, tss, reference, up_range, down_range, sg_length, 
                         if strand == '+':
                             t_strand = '+'
                             if pam_pos < sg_start < sg_end:
-                                p_type = "T"
-                            elif sg_start < sg_end < pam_pos:
                                 p_type = "NT"
+                            elif sg_start < sg_end < pam_pos:
+                                p_type = "T"
                         else:
                             t_strand = '-'
                             if pam_pos < sg_start < sg_end:
-                                p_type = "NT"
+                                p_type = "TT"
                             elif sg_start < sg_end < pam_pos:
-                                p_type = "T"
+                                p_type = "NT"
                         if sg_start <= tss_pos:
-                            distance = sg_start - tss_pos
+                            if strand == "+":
+                                distance = sg_start - tss_pos
+                            else:
+                                distance = tss_pos - sg_start
                         else:
-                            distance = sg_end - tss_pos
+                            if strand == "+":
+                                distance = sg_end - tss_pos
+                            else:
+                                distance = tss_pos - sg_end
                         sg_seq = ''.join(['5\'-', candidate_seq[m][0], '-3\''])
                         sgRNA.append([new_locus, old_tag, pro_id, t_strand, tss_pos,
                                       pam_pos, p_seq, sg_start, sg_end, p_type, distance, sg_seq])
