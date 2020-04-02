@@ -175,7 +175,7 @@ def sgRNA_finder(sg_candidate, tss, reference, up_range, down_range, sg_length, 
                         else:
                             t_strand = '-'
                             if pam_pos < sg_start < sg_end:
-                                p_type = "TT"
+                                p_type = "T"
                             elif sg_start < sg_end < pam_pos:
                                 p_type = "NT"
                         if sg_start <= tss_pos:
