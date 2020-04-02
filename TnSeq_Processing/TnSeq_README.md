@@ -28,7 +28,7 @@ To be able to run these scripts on command line, they must be made executable. U
 # to run on single file
 gunzip -k zippedFile
 fastx-clipper -l 20 -a "adapter_sequence" -i inFile -o OutFile
-
+```
 2. Build a reference genome from Bowtie if one hasn't been built yet. For Step 3, the reference directory should be enterd as GenomeName/GenomeName (what was used in this step). 
 ```bash
 mkdir -p GenomeName
