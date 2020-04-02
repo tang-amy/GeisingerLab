@@ -52,7 +52,8 @@ def get_ta(strain):
 def write_wig(f, outfile, ta_table, mystrain):
     # get occupied TA sited
     mdict = make_read_counter(f)
-    print(len(ta_table), len(mdict))
+    print(len(ta_table), " total TA sites found\n")
+    print(len(mdict), "inserted TA sites found\n")
 
     # add occupied ta sites to the master list
     q = 0 # not matched within error range (+-2)
@@ -78,8 +79,10 @@ def write_wig(f, outfile, ta_table, mystrain):
                 q2 += 1
             else:
                 q += 1
-
-    print(len(ta_table), q, q1, q2)
+    print(q, " no match within +/- 2 bp\n")
+    print(q1, " mapped within +/- 1 bp\n")
+    print(q2, " mapped within +/- 2 bp\n")
+    print("Finished")
 
     talist = [[key, ta_table[key]] for key in sorted(ta_table.keys())]
 
