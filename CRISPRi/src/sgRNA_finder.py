@@ -12,12 +12,18 @@ The script also checks for specificity of sgRNAs, only unique target sequences a
 Input file is .bed generated with PAM_finder.py
 
 The output is a tab delimited txt file with 5 columns.
-    Column 1: chromosome ID
-    Column 2: "+" or "-" strand
-    Column 3: sgRNA start position
-    Column 4: sgRNA end position
-    Column 5: sgRNA sequence
-    Column 6: ACX60_ locus_tag (could be multiple for one sgRNA)
+    Column 1: ACX_60 locus tag (old as in Kroger TSS list)
+    Column 2: ACX_RS60 locus tag (new)
+    Column 3: protein id
+    Column 4: TSS strand
+    Column 5: TSS coordinate
+    Column 6: pam coordinate
+    Column 7: pam sequence
+    Column 8: SGR start position
+    Column 9: SGR end position
+    Column 10: target strand (template or non-template)
+    Column 11: Distance (tss to the beginning / end of SGR sequence, whichever is longer)
+    Column 11: SGR sequence
 
 [mandatory options]
     -i input file (.bed)
@@ -29,6 +35,7 @@ The output is a tab delimited txt file with 5 columns.
 [optional]
     -u acceptable upstream range to tss (default is 50)
     -d acceptable downstream range to tss (default is 100)
+    -l length of desired sgRNA sequences (default is 20)
 
 """
 from optparse import OptionParser
@@ -49,6 +56,7 @@ options.add_option("-g", "--genebank", dest="gbk",
                    help='genome genebank file')
 options.add_option("-u", "--up_range", dest="up_range", default="50")
 options.add_option("-d", "--down_range", dest="down_range", default="100"),
+options.add_option("-l", "--sg_length", dest="sg_length", default="20")
 options.add_option("-o", "--output_name", dest="outfile")
 
 gkb = ""
@@ -58,7 +66,7 @@ gkb = ""
 # Identify pam sequences in proximity to at least one TSS.
 # Output shortlist as "sg_candidate_[infile].bed"
 
-def tss_pam(pam, tss, up_range, down_range, shortlist):
+def tss_pam(pam, tss, up_range, down_range, shortlist, sg_length):
     df_PAM = pd.read_csv(pam, sep='\t')
     df_TSS = pd.read_csv(tss, sep='\t')
     pam_index = df_PAM.index.tolist()  # index for all pam sequences
@@ -73,7 +81,7 @@ def tss_pam(pam, tss, up_range, down_range, shortlist):
     close_pam_index = []
     for m in pam_index:
         pam_to_search = all_pam[m]
-        v = binary_search(tss_coordinate, 0, len(tss_coordinate) - 1, pam_to_search, up_range, down_range)
+        v = binary_search(tss_coordinate, 0, len(tss_coordinate) - 1, pam_to_search, up_range, down_range, sg_length)
         if v != -1:
             close_pam_index.append(m)
 
@@ -93,7 +101,7 @@ def tss_pam(pam, tss, up_range, down_range, shortlist):
     return shortlist  # returns path of the shortlist of candidates
 
 
-def sgRNA_finder(sg_candidate, tss, reference, up_range, down_range, sg_outfile):
+def sgRNA_finder(sg_candidate, tss, reference, up_range, down_range, sg_length, sg_outfile):
     global gbk
     df_candidate = pd.read_csv(sg_candidate, sep='\t', names=['ID', "Type", "Start_pos", "End_pos", "PAM_pos"])
     candidate_start = df_candidate["Start_pos"].tolist()  # start_pos of pam sequences
@@ -140,7 +148,7 @@ def sgRNA_finder(sg_candidate, tss, reference, up_range, down_range, sg_outfile)
             sgRNA = []
             for t in tss_index:
                 for m in candidate_seq:
-                    if -up_range < candidate_start[m] - tss_coordinate[t] < down_range - 20:
+                    if -up_range < candidate_start[m] - tss_coordinate[t] < down_range - sg_length:
                         strand = tss_strand[t]
                         old_tag = old_locus[t]
                         new_locus = locus_to_new(old_tag, dic_locus)
@@ -191,15 +199,15 @@ def sgRNA_finder(sg_candidate, tss, reference, up_range, down_range, sg_outfile)
     print("sgRNA sequences saved as: ", sg_outfile, ".", "\n")
 
 
-def binary_search(arr_tss, l, r, p, up, down):
+def binary_search(arr_tss, l, r, p, up, down, sg_length):
     if r >= l:
         mid = l + (r - l) // 2
-        if -up <= p - arr_tss[mid] <= down - 20:
+        if -up <= p - arr_tss[mid] <= down - sg_length:
             return mid
         elif p - arr_tss[mid] < -up:
-            return binary_search(arr_tss, l, mid - 1, p, up, down)
+            return binary_search(arr_tss, l, mid - 1, p, up, down, sg_length)
         else:
-            return binary_search(arr_tss, mid + 1, r, p, up, down)
+            return binary_search(arr_tss, mid + 1, r, p, up, down, sg_length)
     else:
         return -1
 
@@ -282,6 +290,7 @@ def main():
     gbk = opts.gbk
     up_range = int(opts.up_range)
     down_range = int(opts.down_range)
+    sg_length = int(opts.sg_length)
     sg_outfile = opts.outfile
     base_pam = os.path.splitext(pam_filename)[0]
     shortlist = pam_dir + '/' + 'PAM_shortlist_' + base_pam + '.bed'
@@ -290,10 +299,10 @@ def main():
         sg_outfile = pam_dir + '/' + sg_outfile
 
     t0 = timeit.default_timer()
-    sg_candidate = tss_pam(pam, tss, up_range, down_range, shortlist)
+    sg_candidate = tss_pam(pam, tss, up_range, down_range, shortlist, sg_length)
     t1 = timeit.default_timer()
     print("finished PAM shortlist in: ", format(t1 - t0, '.2f'), " seconds" + "\n")
-    sgRNA_finder(sg_candidate, tss, reference, up_range, down_range, sg_outfile)
+    sgRNA_finder(sg_candidate, tss, reference, up_range, down_range, sg_length, sg_outfile)
 
 
 if __name__ == '__main__':
