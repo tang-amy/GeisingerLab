@@ -131,8 +131,7 @@ def sgRNA_finder(sg_candidate, tss, reference, up_range, down_range, sg_outfile)
     dic_locus = locus_dic(gbk)
     dic_protein = pro_dic(gbk)
 
-
-    # screen seed regions to avoid off-target effect (12 bp seed regions of the sgRNAs are screened)
+    # screen seed regions to avoid off-target effect (12 bp region next to NGG)
     # generates a dictionary {index: sequence}
     with open(reference, "r") as f:
         for record in SeqIO.parse(f, "fasta"):  # read sequence(s) from fasta
@@ -143,10 +142,10 @@ def sgRNA_finder(sg_candidate, tss, reference, up_range, down_range, sg_outfile)
                 sequence = str(record.seq[candidate_start[n]:candidate_end[n]])  # sgRNA sequence (default 20 bp)
                 rc_sequence = reverse_complement(sequence)
                 if candidate_type[n] == 'NGG':  # if NGG, keep original sequence
-                    seed = str(record.seq[(candidate_end[n]-12):candidate_end[n]])
+                    seed = sequence[-12:]
                     rc_seed = reverse_complement(seed)
-                    pattern_plus = ''.join([seed,'[ATGC]GG'])
-                    pattern_minus = ''.join([rc_seed,'[ATGC]GG'])
+                    pattern_plus = ''.join([seed, '[ATGC]GG'])
+                    pattern_minus = ''.join(['CC[ATGC]', rc_seed])
                     seed_number = len(re.findall(pattern_plus, gDNA)) + len(re.findall(pattern_minus, gDNA))
                     if seed_number == 1:
                         counter += 1
@@ -154,9 +153,9 @@ def sgRNA_finder(sg_candidate, tss, reference, up_range, down_range, sg_outfile)
                     candidate_seq.update({n: [sequence, p_seq, seed_number]})
 
                 else:  # if CCN, keep reverse complementary
-                    seed = str(record.seq[(candidate_start[n]):(candidate_start[n]+12)])
+                    seed = rc_sequence[-12:]
                     rc_seed = reverse_complement(seed)
-                    pattern_plus = ''.join(['CC[ATGC]', seed])
+                    pattern_plus = ''.join([seed, '[ATGC]GG'])
                     pattern_minus = ''.join(['CC[ATGC]', rc_seed])
                     seed_number = len(re.findall(pattern_plus, gDNA)) + len(re.findall(pattern_minus, gDNA))
                     if seed_number == 1:
