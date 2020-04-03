@@ -56,7 +56,7 @@ options.add_option("-r", "--reference", dest="reference",
 options.add_option("-g", "--genebank", dest="gbk",
                    help='genome genebank file')
 options.add_option("-u", "--up_range", dest="up_range", default="50")
-options.add_option("-d", "--down_range", dest="down_range", default="100"),
+options.add_option("-d", "--down_range", dest="down_range", default="100")
 options.add_option("-l", "--sg_length", dest="sg_length", default="20")
 options.add_option("-o", "--output_name", dest="outfile")
 
@@ -67,7 +67,7 @@ gkb = ""
 # Identify pam sequences in proximity to at least one TSS.
 # Output shortlist as "sg_candidate_[infile].bed"
 
-def tss_pam(pam, tss, up_range, down_range, shortlist):
+def tss_pam(pam, tss, up_range, down_range, shortlist, sg_length):
     df_PAM = pd.read_csv(pam, sep='\t')
     df_TSS = pd.read_csv(tss, sep='\t')
     pam_index = df_PAM.index.tolist()  # index for all pam sequences
@@ -89,8 +89,8 @@ def tss_pam(pam, tss, up_range, down_range, shortlist):
             tss_minus.append(tss_coordinate[t])
     for m in pam_index:
         start_to_search = all_pam[m]
-        v = binary_search(tss_plus, 0, len(tss_plus) - 1, start_to_search, up_range, down_range)
-        w = binary_search(tss_minus, 0, len(tss_minus) - 1, start_to_search, down_range, up_range)
+        v = binary_search(tss_plus, 0, len(tss_plus) - 1, start_to_search, up_range, down_range, sg_length)
+        w = binary_search(tss_minus, 0, len(tss_minus) - 1, start_to_search, down_range, up_range, sg_length)
         if v != -1:
             close_pam_index.append([m, '+'])
         if w != -1:
@@ -113,7 +113,7 @@ def tss_pam(pam, tss, up_range, down_range, shortlist):
     return shortlist  # returns path of the shortlist of candidates
 
 
-def sgRNA_finder(sg_candidate, tss, reference, up_range, down_range, sg_outfile):
+def sgRNA_finder(sg_candidate, tss, reference, up_range, down_range, sg_length, sg_outfile):
     global gbk
     df_candidate = pd.read_csv(sg_candidate, sep='\t', names=['ID', "Type", "Start_pos", "End_pos", "PAM_pos", "Strand_in_range"])
     candidate_start = df_candidate["Start_pos"].tolist()  # start_pos of pam sequences
@@ -165,15 +165,15 @@ def sgRNA_finder(sg_candidate, tss, reference, up_range, down_range, sg_outfile)
 
             t3 = timeit.default_timer()
             print("Finished screening seed regions in: ", format((t3 - t2), '.2f'), " seconds." + "\n")
-            print("Found ", counter, " records with seed numbers = 1 .")
+            print("Found ", counter, " records with seed numbers = 1 .\n")
 
             sgRNA = []
             for t in tss_index:
                 for m in candidate_seq:
                     strand = tss_strand[t]
                     # locate sgRNA sequence to it's neighboring TSSs
-                    if (-up_range < candidate_start[m] - tss_coordinate[t] < down_range and strand == '+') or \
-                            (-down_range < candidate_start[m] - tss_coordinate[t] < up_range and strand == '-'):
+                    if (-up_range < candidate_start[m] - tss_coordinate[t] < down_range-sg_length and strand == '+') or \
+                            (-down_range < candidate_start[m] - tss_coordinate[t] < up_range - sg_length and strand == '-'):
                         if candidate_in_range_strand[m] == tss_strand[t]:
                             strand = tss_strand[t]
                             old_tag = old_locus[t]
@@ -228,20 +228,20 @@ def sgRNA_finder(sg_candidate, tss, reference, up_range, down_range, sg_outfile)
                                               'Distance to nearest TSS', 'SGR sequence', 'Seed number'])
             df.to_csv(sg_outfile, sep='\t', index=False)
     t4 = timeit.default_timer()
-    print("Finished recording sgRNA candidates: ", format((t4 - t3), '.2f'), " seconds." + "\n")
-    print("Recorded ", len(candidate_seq), "sgRNA sequences." + "\n")
-    print("sgRNA sequences saved as: ", sg_outfile, ".", "\n")
+    print("Finished recording sgRNA candidates: ", format((t4 - t3), '.2f'), " seconds.\n")
+    print("Recorded ", len(candidate_seq), "sgRNA sequences.\n")
+    print("sgRNA sequences saved as: ", sg_outfile, "\n")
 
 
-def binary_search(arr_tss, l, r, p, up, down):
+def binary_search(arr_tss, l, r, p, up, down, length):
     if r >= l:
         mid = l + (r - l) // 2
-        if -up <= p - arr_tss[mid] <= down:
+        if -up <= p - arr_tss[mid] <= down - length:
             return mid
         elif p - arr_tss[mid] < -up:
-            return binary_search(arr_tss, l, mid - 1, p, up, down)
+            return binary_search(arr_tss, l, mid - 1, p, up, down, length)
         else:
-            return binary_search(arr_tss, mid + 1, r, p, up, down)
+            return binary_search(arr_tss, mid + 1, r, p, up, down, length)
     else:
         return -1
 
@@ -333,10 +333,10 @@ def main():
         sg_outfile = pam_dir + '/' + sg_outfile
 
     t0 = timeit.default_timer()
-    shortlist = tss_pam(pam, tss, up_range, down_range, shortlist)
+    shortlist = tss_pam(pam, tss, up_range, down_range, shortlist, sg_length)
     t1 = timeit.default_timer()
     print("finished PAM shortlist in: ", format(t1 - t0, '.2f'), " seconds" + "\n")
-    sgRNA_finder(shortlist, tss, reference, up_range, down_range, sg_outfile)
+    sgRNA_finder(shortlist, tss, reference, up_range, down_range, sg_length, sg_outfile)
 
 
 if __name__ == '__main__':
