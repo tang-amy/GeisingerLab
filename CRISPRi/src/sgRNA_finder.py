@@ -25,14 +25,14 @@ The output is a tab delimited txt file with 5 columns.
     Column 11: Distance (tss to the beginning / end of SGR sequence, whichever is longer)
     Column 11: SGR sequence
 
-[mandatory options]
+[mandatory arguments]
     -i input file (.bed)
     -t TSS list (.csv)
     -r reference genome file (.fasta)
     -g genome annotation file (.gbk)
     -o output file
 
-[optional]
+[optional arguments]
     -u acceptable upstream range to tss (default is 50)
     -d acceptable downstream range to tss (default is 100)
     -l length of desired sgRNA sequences (default is 20)

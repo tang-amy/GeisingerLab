@@ -15,6 +15,11 @@ mandatory arguments:
     -t input TSS list
     -o output file (bed format)
 
+optional arguments:
+
+    -l sequence length desired for query in MEME suite
+    -u acceptable upstream distance of peak to TSS
+    -d acceptable downstream distance of peak to TSS
 
 """
 from optparse import OptionParser
