@@ -25,7 +25,7 @@
    - Output:
    ```
     Column 1: ID
-    Column 2: Strand
+    Column 2: Type (NGG) or (CCN)
     Column 3: Start position (SGR)
     Column 4: End position (SGR)
     Column 5: PAM coordinate (position of "N")
@@ -46,7 +46,12 @@
     -d acceptable downstream range to tss (default is 100 bp)
     -l length of desired sgRNA sequences (default is 20 bp)
    ```
-
+   
+   - Description:
+   ```
+   The two main functions in this script are tss_pam and  sgRNA_finder
+   ```
+   
    - Output:
    ```
     Column 1: ACX_60 locus tag (old as in Kroger TSS list)
@@ -61,4 +66,5 @@
     Column 10: target strand (template or non-template)
     Column 11: Distance (tss to the beginning / end of SGR sequence, whichever is longer)
     Column 11: SGR sequence
+    Column 12: Seed number (total occurance of the 12 bp region preceeding PAM plus "NGG" in the entire genome)
    ```
