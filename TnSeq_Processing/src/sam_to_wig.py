@@ -30,13 +30,12 @@ def make_read_counter(samfile):
     f.close()
     for i in flines:
         linelist = i.split()
-        strand = linelist[2]
+        strand = int(linelist[2]) & 0b00010000
         coordinate = int(linelist[4])
         length = len(linelist[10])
-        // TO DO parsing bitwise flag for strand
-        if strand == "-":
+        if strand == 0: # + strand << flag for reverse complement is on
             coordinate += length + 2
-        elif strand == "+":
+        else: # - strand << flag for reverse complement is on
             coordinate -= 2 # shift the coordinate to the beginning of the TA site
         reads_counter[coordinate] += 1
     return dict(reads_counter)
