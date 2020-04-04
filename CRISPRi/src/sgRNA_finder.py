@@ -304,7 +304,7 @@ def pro_dic(annotation_gbk):
         return dic_protein
 
 
-# Update a given old tag, return a new tag
+# Update a given old tag, return protein id
 def locus_to_protein(locus_old, dic_protein):
     if dic_protein.get(locus_old) is None:
         protein_id = ''
