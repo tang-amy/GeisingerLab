@@ -49,8 +49,9 @@
    
    - Description:
    
-     The two main functions in this script are `tss_pam` and `sgRNA_finder`.
-     Frist, tss_pam screens each PAM region in the list generated in Step 1 to determine whether the resulting short guide is in proximity to at least one TSS. The range is defined by the user, and the default is 50 bp upstream to the TSS and 100 bp downstream to the TSS (i.e. -50 to +100 for TSSs on + strand, and -100 to +50 on - strand). These are recorded into a new bed file called "shortlist". Using the coordinates in the "shorlist", `sgRNA_finder` extracts the actual sequences from the fasta genome. 
+     The two main functions in this script are `tss_pam` and `sgRNA_finder`. Frist, tss_pam screens each PAM region in the list generated in Step 1 to determine whether the resulting short guide is in proximity to at least one TSS. The range is defined by the user, and the default is 50 bp upstream to the TSS and 100 bp downstream to the TSS (i.e. -50 to +100 for TSSs on + strand, and -100 to +50 on - strand). These are recorded into a new bed file called "shortlist". Using the coordinates in the "shorlist", `sgRNA_finder` extracts the actual sequences of defined length (default is 20 bp) from the fasta genome. For PAM regions on the - strand (labeled as "CCN" type), reverse complement sequences are recorded.
+     
+     Next, `sgRNA_finder` searches 12-bp seed regions from these short guides in the entire genome, and counts the occurence of these short guides next to all PAM regions. Meanwhile, the actual PAM sequences (e.g. AGG, TGG, CGG, or GGG) are recorded.
    
    
    - Output:
