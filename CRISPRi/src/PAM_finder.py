@@ -3,25 +3,29 @@
 
 """
 
-This script identifies all n-base (default is 20) protospacer sequences in the genome based on protospacer adjacent motifs (PAM),
-and outputs their positions.
+This script identifies all n-base (default is 20) protospacer sequences in the genome based on
+protospacer adjacent motifs (PAM), and outputs their positions.
 
 Packages required: Bio, pandas, optparse, re
 
 Usage: python3 PAM_finder.py -i [input_directory] -n [PAM_length] -o [output_directory]
 
+Mandatory arguments:
 -i input file in fasta format, multiple-chromosome is supported
+-o output file
+
+Optional arguments:
+-l desired sequence length (default is 20)
 
 Output
     column 1: ID
-    column 2: Strand
+    column 2: Type (NGG or CCN)
     column 3: Start position (SGR)
     column 4: End position (SGR)
     column 5: PAM coordinate (position of "N")
 
 """
 
-# !/home/bin/python3
 
 from optparse import OptionParser
 from Bio import SeqIO

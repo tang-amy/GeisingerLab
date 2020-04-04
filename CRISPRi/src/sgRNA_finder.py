@@ -24,6 +24,7 @@ The output is a tab delimited txt file with 5 columns.
     Column 10: target strand (template or non-template)
     Column 11: Distance (tss to the beginning / end of SGR sequence, whichever is longer)
     Column 11: SGR sequence
+    Column 12: Seed number (total occurance of the 12 bp region preceeding PAM plus "NGG" in the entire genome)
 
 [mandatory arguments]
     -i input file (.bed)
