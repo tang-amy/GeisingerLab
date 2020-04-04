@@ -11,7 +11,7 @@
 ## Steps
 1. List all pam sequences from fasta genome file
   Use PAM_finder.py to identify all pam regions in the genome. (PAM regions could be preceeding NGG if on the + strand, or following CCN on the - strand. )
-  Usage:
+  *Usage:
   ```
   python3 PAM_finder.py -i [input.fasta] -o [output.bed] -l [shortguide length]
   ```
