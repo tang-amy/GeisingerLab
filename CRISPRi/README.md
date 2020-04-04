@@ -14,12 +14,12 @@
     
    - Usage:
    ```
-    python3 PAM_finder.py -i [input.fasta] -o [output.bed] -l [shortguide length]
+    python3 PAM_finder.py -i [input.fasta] -o [output.bed]
    ```
     
    - Options
    ```
-    -l desired short guide length, default is 20
+    -l desired short guide length, default is 20 bp.
    ```
    
    - Output:
@@ -42,9 +42,9 @@
    
    - Options:
    ```
-    -u acceptable upstream range to tss (default is 50)
-    -d acceptable downstream range to tss (default is 100)
-    -l length of desired sgRNA sequences (default is 20)
+    -u acceptable upstream range to tss (default is 50 bp)
+    -d acceptable downstream range to tss (default is 100 bp)
+    -l length of desired sgRNA sequences (default is 20 bp)
    ```
 
    - Output:
