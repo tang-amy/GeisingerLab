@@ -24,12 +24,41 @@
    
    - Output:
    ```
-    column 1: ID
-    column 2: Strand
-    column 3: Start position (SGR)
-    column 4: End position (SGR)
-    column 5: PAM coordinate (position of "N")
+    Column 1: ID
+    Column 2: Strand
+    Column 3: Start position (SGR)
+    Column 4: End position (SGR)
+    Column 5: PAM coordinate (position of "N")
    ```
     
   
-2. Identify sgRNA sequences from the list of PAM sequences in step 1
+**2. Find sgRNA sequences**
+  Use `sgRNA_finder.py` to generate a list of sgRNA list that could be used for CRISPRi knock-down.
+  
+   - Usage:
+   ```
+   python3 sgRNA_finder.py -i [input.bed] -t [TSS list.txt] -r [genome.fasta] -g [genome.gbk] -o [output.tsv]
+   ```
+   
+   - Options:
+   ```
+    -u acceptable upstream range to tss (default is 50)
+    -d acceptable downstream range to tss (default is 100)
+    -l length of desired sgRNA sequences (default is 20)
+   ```
+
+   - Output:
+   ```
+    Column 1: ACX_60 locus tag (old as in Kroger TSS list)
+    Column 2: ACX_RS60 locus tag (new)
+    Column 3: protein id
+    Column 4: TSS strand
+    Column 5: TSS coordinate
+    Column 6: pam coordinate
+    Column 7: pam sequence
+    Column 8: SGR start position
+    Column 9: SGR end position
+    Column 10: target strand (template or non-template)
+    Column 11: Distance (tss to the beginning / end of SGR sequence, whichever is longer)
+    Column 11: SGR sequence
+   ```
