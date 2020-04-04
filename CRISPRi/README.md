@@ -52,7 +52,7 @@
    The two main functions in this script are tss_pam and sgRNA_finder.
    Frist, tss_pam screens each PAM region in the list generated in Step 1 to determine whether the resulting
    short guide is in proximity to at least one TSS. The range is defined by the user, and the default is 50 bp
-   upstream to the TSS and 300 bp downstream to the TSS (i.e. -50 to +300 for TSSs on + strand, and -300 to +50
+   upstream to the TSS and 100 bp downstream to the TSS (i.e. -50 to +100 for TSSs on + strand, and -100 to +50
    on - strand.
    ```
    
