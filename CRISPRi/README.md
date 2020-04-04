@@ -49,7 +49,7 @@
    
    - Description:
    ```
-   The two main functions in this script are tss_pam and  sgRNA_finder
+   The two main functions in this script are ==tss_pam== and ==sgRNA_finder==
    ```
    
    - Output:
