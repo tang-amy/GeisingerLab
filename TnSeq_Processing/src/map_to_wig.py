@@ -34,10 +34,10 @@ def make_read_counter(bowtiefile):
         coordinate = int(linelist[4])
         length = len(linelist[5])
         if strand == "-":
-            coordinate += length + 2
+            coordinate += length
         elif strand == "+":
             coordinate -= 2 # shift the coordinate to the beginning of the TA site
-        reads_counter[coordinate] += 1
+        reads_counter[coordinate] += 1 # increment the total count of this coordinate by 1
     return dict(reads_counter)
 
 def get_ta(strain):
