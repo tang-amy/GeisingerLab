@@ -40,7 +40,7 @@ def make_map_dict(mapfilename):
         thisstrand = linelist[1]
         thispos = int(linelist[2])
         thislen = int(linelist[3])
-        // Amy: changed how position is determined
+        # Amy: changed how position is determined
         if thisstrand == "+":
             thispos = thispos - 2
         if thisstrand == "-":
@@ -63,7 +63,7 @@ def make_oldmap_dict(mapfilename):
         thisstrand = linelist[1]
         thispos = int(linelist[3])
         thislen = len(linelist[5])
-        // Amy: changed how position is determined
+        # Amy: changed how position is determined
         if thisstrand == "+":
             thispos = thispos - 2
         if thisstrand == "-":
