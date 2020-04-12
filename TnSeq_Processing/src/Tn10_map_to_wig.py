@@ -85,7 +85,7 @@ def write_wig_file(strainname, infile, outfile, isold):
     # write into the output file
     f = open(outfile, 'w')
     for site in insertion_counts:
-      linestr = [str(site[0]), str(site[1])
+      linestr = [str(site[0]), str(site[1])]
       f.write("\t".join(linestr)+"\n")
     f.close()
 
