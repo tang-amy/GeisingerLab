@@ -40,8 +40,7 @@ def make_map_dict(mapfilename):
         thisstrand = linelist[1]
         thispos = int(linelist[2])
         thislen = int(linelist[3])
-        if thisstrand == "+":
-            thispos = thispos
+        # adjustment for - strand
         if thisstrand == "-":
             thispos = thispos + thislen
         
