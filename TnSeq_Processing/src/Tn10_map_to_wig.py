@@ -94,7 +94,7 @@ def write_wig_file(strainname, infile, outfile, isold):
     f.write('variableStep chrom='+strainname+'\n')
     # go through all insertion sites and append site, read count into wig output file
     for key in sorted(insertions_dict.keys()):
-      linestr = [key, insertions_dict[key]]
+      linestr = str(key) + "\t" + str(insertions_dict[key])
       f.write("\t".join(linestr)+"\n")
     f.close()
 
