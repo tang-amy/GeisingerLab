@@ -95,7 +95,7 @@ def write_wig_file(strainname, infile, outfile, isold):
     # go through all insertion sites and append site, read count into wig output file
     for key in sorted(insertions_dict.keys()):
       linestr = str(key) + "\t" + str(insertions_dict[key])
-      f.write("\t".join(linestr)+"\n")
+      f.write(linestr+"\n")
     f.close()
 
 def main():
