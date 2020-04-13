@@ -78,15 +78,23 @@ def write_wig_file(strainname, infile, outfile, isold):
     else:
         mdict = make_map_dict(infile)
     
-    # sort the insertion counts by position into a 2D array (2 X unique insertion sites) 
-    # containing insertion site, # of insertions at that site
-    insertion_counts = [[key, mdict[key]] for key in sorted(mdict.keys())]
+    # create dict of all the positions and set the counts to 0
+    insertions_dict = {}
+    # eventually we should make this take in a gbk and get seq length?
+    for i in range(1,3857743+1):
+      insertions_dict[i] = 0
+    
+    print("Number of unique insertion sites:", len(mdict))
+    # adding in the counts from the map file to the insertion dict
+    for site in mdict:
+      insertions_dict[site] += mdict[site]
     
     # write into the output file
     f = open(outfile, 'w')
     f.write('variableStep chrom='+strainname+'\n')
-    for site in insertion_counts:
-      linestr = [str(site[0]), str(site[1])]
+    # go through all insertion sites and append site, read count into wig output file
+    for key in sorted(insertions_dict.keys()):
+      linestr = [key, insertions_dict[key]]
       f.write("\t".join(linestr)+"\n")
     f.close()
 
