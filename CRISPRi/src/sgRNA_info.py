@@ -107,7 +107,7 @@ def pam_finder(reference, seq):
                 start_pos = 0
                 end_pos = 0
                 seed_number = 0
-            return type, start_pos, end_pos, PAM, seed_number
+            return type, start_pos+1, end_pos+1, PAM, seed_number
 
 
 def distance_finder(seq):
@@ -116,21 +116,23 @@ def distance_finder(seq):
     i_plus = bisect_left(tss_plus, info[1])
     i_minus = bisect_left(tss_minus, info[2])
     match_plus = tss_plus[i_plus - 1]
-    match_minus = tss_plus[i_minus]
+    match_minus = tss_minus[i_minus]
     old_locus_plus = df_TSS['Locus_tag'][match_plus]
     new_locus_plus = locus_to_new(old_locus_plus, dic_locus)
     old_locus_minus = df_TSS['Locus_tag'][match_minus]
     new_locus_minus = locus_to_new(old_locus_minus, dic_locus)
-    if abs(info[2] - match_plus) <= abs(match_minus - info[1]):
+    dis_plus = abs(info[2] - match_plus - 1)
+    dis_minus = abs(match_minus - info[1])
+    if dis_plus <= dis_minus:
         if info[0] == 'NGG':
-            return match_plus, '+', 'T', info[2] - match_plus, old_locus_plus, new_locus_plus, get_TSS_type(match_plus)
+            return match_plus, '+', 'T', dis_plus, old_locus_plus, new_locus_plus, get_TSS_type(match_plus)
         else:
-            return match_plus, '+', 'NT', match_plus - info[1], old_locus_plus, new_locus_plus, get_TSS_type(match_plus)
+            return match_plus, '+', 'NT', dis_plus, old_locus_plus, new_locus_plus, get_TSS_type(match_plus)
     else:
         if info[0] == 'NGG':
-            return match_minus, '-', 'NT', info[2] - match_minus, old_locus_minus, new_locus_minus, get_TSS_type(match_minus)
+            return match_minus, '-', 'NT', dis_minus, old_locus_minus, new_locus_minus, get_TSS_type(match_minus)
         else:
-            return match_minus, '-', 'T', match_minus - info[1], old_locus_minus, new_locus_minus, get_TSS_type(match_minus)
+            return match_minus, '-', 'T', dis_minus, old_locus_minus, new_locus_minus, get_TSS_type(match_minus)
 
 
 def get_TSS_type(pos):
