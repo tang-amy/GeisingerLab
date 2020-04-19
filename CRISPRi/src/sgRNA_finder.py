@@ -41,7 +41,6 @@ The output is a tab delimited txt file with 5 columns.
 """
 from optparse import OptionParser
 import os
-from collections import defaultdict
 import pandas as pd
 from Bio import SeqIO
 import timeit
@@ -60,9 +59,10 @@ options.add_option("-u", "--up_range", dest="up_range", default="50")
 options.add_option("-d", "--down_range", dest="down_range", default="100")
 options.add_option("-l", "--sg_length", dest="sg_length", default="20")
 options.add_option("-o", "--output_name", dest="outfile")
+options.add_option("-n", "--TSS_list_type", dest="TSS_type", default="Kroger")
 
-gkb = ""
-
+gbk = ''
+TSS_type = ''
 
 # Reads in pam_list.bed and TSS list.
 # Identify pam sequences in proximity to at least one TSS.
@@ -116,6 +116,7 @@ def tss_pam(pam, tss, up_range, down_range, shortlist, sg_length):
 
 def sgRNA_finder(sg_candidate, tss, reference, up_range, down_range, sg_length, sg_outfile):
     global gbk
+    global TSS_type
     df_candidate = pd.read_csv(sg_candidate, sep='\t', names=['ID', "Type", "Start_pos", "End_pos", "PAM_pos", "Strand_in_range"])
     candidate_start = df_candidate["Start_pos"].tolist()  # start_pos of pam sequences
     candidate_end = df_candidate["End_pos"].tolist()
@@ -130,7 +131,11 @@ def sgRNA_finder(sg_candidate, tss, reference, up_range, down_range, sg_length, 
     tss_strand = df_TSS["Strand"][:-1].tolist()
     old_locus = df_TSS["Locus_tag"][:-1].tolist()
     dic_locus = locus_dic(gbk)
-    dic_protein = pro_dic(gbk)
+    if TSS_type == 'Kroger':
+        dic_protein = pro_dic(gbk, 'old')
+    elif TSS_type == 'Prados':
+        dic_protein = pro_dic(gbk, 'new')
+        TSS_cluster_ID = df_TSS['TSS_cluster_ID'][:-1].tolist()
 
     # screen seed regions to avoid off-target effect (12 bp region next to NGG)
     # generates a dictionary {index: sequence}
@@ -150,7 +155,7 @@ def sgRNA_finder(sg_candidate, tss, reference, up_range, down_range, sg_length, 
                     seed_number = len(re.findall(pattern_plus, gDNA)) + len(re.findall(pattern_minus, gDNA))
                     if seed_number == 1:
                         counter += 1
-                    p_seq = str(record.seq[(candidate_coordinate[n]-1):(candidate_coordinate[n]+2)])
+                    p_seq = str(record.seq[(candidate_coordinate[n] - 1):(candidate_coordinate[n] + 2)])
                     candidate_seq.update({n: [sequence, p_seq, seed_number]})
 
                 else:  # if CCN, keep reverse complementary
@@ -161,7 +166,7 @@ def sgRNA_finder(sg_candidate, tss, reference, up_range, down_range, sg_length, 
                     seed_number = len(re.findall(pattern_plus, gDNA)) + len(re.findall(pattern_minus, gDNA))
                     if seed_number == 1:
                         counter += 1
-                    p_seq = str(record.seq[(candidate_coordinate[n]-3):candidate_coordinate[n]])
+                    p_seq = str(record.seq[(candidate_coordinate[n] - 3):candidate_coordinate[n]])
                     candidate_seq.update({n: [rc_sequence, p_seq, seed_number]})
 
             t3 = timeit.default_timer()
@@ -173,12 +178,17 @@ def sgRNA_finder(sg_candidate, tss, reference, up_range, down_range, sg_length, 
                 for m in candidate_seq:
                     strand = tss_strand[t]
                     # locate sgRNA sequence to it's neighboring TSSs
-                    if (-up_range < candidate_start[m] - tss_coordinate[t] < down_range-sg_length and strand == '+') or \
-                            (-down_range < candidate_start[m] - tss_coordinate[t] < up_range - sg_length and strand == '-'):
+                    if (-up_range < candidate_start[m] - tss_coordinate[
+                        t] < down_range - sg_length and strand == '+') or \
+                            (-down_range < candidate_start[m] - tss_coordinate[
+                                t] < up_range - sg_length and strand == '-'):
                         if candidate_in_range_strand[m] == tss_strand[t]:
                             strand = tss_strand[t]
                             old_tag = old_locus[t]
-                            new_locus = locus_to_new(old_tag, dic_locus)
+                            if TSS_type == 'Kroger':
+                                new_locus = locus_to_new(old_tag, dic_locus)
+                            elif TSS_type == 'Prados':
+                                cluster = TSS_cluster_ID[t]
                             pro_id = locus_to_protein(old_tag, dic_protein)
                             tss_pos = tss_coordinate[t]
                             sg_start = candidate_start[m] + 1  # converted to 1-based index in output
@@ -209,8 +219,12 @@ def sgRNA_finder(sg_candidate, tss, reference, up_range, down_range, sg_length, 
                                 else:
                                     distance = tss_pos - sg_end
                             sg_seq = ''.join(['5\'-', candidate_seq[m][0], '-3\''])
-                            sgRNA.append([new_locus, old_tag, pro_id, t_strand, tss_pos,
-                                      pam_pos, p_seq, sg_start, sg_end, p_type, distance, sg_seq, n_seed])
+                            if TSS_type == 'Kroger':
+                                sgRNA.append([new_locus, old_tag, pro_id, t_strand, tss_pos,
+                                          pam_pos, p_seq, sg_start, sg_end, p_type, distance, sg_seq, n_seed])
+                            elif TSS_type == 'Prados':
+                                sgRNA.append([old_tag, pro_id, t_strand, tss_pos,
+                                              pam_pos, p_seq, sg_start, sg_end, p_type, distance, sg_seq, n_seed, cluster])
 
 
 # [Not executed] Assign ids to each unique sgRNA in sgRNA
@@ -223,10 +237,16 @@ def sgRNA_finder(sg_candidate, tss, reference, up_range, down_range, sg_length, 
 #     label.update({ele: temp[ele]})
 # for entry in sgRNA:
 #     entry.insert(0, ''.join(['SGR_Ab', str(label[entry[8]]+1).zfill(4)]))
-
-            df = pd.DataFrame(sgRNA, columns=['Locus tag (new)', 'Locus tag (old)', 'Protein ID', 'TSS Strand', 'TSS coordinate',
+            if TSS_type == 'Kroger':
+                df = pd.DataFrame(sgRNA, columns=['Locus tag (new)', 'Locus tag (old)', 'Protein ID', 'TSS Strand', 'TSS coordinate',
                                               'PAM coordinate', 'PAM sequence', 'SGR start', 'SGR end', 'Target strand',
                                               'Distance to nearest TSS', 'SGR sequence', 'Seed number'])
+            elif TSS_type == 'Prados':
+                df = pd.DataFrame(sgRNA, columns=['Locus tag', 'Protein ID', 'TSS Strand',
+                                                  'TSS coordinate',
+                                                  'PAM coordinate', 'PAM sequence', 'SGR start', 'SGR end',
+                                                  'Target strand',
+                                                  'Distance to nearest TSS', 'SGR sequence', 'Seed number', 'TSS_cluster_ID'])
             df.to_csv(sg_outfile, sep='\t', index=False)
     t4 = timeit.default_timer()
     print("Finished recording sgRNA candidates: ", format((t4 - t3), '.2f'), " seconds.\n")
@@ -291,25 +311,35 @@ def locus_to_new(locus_old, dic_locus):
 
 # Find protein_id based on old locus tag
 # Return a dictionary {old_tag: protein_id}
-def pro_dic(annotation_gbk):
+def pro_dic(annotation_gbk, tag_version):
     recs = [rec for rec in SeqIO.parse(annotation_gbk, "genbank")]
     dic_protein = {}
-    for rec in recs:
-        feats = [feat for feat in rec.features if feat.type == "CDS"]
-        for feat in feats:
-            if 'old_locus_tag' in feat.qualifiers and 'protein_id' in feat.qualifiers:
-                locus = ''.join((feat.qualifiers['old_locus_tag']))
-                protein_id = ''.join((feat.qualifiers['protein_id']))
-            dic_protein.update({locus: protein_id})
-        return dic_protein
+    if tag_version == 'old':
+        for rec in recs:
+            feats = [feat for feat in rec.features if feat.type == "CDS"]
+            for feat in feats:
+                if 'old_locus_tag' in feat.qualifiers and 'protein_id' in feat.qualifiers:
+                    locus = ''.join((feat.qualifiers['old_locus_tag']))
+                    protein_id = ''.join((feat.qualifiers['protein_id']))
+                dic_protein.update({locus: protein_id})
+            return dic_protein
+    elif tag_version == 'new':
+        for rec in recs:
+            feats = [feat for feat in rec.features if feat.type == "CDS"]
+            for feat in feats:
+                if 'locus_tag' in feat.qualifiers and 'protein_id' in feat.qualifiers:
+                    locus = ''.join((feat.qualifiers['locus_tag']))
+                    protein_id = ''.join((feat.qualifiers['protein_id']))
+                dic_protein.update({locus: protein_id})
+            return dic_protein
 
 
 # Update a given old tag, return protein id
-def locus_to_protein(locus_old, dic_protein):
-    if dic_protein.get(locus_old) is None:
+def locus_to_protein(locus, dic_protein):
+    if dic_protein.get(locus) is None:
         protein_id = ''
     else:
-        protein_id = dic_protein.get(locus_old)
+        protein_id = dic_protein.get(locus)
     return protein_id
 
 
@@ -322,7 +352,9 @@ def main():
     tss = opts.tss
     reference = opts.reference
     global gbk
+    global TSS_type
     gbk = opts.gbk
+    TSS_type = opts.TSS_type
     up_range = int(opts.up_range)
     down_range = int(opts.down_range)
     sg_length = int(opts.sg_length)
