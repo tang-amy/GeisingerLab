@@ -125,17 +125,19 @@ def sgRNA_finder(sg_candidate, tss, reference, up_range, down_range, sg_length, 
     candidate_in_range_strand = df_candidate["Strand_in_range"].tolist()
     pam_index = df_candidate.index.tolist()
     t2 = timeit.default_timer()
-    df_TSS = pd.read_csv(tss, sep='\t')
-    tss_index = df_TSS.index.tolist()[:-1]
-    tss_coordinate = [int(i) for i in df_TSS["TSS coordinate"].tolist()[:-1]]
-    tss_strand = df_TSS["Strand"][:-1].tolist()
-    old_locus = df_TSS["Locus_tag"][:-1].tolist()
+    df_TSS = pd.read_csv(tss, sep='\t', skipfooter=1)
+    tss_index = df_TSS.index.tolist()
+    tss_coordinate = [int(i) for i in df_TSS["TSS coordinate"].tolist()]
+    tss_strand = df_TSS["Strand"].tolist()
+    old_locus = df_TSS["Locus tag"].tolist()
     dic_locus = locus_dic(gbk)
     if TSS_type == 'Kroger':
         dic_protein = pro_dic(gbk, 'old')
     elif TSS_type == 'Prados':
         dic_protein = pro_dic(gbk, 'new')
-        TSS_cluster_ID = df_TSS['TSS_cluster_ID'][:-1].tolist()
+        TSS_cluster_ID = df_TSS['TSS cluster ID'].tolist()
+        distance_ORF = df_TSS['Distance to ORF'].tolist()
+        inside_ORF = df_TSS['is_inside_ORF'].tolist()
 
     # screen seed regions to avoid off-target effect (12 bp region next to NGG)
     # generates a dictionary {index: sequence}
@@ -173,7 +175,20 @@ def sgRNA_finder(sg_candidate, tss, reference, up_range, down_range, sg_length, 
             print("Finished screening seed regions in: ", format((t3 - t2), '.2f'), " seconds." + "\n")
             print("Found ", counter, " records with seed numbers = 1 .\n")
 
-            sgRNA = []
+            if TSS_type == 'Kroger':
+                df_sgRNA = pd.DataFrame(columns=['Locus tag (new)', 'Locus tag (old)', 'Protein ID', 'TSS strand',
+                                                 'TSS-ORF distance', 'TSS coordinate', 'PAM coordinate', 'PAM sequence',
+                                                 'SGR start', 'SGR end', 'Target strand', 'TSS-SGR distance',
+                                                 'SGR sequence', 'Seed number', 'Additional TSS 1', 'Additional TSS 2',
+                                                 'Additional TSS 3', 'Additional TSS 4', 'Additional TSS 5',
+                                                 'Additional TSS 6'])
+            elif TSS_type == 'Prados':
+                df_sgRNA = pd.DataFrame(columns=['Locus tag', 'Protein ID', 'TSS strand', 'TSS coordinate',
+                                                 'TSS-ORF distance', 'is_inside_ORF', 'PAM coordinate', 'PAM sequence',
+                                                 'SGR start', 'SGR end', 'Target strand', 'TSS-SGR distance',
+                                                 'SGR sequence', 'Seed number',  'TSS_cluster_ID', 'Additional TSS 1',
+                                                 'Additional TSS 2', 'Additional TSS 3', 'Additional TSS 4'])
+            index = 0
             for t in tss_index:
                 for m in candidate_seq:
                     strand = tss_strand[t]
@@ -189,6 +204,8 @@ def sgRNA_finder(sg_candidate, tss, reference, up_range, down_range, sg_length, 
                                 new_locus = locus_to_new(old_tag, dic_locus)
                             elif TSS_type == 'Prados':
                                 cluster = TSS_cluster_ID[t]
+                                inside = inside_ORF[t]
+                                orf_dis = distance_ORF[t]
                             pro_id = locus_to_protein(old_tag, dic_protein)
                             tss_pos = tss_coordinate[t]
                             sg_start = candidate_start[m] + 1  # converted to 1-based index in output
@@ -220,11 +237,60 @@ def sgRNA_finder(sg_candidate, tss, reference, up_range, down_range, sg_length, 
                                     distance = tss_pos - sg_end
                             sg_seq = ''.join(['5\'-', candidate_seq[m][0], '-3\''])
                             if TSS_type == 'Kroger':
-                                sgRNA.append([new_locus, old_tag, pro_id, t_strand, tss_pos,
-                                          pam_pos, p_seq, sg_start, sg_end, p_type, distance, sg_seq, n_seed])
+                                df_sgRNA.loc[index] = [new_locus, old_tag, pro_id, t_strand, tss_pos, orf_dis,
+                                                       pam_pos, p_seq, sg_start, sg_end, p_type, distance,
+                                                       sg_seq, n_seed, cluster, '', '', '', '', '', '']
                             elif TSS_type == 'Prados':
-                                sgRNA.append([old_tag, pro_id, t_strand, tss_pos,
-                                              pam_pos, p_seq, sg_start, sg_end, p_type, distance, sg_seq, n_seed, cluster])
+                                if sg_seq not in df_sgRNA['SGR sequence'].tolist():
+                                    df_sgRNA.loc[index] = [old_tag, pro_id, t_strand, tss_pos, orf_dis, inside,
+                                                           pam_pos, p_seq, sg_start, sg_end, p_type, distance,
+                                                           sg_seq, n_seed, cluster, '', '', '', '']
+                                    index += 1
+                                else:
+                                    row_location = df_sgRNA.index[df_sgRNA['SGR sequence'] == sg_seq][0]
+                                    old_distance = df_sgRNA['TSS-ORF distance'][row_location]
+                                    if abs(old_distance) <= abs(distance):
+                                        additional = ','.join(map(str,[old_tag, tss_pos, t_strand, orf_dis, distance]))
+                                        if df_sgRNA['Additional TSS 1'][row_location] == '':
+                                            df_sgRNA.at[row_location, 'Additional TSS 1'] = additional
+                                        elif df_sgRNA['Additional TSS 2'][row_location] == '':
+                                            df_sgRNA.at[row_location, 'Additional TSS 2'] = additional
+                                        elif df_sgRNA['Additional TSS 3'][row_location] == '':
+                                            df_sgRNA.at[row_location, 'Additional TSS 3'] = additional
+                                        else:
+                                            df_sgRNA.at[row_location, 'Additional TSS 4'] = additional
+                                    else:
+                                        additional = ', '.join(map(str, [df_sgRNA['Locus tag'][row_location],
+                                                               df_sgRNA['TSS coordinate'][row_location],
+                                                               df_sgRNA['TSS strand'][row_location],
+                                                               df_sgRNA['TSS-ORF distance'][row_location],
+                                                               df_sgRNA['TSS-SGR distance'][row_location]]))
+                                        if df_sgRNA['Additional TSS 1'][row_location] == '':
+                                            df_sgRNA.loc[row_location] = [old_tag, pro_id, t_strand, tss_pos, orf_dis,
+                                                                          inside, pam_pos, p_seq, sg_start, sg_end,
+                                                                          p_type, distance,sg_seq, n_seed, cluster,
+                                                                          additional, '', '', '']
+                                        elif df_sgRNA['Additional TSS 2'][row_location] == '':
+                                            df_sgRNA.loc[row_location] = [old_tag, pro_id, t_strand, tss_pos, orf_dis,
+                                                                          inside, pam_pos, p_seq, sg_start, sg_end,
+                                                                          p_type, distance, sg_seq, n_seed, cluster,
+                                                                          df_sgRNA['Additional TSS 1'][row_location],
+                                                                          additional, '', '']
+                                        elif df_sgRNA['Additional TSS 3'][row_location] == '':
+                                            df_sgRNA.loc[row_location] = [old_tag, pro_id, t_strand, tss_pos, orf_dis,
+                                                                          inside, pam_pos, p_seq, sg_start, sg_end,
+                                                                          p_type, distance, sg_seq, n_seed, cluster,
+                                                                          df_sgRNA['Additional TSS 1'][row_location],
+                                                                          df_sgRNA['Additional TSS 2'][row_location],
+                                                                          additional, '']
+                                        else:
+                                            df_sgRNA.loc[row_location] = [old_tag, pro_id, t_strand, tss_pos, orf_dis,
+                                                                          inside, pam_pos, p_seq, sg_start, sg_end,
+                                                                          p_type, distance, sg_seq, n_seed, cluster,
+                                                                          df_sgRNA['Additional TSS 1'][row_location],
+                                                                          df_sgRNA['Additional TSS 2'][row_location],
+                                                                          df_sgRNA['Additional TSS 3'][row_location],
+                                                                          additional]
 
 
 # [Not executed] Assign ids to each unique sgRNA in sgRNA
@@ -237,21 +303,12 @@ def sgRNA_finder(sg_candidate, tss, reference, up_range, down_range, sg_length, 
 #     label.update({ele: temp[ele]})
 # for entry in sgRNA:
 #     entry.insert(0, ''.join(['SGR_Ab', str(label[entry[8]]+1).zfill(4)]))
-            if TSS_type == 'Kroger':
-                df = pd.DataFrame(sgRNA, columns=['Locus tag (new)', 'Locus tag (old)', 'Protein ID', 'TSS Strand', 'TSS coordinate',
-                                              'PAM coordinate', 'PAM sequence', 'SGR start', 'SGR end', 'Target strand',
-                                              'Distance to nearest TSS', 'SGR sequence', 'Seed number'])
-            elif TSS_type == 'Prados':
-                df = pd.DataFrame(sgRNA, columns=['Locus tag', 'Protein ID', 'TSS Strand',
-                                                  'TSS coordinate',
-                                                  'PAM coordinate', 'PAM sequence', 'SGR start', 'SGR end',
-                                                  'Target strand',
-                                                  'Distance to nearest TSS', 'SGR sequence', 'Seed number', 'TSS_cluster_ID'])
-            df.to_csv(sg_outfile, sep='\t', index=False)
-    t4 = timeit.default_timer()
-    print("Finished recording sgRNA candidates: ", format((t4 - t3), '.2f'), " seconds.\n")
-    print("Recorded ", len(candidate_seq), "sgRNA sequences.\n")
-    print("sgRNA sequences saved as: ", sg_outfile, "\n")
+
+            df_sgRNA.to_csv(sg_outfile, sep='\t', index=False)
+            t4 = timeit.default_timer()
+            print("Finished recording sgRNA candidates: ", format((t4 - t3), '.2f'), " seconds.\n")
+            print("Recorded ", len(candidate_seq), "sgRNA sequences.\n")
+            print("sgRNA sequences saved as: ", sg_outfile, "\n")
 
 
 def binary_search(arr_tss, l, r, p, up, down, length):
