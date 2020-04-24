@@ -18,7 +18,7 @@ Optional:
 
 '''
 
-
+import os
 from optparse import OptionParser
 from pybedtools import BedTool
 
@@ -38,12 +38,18 @@ def main():
     (opts, args) = options.parse_args()
 
     infile = opts.infile
+    outfile = opts.outfile
+    out_path = os.path.abspath(outfile)
+    out_dir = os.path.dirname(out_path)
+    out_name = os.path.basename(out_path)
+    out_base = os.path.splitext(out_name)[0]
+    bedname = out_dir + '/' + 'get_fasta_' + out_base + '.bed'
     reference = opts.reference
     seq_length = opts.seq_length//2
-    outfile = opts.outfile
+
     new_bed = str(outfile.replace(".fasta", ".bed"))
 
-    w = open(new_bed, "w+")
+    w = open(bedname, "w+")
     w.write("track name=new bed from narrowPeak\n")
     with open(infile, "r") as f:
         for line in f:
@@ -57,7 +63,7 @@ def main():
             w.write("\t".join(ls) + "\n")
     w.close()
 
-    mybed = BedTool(new_bed)
+    mybed = BedTool(bedname)
     fasta = BedTool(reference)
     mybed = mybed.sequence(fi=fasta, fo=outfile)
 
