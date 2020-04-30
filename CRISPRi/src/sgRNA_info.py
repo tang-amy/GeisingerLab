@@ -2,6 +2,11 @@
 ## 04/15/2020
 
 
+"""
+This script takes input a list of known sgRNA sequences, calculate its nearest TSS site
+based on the list in Prados et al, 2016.
+"""
+
 from optparse import OptionParser
 import re
 from bisect import bisect_left
