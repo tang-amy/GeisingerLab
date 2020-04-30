@@ -2,6 +2,10 @@
 ## 04/19/2020
 
 
+"""
+Adjust format of the Prados list for easier processing.
+"""
+
 import pandas as pd
 infile = '/Users/yunfei/GeisingerLab/CRISPRi/reference_files/Prados_TSS_raw.csv'
 outfile = '/Users/yunfei/GeisingerLab/CRISPRi/reference_files/Prados_TSS_list.txt'

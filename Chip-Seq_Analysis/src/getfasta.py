@@ -47,8 +47,6 @@ def main():
     reference = opts.reference
     seq_length = opts.seq_length//2
 
-    new_bed = str(outfile.replace(".fasta", ".bed"))
-
     w = open(bedname, "w+")
     w.write("track name=new bed from narrowPeak\n")
     with open(infile, "r") as f:
