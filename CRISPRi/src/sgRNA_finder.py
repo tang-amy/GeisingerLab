@@ -68,6 +68,7 @@ TSS_type = ''
 # Identify pam sequences in proximity to at least one TSS.
 # Output shortlist as "sg_candidate_[infile].bed"
 
+
 def tss_pam(pam, tss, up_range, down_range, shortlist, sg_length):
     df_PAM = pd.read_csv(pam, sep='\t')
     df_TSS = pd.read_csv(tss, sep='\t')
