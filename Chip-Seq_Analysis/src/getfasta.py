@@ -62,7 +62,7 @@ def main():
             if style == 'separate':
                 offset = int(ls[9])
             elif style == 'consensus':
-                offset = int(ls[2]-ls[1])//2
+                offset = (int(ls[2])-int(ls[1]))//2
             new_start = start + offset - seq_length
             new_end = start + offset + seq_length
             ls[1] = str(new_start)
