@@ -16,6 +16,9 @@ Optional:
 
 -l [integer] this is the length of resulting sequence region included for meme analysis (default is 500)
 
+-s Style of input bed file. Default is "separate", meaning direct macs2 call peak output (.narrowPeak),
+    "consensus" is consensus peaks (.bed format) obtained from multiple .narrowPeak files via multiIntersectBed
+
 '''
 
 import os
@@ -27,11 +30,13 @@ def main():
     options = OptionParser()
 
     options.add_option("-i", "--input", dest="infile",
-                       help="provide input .narrowPeak file")
+                       help="provide input bed file")
     options.add_option("-g", "--reference", dest="reference",
                        help="provide genome reference file (in .fasta)")
     options.add_option("-l", "--sequence_length", dest="seq_length", type="int", default=500,
                        help="length of resulting sequence region included for meme analysis")
+    options.add_option("-s", "--style", dest="style", default='separate',
+                       help="style of input bed file")
     options.add_option("-o", "--output", dest="outfile",
                        help="name of the output file")
 
@@ -39,6 +44,7 @@ def main():
 
     infile = opts.infile
     outfile = opts.outfile
+    style = opts.style
     out_path = os.path.abspath(outfile)
     out_dir = os.path.dirname(out_path)
     out_name = os.path.basename(out_path)
@@ -53,7 +59,10 @@ def main():
         for line in f:
             ls = line.strip().split()
             start = int(ls[1])
-            offset = int(ls[9])
+            if style == 'separate':
+                offset = int(ls[9])
+            elif style == 'consensus':
+                offset = int(ls[2]-ls[1])//2
             new_start = start + offset - seq_length
             new_end = start + offset + seq_length
             ls[1] = str(new_start)
