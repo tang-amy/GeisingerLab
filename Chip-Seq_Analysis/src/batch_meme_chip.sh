@@ -29,7 +29,7 @@ for file in ${OUT}/bed_intersect_consensus_meme_chip/*/fimo_out*/*.gff
 do
   fname=$(echo $file | rev | cut -d'/' -f3 | rev);
   ext=$(echo $file | cut -d'/' -f2);
-  cp -a $file ${OUT}/bed_intersect_consensus_meme_chip/fimo_output/$fname.$ext.gff;
+  cp -a $file ${OUT}/bed_intersect_consensus_meme_chip/fimo_output/${fname}.${ext}.gff;
 done
 
 for file in ${OUT}/bed_intersect_consensus_meme_chip/*/*.html
