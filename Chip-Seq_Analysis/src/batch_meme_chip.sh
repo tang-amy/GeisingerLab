@@ -25,6 +25,7 @@ for file in $DIR/consensus_fasta_bed_intersect/*.fasta
   -db /Users/yunfei/meme/motif_databases/PROKARYOTE/collectf.meme $file >> meme-chip_log.txt 2>&1;
 done
 
+# copy all fimo outputs into a single folder
 for file in ${OUT}/bed_intersect_consensus_meme_chip/*/fimo_out*/*.gff
 do
   fname=$(echo $file | rev | cut -d'/' -f3 | rev);
@@ -32,6 +33,7 @@ do
   cp -a $file ${OUT}/bed_intersect_consensus_meme_chip/fimo_output/${fname}.${ext}.gff;
 done
 
+# copy all html outputs into a single folder
 for file in ${OUT}/bed_intersect_consensus_meme_chip/*/*.html
 do
   fname=$(echo $file | rev | cut -d'/' -f2 | rev);
