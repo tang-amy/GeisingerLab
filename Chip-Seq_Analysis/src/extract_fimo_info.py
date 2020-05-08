@@ -1,3 +1,13 @@
+## Yunfei Dai
+## 05/06/2020
+
+"""
+Extract information (sequence position, strand, IUPAC code, motif sequence) from all fimo files into a tsv table.
+
+Usage:
+python extract_fimo_info.py [DIR]
+
+"""
 
 
 from sys import argv
