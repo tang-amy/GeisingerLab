@@ -5,6 +5,7 @@
 
 <<Comment
   Find consensus peaks from macs2 narrowPeak outputs of replicates using bedtool multiIntersectBed function.
+  Consensus peaks are saved as bed files. Fasta files are generated using get_fasta.py (-s consensus).
   Usage:
   bash batch_find_consensus_bedIntersect.sh <input directory>
 Comment
