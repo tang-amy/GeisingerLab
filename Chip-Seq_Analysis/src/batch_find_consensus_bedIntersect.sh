@@ -23,11 +23,13 @@ do
     outfile=${DIR}/consensus_fasta_bed_intersect/concensus_peak/seed$seed/${outname};
     echo "concensus found for $replicates";
     multiIntersectBed -cluster -i $replicates | awk -F"\t" '$4>1' > $outfile &&
+    # only output peaks that occur in two files or more
     python /Users/yunfei/GeisingerLab/Chip-Seq_Analysis/src/getfasta.py \
     -i $outfile \
     -g /Users/yunfei/GeisingerLab/CRISPRi/reference_files/NZ_CP012004.fasta \
     -s 'consensus' \
     -o ${DIR}/consensus_fasta_bed_intersect/${outname/bed/fasta};
+    # generate fasta files for meme-chip
 	done
 done
 
