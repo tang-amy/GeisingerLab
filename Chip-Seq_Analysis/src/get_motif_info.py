@@ -38,7 +38,7 @@ def get_info(file):
                 info2 = line_list[num+1][1].split()
                 nsites = info2[7]
                 e_val = float(info2[9])
-                if e_val != 0.0e+000:
+                if e_val != 0:
                     INFO.append([size, result_name, seed, motif, method, nsites, e_val])
     df = pd.DataFrame(INFO, columns=['Downsample size', 'File', 'Seed number', 'MOTIF', 'Method', 'nsites', 'E value'])
     df.sort_values(['E value'], ascending=True, inplace=True)
