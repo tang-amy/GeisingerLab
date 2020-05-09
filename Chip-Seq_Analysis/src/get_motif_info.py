@@ -19,7 +19,7 @@ import pandas as pd
 from sys import argv
 
 DIR = argv[1] if len(argv)>1 else "/Volumes/Seagate/10022019_ChipSeq/mapped_SAM/meme-chip"
-OUT = argv[2] if len(argv)>1 else "/Volumes/Seagate/10022019_ChipSeq/mapped_SAM/meme-chip/motif_summary_sorted.tsv"
+OUT = argv[2] if len(argv)>2 else "/Volumes/Seagate/10022019_ChipSeq/mapped_SAM/meme-chip/motif_summary_sorted.tsv"
 
 
 def get_info(file):
