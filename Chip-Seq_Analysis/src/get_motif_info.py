@@ -25,6 +25,7 @@ TYPE = argv[3] if len(argv)>3 else "html"
 
 
 def get_info_from_combine_meme(file):
+    # info sourse is combined.meme file
     path = os.path.abspath(file)
     size = path.split('/')[-4][:-12]
     result_name = path.split('/')[-2][:-15] + '_consensus'
@@ -47,8 +48,8 @@ def get_info_from_combine_meme(file):
     df['E value'] = df['E value'].map(lambda x: '{:.2e}'.format(x))
     return df
 
-
 def get_info_from_html(file):
+    # info source is html file
     path = os.path.abspath(file)
     size = path.split('/')[-4][:-12]
     result_name = path.split('/')[-2][:-15] + '_consensus'
