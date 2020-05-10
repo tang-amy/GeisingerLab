@@ -11,7 +11,7 @@ python3 get_motif.py [DIR] [OUT]
 
 DIR: directory containing all meme-chip results
 OUT: directory of output summary file (.tsv format recommended)
-
+TYPE: type of info source (html or combined.meme), default is html
 """
 
 import os
