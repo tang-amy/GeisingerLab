@@ -15,14 +15,16 @@ OUT: directory of output summary file (.tsv format recommended)
 """
 
 import os
+import codecs
 import pandas as pd
 from sys import argv
 
 DIR = argv[1] if len(argv)>1 else "/Volumes/Seagate/10022019_ChipSeq/mapped_SAM/meme-chip"
-OUT = argv[2] if len(argv)>2 else "/Volumes/Seagate/10022019_ChipSeq/mapped_SAM/meme-chip/motif_summary_sorted.tsv"
+OUT = argv[2] if len(argv)>2 else "/Volumes/Seagate/10022019_ChipSeq/mapped_SAM/meme-chip/html_summary.tsv"
+TYPE = argv[3] if len(argv)>3 else "html"
 
 
-def get_info(file):
+def get_info_from_combine_meme(file):
     path = os.path.abspath(file)
     size = path.split('/')[-4][:-12]
     result_name = path.split('/')[-2][:-15] + '_consensus'
@@ -46,6 +48,28 @@ def get_info(file):
     return df
 
 
+def get_info_from_html(file):
+    path = os.path.abspath(file)
+    size = path.split('/')[-4][:-12]
+    result_name = path.split('/')[-2][:-15] + '_consensus'
+    seed = path.split('/')[-2][-16:-15]
+    INFO = []
+    f = codecs.open(file, 'r', 'utf-8')
+    linelist = list(enumerate(f, 1))
+    for num, line in linelist:
+        if "\"consensus\":" in line:
+            method = linelist[num - 2][1].strip().split("\"")[-2]
+            motif = linelist[num - 1][1].strip().split("\"")[-2]
+            nsites = linelist[num + 2][1].strip().split(": ")[-1][:-1]
+            e_val = linelist[num + 3][1].strip().split("\"")[-2]
+            if "http" in e_val:
+                e_val = ''
+            INFO.append([size, result_name, seed, motif, method, nsites, e_val])
+    df = pd.DataFrame(INFO, columns=['Downsample size', 'File', 'Seed number', 'MOTIF', 'Method', 'nsites',
+                                         'E value'])
+    return df
+
+
 def main():
     for i in os.listdir(DIR):
         full_path = os.path.join(DIR, i)
@@ -53,14 +77,20 @@ def main():
             path = os.path.join(full_path, 'bed_intersect_consensus_meme_chip')
             for result in os.listdir(path):
                 if 'BfmR-ChIP' in result:
-                    meme_file = os.path.join(path, result, 'combined.meme')
-                    if os.path.isfile(meme_file):
-                        # check if combined.meme exists in the folder
-                        df = get_info(meme_file)
-                        if not os.path.isfile(OUT):
-                            df.to_csv(OUT, sep='\t', header='column_names', index=False)
-                        else:
-                            df.to_csv(OUT, mode='a', sep='\t', header=False, index=False)
+                    if TYPE == "combined_meme":
+                        file = os.path.join(path, result, 'combined.meme')
+                        if os.path.isfile(file):
+                            # check if file exists in the folder
+                            df = get_info_from_combine_meme(file)
+                    elif TYPE == "html":
+                        file = os.path.join(path, result, 'meme-chip.html')
+                        if os.path.isfile(file):
+                            # check if file exists in the folder
+                            df = get_info_from_html(file)
+                    if not os.path.isfile(OUT):
+                        df.to_csv(OUT, sep='\t', header='column_names', index=False)
+                    else:
+                        df.to_csv(OUT, mode='a', sep='\t', header=False, index=False)
 
 
 if __name__ == '__main__':
