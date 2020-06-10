@@ -1,27 +1,53 @@
 
 from sys import argv
-import os, codecs , pandas as pd
+from Bio import SeqIO
+from bisect import bisect_left
+
+gbk = '/Users/yunfei/GeisingerLab/CRISPRi/reference_files/NZ_CP012004.gbk'
+
+def gene_dic(gbk):
+    # Parse gbk file to get dictionaries containing gene positions and locus tags
+    recs = [rec for rec in SeqIO.parse(gbk, "genbank")]
+    gene_dic_pos = {}
+    gene_dic_neg = {}
+    for rec in recs:
+        feats = [feat for feat in rec.features if feat.type == "gene"]
+        for feat in feats:
+            if feat.location.strand == 1:
+                pos = int(feat.location.start)
+                end = int(feat.location.end)
+                tag = ''.join((feat.qualifiers['locus_tag']))
+                gene_dic_pos.update({pos: [pos, end, tag]})
+            elif feat.location.strand == -1:
+                pos = int(feat.location.start)
+                end = int(feat.location.end)
+                tag = ''.join((feat.qualifiers['locus_tag']))
+                gene_dic_neg.update({pos: [pos, end, tag]})
+    return gene_dic_pos, gene_dic_neg
 
 
-file = "/Volumes/Seagate/10022019_ChipSeq/mapped_SAM/meme-chip/1M_downsampled/" \
-       "bed_intersect_consensus_meme_chip/html_output/BfmR-ChIP-28_seed9.consensus_peak.meme-chip.html"
+def get_tss_gene(coordinate, original_tag, strand, gene_dic_pos, gene_dic_neg):
+    # Return the locus tag of the gene whose transcription is regulated by a given TSS
+    if strand == '+':
+        gene_list = list(gene_dic_pos.keys())
+        match = bisect_left(gene_list, coordinate)
+        print(gene_dic_pos[gene_list[match]])
+        if gene_list[match] - coordinate < 500:
+            tag = gene_dic_pos[gene_list[match]][2]
+        else:
+            tag = original_tag
+    elif strand == '-':
+        gene_list = list(gene_dic_neg.keys())
+        match = bisect_left(gene_list, coordinate)
+        if coordinate - gene_dic_neg[gene_list[match-1]][1] < 500:
+            tag = gene_dic_neg[gene_list[match-1]][2] + '_new'
+        else:
+            tag = original_tag
+    return tag
 
-f = codecs.open(file, 'r', 'utf-8')
-linelist = list(enumerate(f, 1))
 
-for num, line in linelist:
-       path = os.path.abspath(file)
-       size = path.split('/')[-4][:-12]
-       result_name = path.split('/')[-2][:-15] + '_consensus'
-       seed = path.split('/')[-2][-16:-15]
-       INFO = []
-       if "\"consensus\":" in line:
-              method = linelist[num-2][1].strip().split("\"")[-2]
-              motif = linelist[num-1][1].strip().split("\"")[-2]
-              nsites = linelist[num+2][1].strip().split(": ")[-1][:-1]
-              e_value = float(linelist[num+3][1].strip().split("\"")[-2])
-              print(method)
-              print(motif)
-              print(nsites)
-              print(e_value)
-
+gene_dic_pos, gene_dic_neg = gene_dic(gbk)
+tag1 = get_tss_gene(3646, 'ori', '+', gene_dic_pos, gene_dic_neg)
+tag2 = get_tss_gene(104781, 'ori', '-', gene_dic_pos, gene_dic_neg)
+print('tag1: ', tag1)
+print('tag2: ', tag2)
