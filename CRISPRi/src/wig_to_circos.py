@@ -56,5 +56,6 @@ df = df[['chrom', 'start', 'end', 'value']]
 df = df.loc[df['value'] > 0]
 if scale == 'log':
     df['value'] = np.log10(df['value'].to_numpy())
+    df = df.loc[[df['value'] > 0]]
 values = df['value'].tolist()
 df.to_csv(outfile, sep=' ', header=True, index=False)
