@@ -20,6 +20,7 @@ Output example:
 #chr start end value [options]
 hs5 50 75 0.75
 
+See circos requirements: http://circos.ca/documentation/tutorials/configuration/data_files/
 
 """
 
