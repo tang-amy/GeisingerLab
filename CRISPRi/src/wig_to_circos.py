@@ -34,10 +34,13 @@ options = OptionParser()
 options.add_option("-i", "--infile", dest="infile", help="provide input wig file")
 options.add_option("-o", "--outfile", dest="outfile", default="default", help="provide output directory")
 options.add_option("-l", "--scale", dest='scale', default="linear", help="linear or log")
+options.add_option("-t", "--type", dest='type', default="TA", help="TA or Tn10")
+
 
 opts, args = options.parse_args()
 wig = os.path.abspath(opts.infile)
 scale = opts.scale
+wig_type = opts.type
 basename = os.path.splitext(os.path.basename(wig))[0]
 if opts.scale == 'log':
     if opts.outfile == 'default':
@@ -51,11 +54,14 @@ else:
         outfile = opts.outfile
 df = pd.read_csv(wig, sep='\t', names=['start', 'value'], skiprows=1)
 df['chrom'] = 'NZ_CP012004'
-df['end'] = df['start'].to_numpy() + 1
+if wig_type == 'TA':
+    df['end'] = df['start'].to_numpy() + 1
+elif wig_type == 'Tn10':
+    df['end'] = df['start'].to_numpy()
+
 df = df[['chrom', 'start', 'end', 'value']]
 df = df.loc[df['value'] > 0]
 if scale == 'log':
     df['value'] = np.log10(df['value'].to_numpy())
-    df = df.loc[[df['value'] > 0]]
-values = df['value'].tolist()
+    df = df.loc[df['value'] > 0]
 df.to_csv(outfile, sep=' ', header=True, index=False)
