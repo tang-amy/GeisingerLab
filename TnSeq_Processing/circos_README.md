@@ -35,12 +35,23 @@ Internet, point your browser at http://www.perl.org/, the Perl Home Page.
 ```
 1. To install Circos, first make a directory where you want the software to be installed. For example, if you want to creat a folder in the home directory, execute the following in terminal: 
 ```
+# "~" stands for home directory, you can install Circos to anywhere you want if you know what you are doing.
 cd ~
 mkdir circos
 ```
 2. Download the latest version of Circos on: http://circos.ca/software/download/. Move the .tgz file to the folder created in step 1.
 
-3. De
+3. Unpack the .tgz file (named circos-0.67-pre4.tgz for example):
+```
+# first change working directory to circos
+cd ~/circos
+# unpack file
+tar -xzvf circos-0.67-pre4.tgz
+# now list files in the current directory, you should be able to see a folder named circos-0.67-pre4, in addition to circos-0.67-pre4.tgz
+ls
+# now you can detele the .tgz file
+rm -f circos-0.67-pre4.tgz
+```
 
 Configuration (.conf files): specifies the features of the graph (cytogenetic bands, labels, ticks and, of course, data)
 
