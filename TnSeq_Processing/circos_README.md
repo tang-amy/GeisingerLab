@@ -65,7 +65,7 @@ echo $PATH
 circos
 # you will likely see error messages, this is normal as the required perl packages are not installed yet.
 ```
-Alternatively, use the alias command so you don't have to type in './bin/circos every time':
+Alternatively, use the alias command so you don't have to type in `./bin/circos` every time:
 ```bash
 sudo alias circos=/home/circos/circos-0.67-pre4/bin/circos
 ```
