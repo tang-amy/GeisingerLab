@@ -42,7 +42,7 @@ mkdir circos
 2. Download the latest version of Circos on: http://circos.ca/software/download/. Move the .tgz file to the folder created in step 1.
 
 3. Unpack the .tgz file (named circos-0.67-pre4.tgz for example):
-```
+```bash
 # first change working directory to circos
 cd ~/circos
 # unpack file
