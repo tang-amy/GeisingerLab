@@ -95,7 +95,7 @@ missing  0.2 GD::Polyline
 ok       2.39 Getopt::Long
 ```
 3. Now let's install these packages using the cpan install command, except for GD and GD::Polyline which are a bit tricky to install. 
-```
+```bash
 # add the names of the missing modules listed above (except for GD and GD::Polyline)
 sudo cpan install Carp Clone
 # enter your password when prompted
