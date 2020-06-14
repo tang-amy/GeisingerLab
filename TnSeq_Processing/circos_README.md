@@ -106,6 +106,20 @@ circos -module
 You will have to install the modules that GD is dependent on, including `libpng`, `freetype`, `libgd` and `jpegsrc`, then install the GD module. Follow the instructions (section INSTALLING libpng, freetype, libgd AND gd) on http://circos.ca/documentation/tutorials/configuration/perl_and_modules/. 
 Basically, download the tar.gz files for these modules, unzip the files, go to each of the folders and run `./configure -prefix=/usr/local`, `make`, and `make install` as stated on the link. If you encounter permission issue, add sudo in front of your command, e.g. `sudo make install`. (This installation process is called "build from source", which is sort of a standard way for installing softwares in Unix environments.)
 
+5. Check again if all the perl dependencies are satisfied.
+```bash
+circos -module
+```
+If you see no "missing" module, congratulations the installation is done!
+
+6. To see if circos runs correctly, let's test it by running the example dataset. Suppose your working directory is where circos is installed, run the following command:
+```bash
+circos -conf example/etc/circos.conf
+# this by default should generate two output files `circos.png` and `circos.svg`
+# open the image:
+open circos.png
+# you could also double click the image file in Finder
+```
 
 
 Configuration (.conf files): specifies the features of the graph (cytogenetic bands, labels, ticks and, of course, data)
