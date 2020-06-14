@@ -79,7 +79,7 @@ circos -module
 ```
 This will return something like (with a lot more missing items):
 ```
-ok       1.29 Carp
+missing  1.29 Carp
 missing  0.36 Clone
 ok       2.63 Config::General
 ok       3.40 Cwd
@@ -91,29 +91,16 @@ ok       0.23 File::Temp
 ok       1.51 FindBin
 ok       0.39 Font::TTF::Font
 missing  2.53 GD
-ok        0.2 GD::Polyline
+missing  0.2 GD::Polyline
 ok       2.39 Getopt::Long
-ok       1.16 IO::File
-ok       0.33 List::MoreUtils
-ok       1.38 List::Util
-missing  0.01 Math::Bezier
-ok      1.998 Math::BigFloat
-ok       0.06 Math::Round
-ok       0.08 Math::VecStat
-ok       1.03 Memoize
-ok       1.32 POSIX
-ok       1.08 Params::Validate
-ok       1.61 Pod::Usage
-ok       2.05 Readonly
-ok 2013031301 Regexp::Common
-ok       2.84 SVG
-ok       1.19 Set::IntSpan
-ok     1.6611 Statistics::Basic
-ok       2.41 Storable
-ok       1.17 Sys::Hostname
-ok       2.02 Text::Balanced
-ok       0.61 Text::Format
-ok     1.9725 Time::HiRes
+```
+3. Now let's install these packages using the cpan install command, except for GD and GD::Polyline which are a bit tricky to install. 
+```
+# add the names of the missing modules listed above (except for GD and GD::Polyline)
+sudo cpan install Carp Clone
+# enter your password when prompted
+# check if the modules are installed correctly after done:
+circos -module
 ```
 
 
