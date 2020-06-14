@@ -121,7 +121,7 @@ open circos.png
 # you could also double click the image file in Finder
 ```
 
-
+## Plot Data with Circos
 Configuration (.conf files): specifies the features of the graph (cytogenetic bands, labels, ticks and, of course, data)
 
 Karyotype:  defines the names, sizes and colors of chromosomes that you will use in the image.
