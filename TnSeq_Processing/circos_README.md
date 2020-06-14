@@ -103,7 +103,7 @@ sudo cpan install Carp Clone
 circos -module
 ```
 4. The last thing is to install GD and GD::Polyline. Mostly likely `cpan install` will not install them correctly.
-First you will have to install the modules that GD is dependent on, including `libpng`, `freetype`, `libgd` and `jpegsrc`. Follow the instructions (section `INSTALLING libpng, freetype, libgd AND gd`) on http://circos.ca/documentation/tutorials/configuration/perl_and_modules/. Basically, download the tar.gz files for these modules, unzip the files, go to each of the folders and run `./configure -prefix=/usr/local`, `make`, and `make install` as stated on the link.
+First you will have to install the modules that GD is dependent on, including `libpng`, `freetype`, `libgd` and `jpegsrc`. Follow the instructions (section INSTALLING libpng, freetype, libgd AND gd) on http://circos.ca/documentation/tutorials/configuration/perl_and_modules/. Basically, download the tar.gz files for these modules, unzip the files, go to each of the folders and run `./configure -prefix=/usr/local`, `make`, and `make install` as stated on the link. If you encounter permission issue, add sudo in front of your command, e.g. `sudo make install`.
 
 
 Configuration (.conf files): specifies the features of the graph (cytogenetic bands, labels, ticks and, of course, data)
