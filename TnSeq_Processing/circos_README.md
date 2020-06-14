@@ -1,6 +1,6 @@
 # Data Visualization Using Circos
 ## Installation
-This user guide is based on the documentation provided by circos: [http://circos.ca/documentation/tutorials/configuration/installation/].
+This user guide is based on the documentation provided by circos: http://circos.ca/documentation/tutorials/configuration/installation/.
 However, the official documentation is a bit complicated and hard to follow, which is why I wrote this user guide.
 ### Installing Circos
 Circos is a command line tool (e.g. no GUI) and is perl based. It would be easier to run it on a mac computer (or linux). If you are using Mac OS, perl is most likely pre-installed. 
@@ -33,12 +33,14 @@ Complete documentation for Perl, including FAQ lists, should be found on
 this system using "man perl" or "perldoc perl".  If you have access to the
 Internet, point your browser at http://www.perl.org/, the Perl Home Page.
 ```
-To install Circos, first make a directory where you want the software to be installed.
-Download the latest version of Circos on: http://circos.ca/software/download/.
-Install circos following instructions on:
-Circos Tutorials: Configuration and Installation - Distribution and Installation
+1. To install Circos, first make a directory where you want the software to be installed. For example, if you want to creat a folder in the home directory, execute the following in terminal: 
+```
+cd ~
+mkdir circos
+```
+2. Download the latest version of Circos on: http://circos.ca/software/download/. Move the .tgz file to the folder created in step 1.
 
-http://circos.ca/documentation/tutorials/configuration/perl_and_modules/index.mhtml#circos-libgd-gd
+3. De
 
 Configuration (.conf files): specifies the features of the graph (cytogenetic bands, labels, ticks and, of course, data)
 
