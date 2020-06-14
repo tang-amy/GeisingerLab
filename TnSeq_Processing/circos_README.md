@@ -54,7 +54,7 @@ rm -f circos-0.67-pre4.tgz
 ```
 
 4. Circos is ready to use if you finish installing the required perl packages. You can run circos by executing `./bin/circos`, but you can also add it to the shell path so you can run it anywhere by simply typing `circos`.
-```
+```bash
 # check what's in the current PATH
 echo $PATH
 # add circos to the PATH (suppose circos is installed in /home/circos/circos-0.67-pre4)
@@ -66,7 +66,7 @@ circos
 # you will likely see error messages, this is normal as the required perl packages are not installed yet.
 ```
 Alternatively, use the alias command so you don't have to type in './bin/circos every time':
-```
+```bash
 sudo alias circos=/home/circos/circos-0.67-pre4/bin/circos
 ```
 ### Installing Perl Dependencies
