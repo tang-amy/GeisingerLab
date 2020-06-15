@@ -139,12 +139,12 @@ An [example .conf file](https://github.com/tang-amy/GeisingerLab/blob/master/TnS
 
 ### Basic Configuration
 Inside the configuration file, there are different sections (enclosed in `<section>` and `</section>`) that defines different features of the graph (e.g. ticks, labels, sub plots). You do not have to write the configuration file from scratch, as there are existing configurations in the `circos/etc/` folder.
-**Karyotype**
+####Karyotype
 This should be the first line of the configuration file. 
 ```perl
 karyotype=/home/circos/karyotype.Ab17978.txt
 ```
-**Ideogram**
+####Ideogram
 The ideogram is a circular visualization of the genome. For polyploid, the ideogram can plot different chromosomes in different colors. In the case of *A.baumannii*, only one chromosome will be plotted.
 ```perl
 <ideogram>
