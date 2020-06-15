@@ -223,13 +223,13 @@ type = histogram
 file = /Users/yunfei/circos-0.69-9/crispr_paper_circos/data_files_for_plotting/circos_mariner_tn10_essentiality.txt
 r1 = 0.25r
 r0 = 0.2r
-
+# r1 is the position of the outer circle of the track
+# r0 is the position of the inner circle of the track
 stroke_type = outline
 thickness = 1
 color = red
 extend_bin = no
 </plot>
-
 
 <plot>
 # Track 2: Mariner essentiality barcodes
