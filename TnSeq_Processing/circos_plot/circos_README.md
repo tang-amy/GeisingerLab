@@ -122,7 +122,7 @@ open circos.png
 ```
 
 ## Plot Data with Circos
-Circos is highly versatile and can be used to generate various types of plots. See detailed tutorials here: http://circos.ca/documentation/tutorials/
+Circos is highly versatile and can be used to generate various types of plots. See detailed tutorials on the [circos website](http://circos.ca/documentation/tutorials/).
 
 The basic usage of Circos is by typing the following command:
 ```
