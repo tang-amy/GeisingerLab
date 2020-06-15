@@ -11,7 +11,7 @@ Circos is a command line tool (e.g. no GUI) and is perl based. It would be easie
 cd ~
 mkdir circos
 ```
-2. Download the latest version of [Circos](http://circos.ca/software/download/). Move the .tgz file to the folder created in the previous step.
+2. Download the [latest version of Circos](http://circos.ca/software/download/). Move the .tgz file to the folder created in the previous step.
 
 3. Unpack the .tgz file (named circos-0.67-pre4.tgz for example):
 ```bash
