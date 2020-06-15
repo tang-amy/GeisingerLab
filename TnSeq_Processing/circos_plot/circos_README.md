@@ -212,7 +212,7 @@ format         = %.2f
 </ticks>
 ```
 #### Plots
-This section specifies the tracks you wish to plot. Inside `<plots>` and `</plots>` you can add multiple tracks by writing multiple `<plot>` and `</plot>` blocks. The settings can be applied globally if it is outside individual `<plot>` and `</plot>` blocks, or can be applied specifically to one plot if written inside the block. You could also show data selectively by defining the `<rule>` and `</rule>` block (e.g. to plot only values greater than certain values). 
+This section specifies the tracks you wish to plot. Inside `<plots>` and `</plots>` you can add multiple tracks by writing multiple `<plot>` and `</plot>` blocks. The settings can be applied globally if it is outside individual `<plot>` and `</plot>` blocks, or can be applied specifically to one plot if written inside the block. You could also show data selectively by defining the `<rule>` and `</rule>` block (e.g. to plot only values greater than certain values). The example configuration contains 5 tracks.
 
 ```perl
 <plots>
@@ -306,3 +306,12 @@ show = no
 </plots>
 
 ```
+#### Others
+The example configuration uses the default setting for colors and fonts, as well as the default housekeeping confuration.
+
+```perl
+<<include etc/colors_fonts_patterns.conf>> 
+<<include etc/housekeeping.conf>> 
+```
+#### Output
+By default, the output is `.png` and `.svg` image files. The `.png` file is smaller with limited resolution, and is good for preview purposes. The `.svg` file is a vector graph, meaning that it remains smooth no matter how large you zoom in, and it is better for publication purposes.
