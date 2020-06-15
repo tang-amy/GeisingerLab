@@ -134,8 +134,8 @@ An [example .conf file](https://github.com/tang-amy/GeisingerLab/blob/master/TnS
 
 **Configuration** (.conf): specifies the features of the graph (cytogenetic bands, labels, ticks and, of course, data)
 
-**Karyotype** (.txt): defines the names, sizes and colors of chromosomes that you will use in the image. For A. baumannii there is only one chromosome and I have uploaded the [*A. baumannii* NZ_CP012004 karyotype file](https://github.com/tang-amy/GeisingerLab/blob/master/TnSeq_Processing/circos_plot/karyotype.Ab17978.txt) in this repository.
+**Karyotype** (.txt): defines the names, sizes and colors of chromosomes that you will use in the image. For *A. baumannii* there is only one chromosome and I have uploaded the [*A. baumannii* NZ_CP012004 karyotype file](https://github.com/tang-amy/GeisingerLab/blob/master/TnSeq_Processing/circos_plot/karyotype.Ab17978.txt) in this repository.
 
-
+**Data File** (.txt): data that you wish to plot as different tracks. For scatter / line / histogram plots, the data files contains four requried columns and one optional column. See [Data Files](http://circos.ca/documentation/tutorials/configuration/data_files/) section on circos tutorial.
 
 
