@@ -225,6 +225,7 @@ r1 = 0.25r
 r0 = 0.2r
 # r1 is the position of the outer circle of the track
 # r0 is the position of the inner circle of the track
+
 stroke_type = outline
 thickness = 1
 color = red
@@ -237,7 +238,6 @@ type = histogram
 file = /Users/yunfei/circos-0.69-9/crispr_paper_circos/data_files_for_plotting/circos_mariner_essentiality.txt 
 r1 = 0.35r
 r0 = 0.3r
-
 
 stroke_type = outline
 thickness = 1
@@ -265,7 +265,6 @@ type = histogram
 file = /Users/yunfei/circos-0.69-9/crispr_paper_circos/data_files_for_plotting/linear_transitcombinedSS83ATAJB83_div200.txt
 r1 = 0.72r
 r0 = 0.5r
-
 
 stroke_type = outline
 thickness = 1
