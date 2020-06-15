@@ -139,12 +139,20 @@ An [example .conf file](https://github.com/tang-amy/GeisingerLab/blob/master/TnS
 
 ### Basic Configuration
 Inside the configuration file, there are different sections (enclosed in `<section>` and `</section>`) that defines different features of the graph (e.g. ticks, labels, sub plots). You do not have to write the configuration file from scratch, as there are existing configurations in the `circos/etc/` folder.
-####Karyotype
-This should be the first line of the configuration file. 
+#### Karyotype
+This should be the first line of the configuration file. It specifies the location of the karyotype file.
 ```perl
 karyotype=/home/circos/karyotype.Ab17978.txt
 ```
-####Ideogram
+#### Image
+Specifies the setting for image output, and the output name. In this case, the default setting is used by importing the `image.conf` from `etc/`. Output name can be specified by `file* =`, followed by the prefix you wish to use. The output is by default generated in the working directory. 
+```perl
+<image>
+<<include etc/image.conf>>
+file* = thickness_10_black_genome_with_3_barcode_tracks_mariner1000_tn10_6000
+</image>
+```
+#### Ideogram
 The ideogram is a circular visualization of the genome. For polyploid, the ideogram can plot different chromosomes in different colors. In the case of *A.baumannii*, only one chromosome will be plotted.
 ```perl
 <ideogram>
@@ -159,4 +167,47 @@ stroke_color = dgrey
 stroke_thickness = 2p
 show_label = no
 </ideogram>
+```
+#### Ticks
+The genome positions can be indicated by adding ticks to the ideogram.
+```perl
+show_ticks          = yes
+show_tick_labels    = yes
+
+<ticks>
+radius           = 1r
+color            = black
+thickness        = 2p
+
+# the tick label is derived by multiplying the tick position
+# by 'multiplier' and casting it in 'format':
+#
+# sprintf(format,position*multiplier)
+
+multiplier       = 1e-6
+
+# %d   - integer
+# %f   - float
+# %.1f - float with one decimal
+# %.2f - float with two decimals
+#
+# for other formats, see http://perldoc.perl.org/functions/sprintf.html
+
+format           = %.2f
+
+<tick>
+spacing        = 0.04u
+size           = 10p
+</tick>
+
+<tick>
+spacing        = 0.2u
+size           = 18p
+show_label     = yes
+label_size     = 40p
+label_offset   = 18p
+format         = %.2f
+</tick>
+
+</ticks>
 ```
