@@ -1,6 +1,6 @@
 # Data Visualization Using Circos
 ## Installation
-This user guide is based on the documentation provided by circos: http://circos.ca/documentation/tutorials/configuration/installation/.
+This user guide is based on the [documentation](http://circos.ca/documentation/tutorials/configuration/installation/) provided by circos.
 However, the official documentation is a bit complicated and hard to follow, which is why I wrote this user guide.
 ### Installing Circos
 Circos is a command line tool (e.g. no GUI) and is perl based. It would be easier to run it on a mac computer (or linux). If you are using Mac OS, perl is most likely pre-installed (see Installing Perl Dependencies for detail). 
@@ -11,7 +11,7 @@ Circos is a command line tool (e.g. no GUI) and is perl based. It would be easie
 cd ~
 mkdir circos
 ```
-2. Download the latest version of Circos on: http://circos.ca/software/download/. Move the .tgz file to the folder created in the previous step.
+2. Download the [latest version of Circos](http://circos.ca/software/download/). Move the .tgz file to the folder created in the previous step.
 
 3. Unpack the .tgz file (named circos-0.67-pre4.tgz for example):
 ```bash
@@ -42,7 +42,6 @@ Alternatively, use the alias command so you don't have to type in `./bin/circos`
 sudo alias circos=/home/circos/circos-0.67-pre4/bin/circos
 ```
 ### Installing Perl Dependencies
-
 1. First, check if perl is installed by typing the following command in the terminal:
 ```bash
 which perl
@@ -103,7 +102,7 @@ sudo cpan install Carp Clone
 circos -module
 ```
 4. The last thing is to install GD and GD::Polyline. Mostly likely `cpan install` will not install them correctly.
-You will have to install the modules that GD is dependent on, including `libpng`, `freetype`, `libgd` and `jpegsrc`, then install the GD module. Follow the instructions (section INSTALLING libpng, freetype, libgd AND gd) on http://circos.ca/documentation/tutorials/configuration/perl_and_modules/. 
+You will have to install the modules that GD is dependent on, including `libpng`, `freetype`, `libgd` and `jpegsrc`, then install the GD module. Follow the [instructions](http://circos.ca/documentation/tutorials/configuration/perl_and_modules/) on the circos website (section INSTALLING libpng, freetype, libgd AND gd) about how to install these packagess. 
 Basically, download the tar.gz files for these modules, unzip the files, go to each of the folders and run `./configure -prefix=/usr/local`, `make`, and `make install` as stated on the link. If you encounter permission issue, add sudo in front of your command, e.g. `sudo make install`. (This installation process is called "build from source", which is sort of a standard way for installing softwares in Unix environments.)
 
 5. Check again if all the perl dependencies are satisfied.
@@ -122,10 +121,22 @@ open circos.png
 ```
 
 ## Plot Data with Circos
-Configuration (.conf files): specifies the features of the graph (cytogenetic bands, labels, ticks and, of course, data)
+Circos is highly versatile and can be used to generate various types of plots. See detailed tutorials on the [circos website](http://circos.ca/documentation/tutorials/).
+### Command Line Usage
+The basic usage of Circos is by typing the following command:
+```
+circos -conf circos.conf
+```
+An [example .conf file](https://github.com/tang-amy/GeisingerLab/blob/master/TnSeq_Processing/circos_plot/combined_barcode_mariner1000_tn10_6000.conf) used for plotting *A. baumannii* Tn insertions and essential genes is available in this repository. **Do not run this .conf file directly!** You will have to modify the details in this file (file paths, tracks to plot, etc.).
 
-Karyotype:  defines the names, sizes and colors of chromosomes that you will use in the image.
+### Key File Formats Used
 
+**Configuration** (.conf): specifies the features of the graph (cytogenetic bands, labels, ticks and, of course, data)
 
+**Karyotype** (.txt): defines the names, sizes and colors of chromosomes that you will use in the image. For *A. baumannii* there is only one chromosome and I have uploaded the [*A. baumannii* NZ_CP012004 karyotype file](https://github.com/tang-amy/GeisingerLab/blob/master/TnSeq_Processing/circos_plot/karyotype.Ab17978.txt) in this repository.
 
+**Data File** (.txt): data that you wish to plot as different tracks. For scatter / line / histogram plots, the data files contains four requried columns and one optional column. See [Data Files](http://circos.ca/documentation/tutorials/configuration/data_files/) section on circos tutorial.
 
+### Basic Configuration
+Inside the configuration file, there are different sections (enclosed in `<section>` and `</section>`) that defines different features of the graph (e.g. ticks, labels, sub plots). You do not have to write the configuration file from scratch, as there are existing configurations in the `etc/` folder.
+**Ideogram**
