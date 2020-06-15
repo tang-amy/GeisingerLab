@@ -122,7 +122,13 @@ open circos.png
 ```
 
 ## Plot Data with Circos
-Configuration (.conf files): specifies the features of the graph (cytogenetic bands, labels, ticks and, of course, data)
+Circos is highly versatile and can be used to generate various types of plots. See detailed tutorials here: http://circos.ca/documentation/tutorials/
+
+The basic usage of Circos is by typing the following command:
+```
+circos -conf circos.conf
+```
+The configuration (.conf) file: specifies the features of the graph (cytogenetic bands, labels, ticks and, of course, data)
 
 Karyotype:  defines the names, sizes and colors of chromosomes that you will use in the image.
 
