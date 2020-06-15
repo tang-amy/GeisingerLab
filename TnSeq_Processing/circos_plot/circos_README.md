@@ -128,12 +128,13 @@ The basic usage of Circos is by typing the following command:
 ```
 circos -conf circos.conf
 ```
-An [example .conf file](https://github.com/tang-amy/GeisingerLab/blob/master/TnSeq_Processing/circos_plot/combined_barcode_mariner1000_tn10_6000.conf) used for plotting *A. baumannii* Tn insertions and essential genes is available in this repository. 
+An [example .conf file](https://github.com/tang-amy/GeisingerLab/blob/master/TnSeq_Processing/circos_plot/combined_barcode_mariner1000_tn10_6000.conf) used for plotting *A. baumannii* Tn insertions and essential genes is available in this repository. **Do not run this .conf file directly!** You will have to modify the details in this file (file paths, tracks to plot, etc.).
 
-Some key file types:
+### Key file formats used
+
 **Configuration** (.conf): specifies the features of the graph (cytogenetic bands, labels, ticks and, of course, data)
 
-**Karyotype**: defines the names, sizes and colors of chromosomes that you will use in the image.
+**Karyotype**: defines the names, sizes and colors of chromosomes that you will use in the image. For A. baumannii there is only one chromosome and I have uploaded the [*A. baumannii* NZ_CP012004 karyotype file](https://github.com/tang-amy/GeisingerLab/blob/master/TnSeq_Processing/circos_plot/karyotype.Ab17978.txt) in this repository.
 
 
 
