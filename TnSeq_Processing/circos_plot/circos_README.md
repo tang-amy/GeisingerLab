@@ -137,4 +137,6 @@ An [example .conf file](https://github.com/tang-amy/GeisingerLab/blob/master/TnS
 
 **Data File** (.txt): data that you wish to plot as different tracks. For scatter / line / histogram plots, the data files contains four requried columns and one optional column. See [Data Files](http://circos.ca/documentation/tutorials/configuration/data_files/) section on circos tutorial.
 
-
+### Basic Configuration
+Inside the configuration file, there are different sections (enclosed in `<section>` and `</section>`) that defines different features of the graph (e.g. ticks, labels, sub plots). 
+**Ideogram**
