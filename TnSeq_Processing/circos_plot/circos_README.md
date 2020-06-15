@@ -1,6 +1,6 @@
 # Data Visualization Using Circos
 ## Installation
-This user guide is based on the documentation provided by circos: http://circos.ca/documentation/tutorials/configuration/installation/.
+This user guide is based on the [documentation](http://circos.ca/documentation/tutorials/configuration/installation/) provided by circos.
 However, the official documentation is a bit complicated and hard to follow, which is why I wrote this user guide.
 ### Installing Circos
 Circos is a command line tool (e.g. no GUI) and is perl based. It would be easier to run it on a mac computer (or linux). If you are using Mac OS, perl is most likely pre-installed (see Installing Perl Dependencies for detail). 
@@ -11,7 +11,7 @@ Circos is a command line tool (e.g. no GUI) and is perl based. It would be easie
 cd ~
 mkdir circos
 ```
-2. Download the latest version of Circos on: http://circos.ca/software/download/. Move the .tgz file to the folder created in the previous step.
+2. Download the latest version of [Circos](http://circos.ca/software/download/). Move the .tgz file to the folder created in the previous step.
 
 3. Unpack the .tgz file (named circos-0.67-pre4.tgz for example):
 ```bash
@@ -103,7 +103,7 @@ sudo cpan install Carp Clone
 circos -module
 ```
 4. The last thing is to install GD and GD::Polyline. Mostly likely `cpan install` will not install them correctly.
-You will have to install the modules that GD is dependent on, including `libpng`, `freetype`, `libgd` and `jpegsrc`, then install the GD module. Follow the instructions (section INSTALLING libpng, freetype, libgd AND gd) on http://circos.ca/documentation/tutorials/configuration/perl_and_modules/. 
+You will have to install the modules that GD is dependent on, including `libpng`, `freetype`, `libgd` and `jpegsrc`, then install the GD module. Follow the [instructions](http://circos.ca/documentation/tutorials/configuration/perl_and_modules/) on the circos website (section INSTALLING libpng, freetype, libgd AND gd) about how to install these packagess. 
 Basically, download the tar.gz files for these modules, unzip the files, go to each of the folders and run `./configure -prefix=/usr/local`, `make`, and `make install` as stated on the link. If you encounter permission issue, add sudo in front of your command, e.g. `sudo make install`. (This installation process is called "build from source", which is sort of a standard way for installing softwares in Unix environments.)
 
 5. Check again if all the perl dependencies are satisfied.
