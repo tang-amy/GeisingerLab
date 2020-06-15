@@ -211,3 +211,98 @@ format         = %.2f
 
 </ticks>
 ```
+#### Plots
+This section specifies the tracks you wish to plot. Inside `<plots>` and `</plots>` you can add multiple tracks by writing multiple `<plot>` and `</plot>` blocks. The settings can be applied globally if it is outside individual `<plot>` and `</plot>` blocks, or can be applied specifically to one plot if written inside the block. You could also show data selectively by defining the `<rule>` and `</rule>` block (e.g. to plot only values greater than certain values). 
+
+```perl
+<plots>
+
+<plot>
+# Track 1: combined essentiality barcodes
+type = histogram 
+file = /Users/yunfei/circos-0.69-9/crispr_paper_circos/data_files_for_plotting/circos_mariner_tn10_essentiality.txt
+r1 = 0.25r
+r0 = 0.2r
+
+stroke_type = outline
+thickness = 1
+color = red
+extend_bin = no
+</plot>
+
+
+<plot>
+# Track 2: Mariner essentiality barcodes
+type = histogram 
+file = /Users/yunfei/circos-0.69-9/crispr_paper_circos/data_files_for_plotting/circos_mariner_essentiality.txt 
+r1 = 0.35r
+r0 = 0.3r
+
+
+stroke_type = outline
+thickness = 1
+color = grey
+extend_bin = no
+
+</plot>
+
+<plot>
+# Track 3: Tn10 essentiality barcodes
+type = histogram 
+file = /Users/yunfei/circos-0.69-9/crispr_paper_circos/data_files_for_plotting/circos_tn10_essentiality.txt
+r1 = 0.45r
+r0 = 0.4r
+
+stroke_type = outline
+thickness = 1
+color = grey
+extend_bin = no
+</plot>
+
+<plot>
+# Track 4: Mariner reads
+type = histogram 
+file = /Users/yunfei/circos-0.69-9/crispr_paper_circos/data_files_for_plotting/linear_transitcombinedSS83ATAJB83_div200.txt
+r1 = 0.72r
+r0 = 0.5r
+
+
+stroke_type = outline
+thickness = 1
+color = green
+extend_bin = no
+
+<rules>
+<rule>
+condition = var(value) > 1000
+condition = 1
+show = no
+</rule>
+</rules>
+
+</plot>
+
+<plot>
+# Track 5: Tn10 reads
+type = histogram 
+file = /Users/yunfei/circos-0.69-9/crispr_paper_circos/data_files_for_plotting/linear_denomenator_700_TN10-TTR-combined_wig_output-20200609_copy.txt
+r1 = 0.94r
+r0 = 0.72r
+
+stroke_type = outline
+thickness = 1
+color = blue
+extend_bin = no
+
+<rules>
+<rule>
+condition = var(value) > 6000
+condition = 1
+show = no
+</rule>
+</rules>
+</plot>
+
+</plots>
+
+```
