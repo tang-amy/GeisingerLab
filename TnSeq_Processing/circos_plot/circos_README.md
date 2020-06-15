@@ -140,7 +140,7 @@ An [example .conf file](https://github.com/tang-amy/GeisingerLab/blob/master/TnS
 ### Basic Configuration
 Inside the configuration file, there are different sections (enclosed in `<section>` and `</section>`) that defines different features of the graph (e.g. ticks, labels, sub plots). You do not have to write the configuration file from scratch, as there are existing configurations in the `circos/etc/` folder.
 #### Karyotype
-This should be the first line of the configuration file. It specifies the location of the karyotype file.
+This should be the first line of the configuration file. It specifies the location of the karyotype file. **Change the file path accordingly.**
 ```perl
 karyotype=/home/circos/karyotype.Ab17978.txt
 ```
@@ -212,7 +212,7 @@ format         = %.2f
 </ticks>
 ```
 #### Plots
-This section specifies the tracks you wish to plot. Inside `<plots>` and `</plots>` you can add multiple tracks by writing multiple `<plot>` and `</plot>` blocks. The settings can be applied globally if it is outside individual `<plot>` and `</plot>` blocks, or can be applied specifically to one plot if written inside the block. You could also show data selectively by defining the `<rule>` and `</rule>` block (e.g. to plot only values greater than certain values). The example configuration contains 5 tracks.
+This section specifies the tracks you wish to plot. Inside `<plots>` and `</plots>` you can add multiple tracks by writing multiple `<plot>` and `</plot>` blocks. The settings can be applied globally if it is outside individual `<plot>` and `</plot>` blocks, or can be applied specifically to one plot if written inside the block. You could also show data selectively by defining the `<rule>` and `</rule>` block (e.g. to plot only values greater than certain values). The example configuration contains 5 tracks. **Change the file paths accordingly.**
 
 ```perl
 <plots>
