@@ -127,7 +127,7 @@ The basic usage of Circos is by typing the following command:
 ```
 circos -conf circos.conf
 ```
-An [example .conf file](https://github.com/tang-amy/GeisingerLab/blob/master/TnSeq_Processing/circos_plot/combined_barcode_mariner1000_tn10_6000.conf) used for plotting *A. baumannii* Tn insertions and essential genes is available in this repository. **Do not run this .conf file directly!** You will have to modify the details in this file (file paths, tracks to plot, etc.).
+An [example .conf file](https://github.com/tang-amy/GeisingerLab/blob/master/TnSeq_Processing/circos_plot/sample_with_3_barcode_tracks_mariner_1000_tn10_6000.conf) used for plotting *A. baumannii* Tn insertions and essential genes is available in this repository. **Do not run this .conf file directly!** You will have to modify the details in this file (file paths, tracks to plot, etc.).
 
 ### Key File Formats Used
 
@@ -138,5 +138,25 @@ An [example .conf file](https://github.com/tang-amy/GeisingerLab/blob/master/TnS
 **Data File** (.txt): data that you wish to plot as different tracks. For scatter / line / histogram plots, the data files contains four requried columns and one optional column. See [Data Files](http://circos.ca/documentation/tutorials/configuration/data_files/) section on circos tutorial.
 
 ### Basic Configuration
-Inside the configuration file, there are different sections (enclosed in `<section>` and `</section>`) that defines different features of the graph (e.g. ticks, labels, sub plots). You do not have to write the configuration file from scratch, as there are existing configurations in the `etc/` folder.
+Inside the configuration file, there are different sections (enclosed in `<section>` and `</section>`) that defines different features of the graph (e.g. ticks, labels, sub plots). You do not have to write the configuration file from scratch, as there are existing configurations in the `circos/etc/` folder.
+**Karyotype**
+This should be the first line of the configuration file. 
+```perl
+karyotype=/home/circos/karyotype.Ab17978.txt
+```
 **Ideogram**
+The ideogram is a circular visualization of the genome. For polyploid, the ideogram can plot different chromosomes in different colors. In the case of *A.baumannii*, only one chromosome will be plotted.
+```perl
+<ideogram>
+<spacing>
+default = 0.005r
+</spacing>
+
+radius  = 0.90r
+thickness = 10p
+fill = yes
+stroke_color = dgrey
+stroke_thickness = 2p
+show_label = no
+</ideogram>
+```
