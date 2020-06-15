@@ -42,7 +42,6 @@ Alternatively, use the alias command so you don't have to type in `./bin/circos`
 sudo alias circos=/home/circos/circos-0.67-pre4/bin/circos
 ```
 ### Installing Perl Dependencies
-
 1. First, check if perl is installed by typing the following command in the terminal:
 ```bash
 which perl
@@ -123,7 +122,7 @@ open circos.png
 
 ## Plot Data with Circos
 Circos is highly versatile and can be used to generate various types of plots. See detailed tutorials on the [circos website](http://circos.ca/documentation/tutorials/).
-
+### Command Line Usage
 The basic usage of Circos is by typing the following command:
 ```
 circos -conf circos.conf
