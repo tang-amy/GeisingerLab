@@ -2,7 +2,7 @@
 ## Installation
 This user guide is based on the [documentation](http://circos.ca/documentation/tutorials/configuration/installation/) provided by circos.
 However, the official documentation is a bit complicated and hard to follow, which is why I wrote this user guide.
-### Installing Circos
+### Install Circos
 Circos is a command line tool (e.g. no GUI) and is perl based. It would be easier to run it on a mac computer (or linux). If you are using Mac OS, perl is most likely pre-installed (see Installing Perl Dependencies for detail). 
 
 1. To install Circos, first make a directory where you want the software to be installed. For example, if you want to creat a folder in the home directory, execute the following in terminal: 
@@ -41,7 +41,7 @@ Alternatively, use the alias command so you don't have to type in `./bin/circos`
 ```bash
 sudo alias circos=/home/circos/circos-0.67-pre4/bin/circos
 ```
-### Installing Perl Dependencies
+### Install Perl Dependencies
 1. First, check if perl is installed by typing the following command in the terminal:
 ```bash
 which perl
