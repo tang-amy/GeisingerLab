@@ -9,6 +9,7 @@ This is a collection of scripts for analyzing chip-seq data using various bioinf
 + [Bowtie](http://bowtie-bio.sourceforge.net/index.shtml) (version > 1.2.2)
 + [MACS2](https://github.com/macs3-project/MACS)
 + [MEME-ChIP](http://meme-suite.org/tools/meme-chip)
++ Sufficient disk space (>200G)
 ### Folder Structure Used
 ```bash
 +-- Chip-Seq_Data
