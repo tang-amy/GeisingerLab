@@ -5,11 +5,11 @@ _On: MacOS, Linux_
 
 MacOS/Linux Installation
 -------------------------------
-Make sure Python2 is installed and the python variable path goes to Python2.
+Make sure Python3 is installed and the python variable path goes to Python2.
 ```bash
 python --version
 ```
-If the version is Python 2.7.x, then the pathing variable is correct. 
+If the version is Python 3.x.x, then the pathing variable is correct. 
 </br>
 
 Install pip with the following command:
