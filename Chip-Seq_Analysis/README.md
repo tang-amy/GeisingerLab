@@ -30,9 +30,22 @@ This is a collection of scripts for analyzing chip-seq data using various bioinf
     |   +-- BfmR-Chip-29_example2_r001.bam
     |   +-- BfmR-Chip-49_example3_r001.bam
 ```
-## Processing Raw Data
-### Access Sequencing Data from TUCF Server
-
+## Process Raw Data
+### Access Sequencing Data from TUCF Server in Terminal
+```bash
+# Connect server with ftp command, followed by IP address of TUCF server
+# Enter username and password when prompted
+# Once login is successful, you will see >ftp at the beginning of a new command line
+ftp 130.64.74.72
+# Go to directory containing sequencing data (no need to type ftp)
+>ftp cd [server directory]
+# Turn off promt mode so that you don't have to enter "yes" for every file to download
+ftp> prompt
+# Retrieve all files in current directory using mget command
+>ftp mget * > [local directory to save data]
+# disconnect server
+>ftp close
+```
 ### Decompress Data
 
 ### Remove Barcodes with Fastx-tool
