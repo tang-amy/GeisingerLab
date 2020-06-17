@@ -71,3 +71,4 @@ To unzip and clip all the fastq.gz files in batch, use the unzip-clip_fastq.sh.
 ## Sequence Alignment with Bowtie 1
 
 ## Find Peak with MACS2 peak caller
+## Predict Motif using MEME-ChIP
