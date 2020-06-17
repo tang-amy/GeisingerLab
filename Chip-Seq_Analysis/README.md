@@ -5,10 +5,10 @@ This is a collection of scripts for analyzing chip-seq data using various bioinf
   + pandas
   + numpy
   + biopython (Bio)
-+ FASTX-Toolkit ([Download and Installation](http://hannonlab.cshl.edu/fastx_toolkit/download.html))
-+ Bowtie (version > 1.2.2)
-+ MACS2
-+ MEME-ChIP
++ [FASTX-Toolkit](http://hannonlab.cshl.edu/fastx_toolkit/index.html)
++ [Bowtie](http://bowtie-bio.sourceforge.net/index.shtml) (version > 1.2.2)
++ [MACS2](https://github.com/macs3-project/MACS)
++ [MEME-ChIP](http://meme-suite.org/tools/meme-chip)
 ### Folder Structure Used
 ```bash
 +-- Chip-Seq_Data
