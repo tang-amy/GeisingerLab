@@ -5,7 +5,7 @@ This is a collection of scripts for analyzing chip-seq data using various bioinf
   + pandas
   + numpy
   + biopython (Bio)
-+ FASTX-Toolkit 
++ FASTX-Toolkit ([Download and Installation](http://hannonlab.cshl.edu/fastx_toolkit/download.html))
 + Bowtie (version > 1.2.2)
 + MACS2
 + MEME-ChIP
