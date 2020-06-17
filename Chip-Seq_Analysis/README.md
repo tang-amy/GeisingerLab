@@ -15,9 +15,9 @@
     |   +-- clipped_BfmR-Chip-29_example2_r001.fastq
     |   +-- clipped_BfmR-Chip-49_example3_r001.fastq
 |   +-- bowtie_mapped_files
-    |   +-- clipped_BfmR-Chip-28_example1_r001.fastq
-    |   +-- clipped_BfmR-Chip-29_example2_r001.fastq
-    |   +-- clipped_BfmR-Chip-49_example3_r001.fastq
+    |   +-- BfmR-Chip-28_example1_r001.bam
+    |   +-- BfmR-Chip-29_example2_r001.bam
+    |   +-- BfmR-Chip-49_example3_r001.bam
 
 
 ```
