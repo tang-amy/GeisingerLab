@@ -1,8 +1,8 @@
 # Analyzing Chip-Seq Data
 This is a collection of scripts for analyzing chip-seq data using various bioinformatic tools, such as `macs2` and `meme-suite`.
 ## Required Softwares
-..* MACS2
-..* MEME-ChIP
+⋅⋅* MACS2
+⋅⋅* MEME-ChIP
 ### Folder Structure Used
 ```bash
 +-- Chip-Seq_Data
