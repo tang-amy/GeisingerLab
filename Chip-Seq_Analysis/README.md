@@ -40,12 +40,12 @@ ftp 130.64.74.72
 # Go to directory containing sequencing data (no need to type ftp)
 >ftp cd [server directory]
 # Turn off promt mode so that you don't have to enter "yes" for every file to download
-ftp> prompt
+>ftp prompt
 # Retrieve all files in current directory using mget command
 >ftp mget * > [local directory to save data]
 # disconnect server
 >ftp close
 ```
 ### Decompress Data
-
+The files downloaded from the server are in `.gunzip` format.
 ### Remove Barcodes with Fastx-tool
