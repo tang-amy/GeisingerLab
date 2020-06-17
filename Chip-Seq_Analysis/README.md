@@ -1,7 +1,8 @@
 # Analyzing Chip-Seq Data
 This is a collection of scripts for analyzing chip-seq data using various bioinformatic tools, such as `macs2` and `meme-suite`.
 ## Requirements
-+ Python3 with following packages installed:
++ Python3 with the following packages installed:
+Follow these [instructions](https://packaging.python.org/tutorials/installing-packages/) on how to install python packages.)
   + pandas
   + numpy
   + biopython (Bio)
