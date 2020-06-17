@@ -10,7 +10,7 @@ This is a collection of scripts for analyzing chip-seq data using various bioinf
 + [MACS2](https://github.com/macs3-project/MACS)
 + [MEME-ChIP](http://meme-suite.org/tools/meme-chip)
 + Sufficient disk space (>200G)
-### Folder Structure Used
+## Folder Structure Used
 ```bash
 +-- Chip-Seq_Data
 |   +-- gunzipped-FASTQ
@@ -29,6 +29,10 @@ This is a collection of scripts for analyzing chip-seq data using various bioinf
     |   +-- BfmR-Chip-28_example1_r001.bam
     |   +-- BfmR-Chip-29_example2_r001.bam
     |   +-- BfmR-Chip-49_example3_r001.bam
-
-
 ```
+## Processing Raw Data
+### Access Sequencing Data from TUCF Server
+
+### Decompress Data
+
+### Remove Barcodes with Fastx-tool
