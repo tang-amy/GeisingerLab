@@ -2,9 +2,9 @@
 This is a collection of scripts for analyzing chip-seq data using various bioinformatic tools, such as `macs2` and `meme-suite`.
 ## Requirements
 + Python3 with following packages installed:
-++ pandas
-++ numpy
-++ biopython (Bio)
+  + pandas
+  + numpy
+  + biopython (Bio)
 + FASTX-Toolkit 
 + Bowtie (version > 1.2.2)
 + MACS2
