@@ -32,6 +32,7 @@ This is a collection of scripts for analyzing chip-seq data using various bioinf
 ```
 ## Process Raw Data
 ### Access Sequencing Data from TUCF Server in Terminal
+This example shows how to download data from the TUCF server. 
 ```bash
 # Connect server with ftp command, followed by IP address of TUCF server
 # Enter username and password when prompted
@@ -47,5 +48,10 @@ ftp 130.64.74.72
 >ftp close
 ```
 ### Decompress Data
-The files downloaded from the server are in `.gunzip` format.
+The sequencing data from TUCF are typically compressed in `.gz` format. We can unpack these files using the `gzip` command. 
+```bash
+mkdir unzipped_fastq_files
+gunzip -k ./gz/[file.fastq.gz]
+mv ./gz/file.fastq
+```
 ### Remove Barcodes with Fastx-tool
