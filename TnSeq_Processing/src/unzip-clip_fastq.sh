@@ -25,8 +25,8 @@ echo "Finished unzipping all .gz files into .fastq files."
 mkdir -p $CLIPPED
 for file in $UNZIPPED/*.fastq
 do
-fastx_clipper -i $file -o $CLIPPED/clipped_$(basename $file)
-# parallel 'fastx_clipper -i {} -o ${CLIPPED}/clipped_{}' ::: $UNZIPPED/*.fastq
+fastx_clipper -v -l 20 -a [adapter sequence] -i $file -o $CLIPPED/clipped_$(basename $file)
+# parallel 'fastx_clipper -v -l 20 -a [adapter sequence] -i {} -o ${CLIPPED}/clipped_{}' ::: $UNZIPPED/*.fastq
 done
 
 echo "Finished clipping all .fastq files with fastx_clipper."
