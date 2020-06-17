@@ -63,5 +63,11 @@ mkdir unzipped_fastq_files
 # discard sequences shorter than 20 bp using -l option
 # use -v option to report number of sequences
 # specify adapter sequence using -a
-fastx_clipper -i ./unzipped_fastq_files/file.fastq -l 20 -a [adapter sequence] -v -o ./clipped_fastq_files/clipped_file.fastq
+fastx_clipper -v -l 20 -a [adapter sequence] -i ./unzipped_fastq_files/file.fastq -o ./clipped_fastq_files/clipped_file.fastq
 ```
+### Batch Unzip and Clip
+To unzip and clip all the fastq.gz files in batch, use the unzip-clip_fastq.sh. 
+
+## Sequence Alignment with Bowtie 1
+
+## Find Peak with MACS2 peak caller
