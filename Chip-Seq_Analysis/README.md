@@ -50,8 +50,18 @@ ftp 130.64.74.72
 ### Decompress Data
 The sequencing data from TUCF are typically compressed in `.gz` format. We can unpack these files using the `gzip` command. 
 ```bash
+# create a new folder for unzipped files
 mkdir unzipped_fastq_files
 gunzip -k ./gz/[file.fastq.gz]
-mv ./gz/file.fastq
+# move unzipped file to the folder
+mv ./gz/file.fastq ./unzipped_fastq_files/file.fastq
 ```
 ### Remove Barcodes with Fastx-tool
+```bash
+# create a new folder for clipped fastq files
+mkdir unzipped_fastq_files
+# discard sequences shorter than 20 bp using -l option
+# use -v option to report number of sequences
+# specify adapter sequence using -a
+fastx_clipper -i ./unzipped_fastq_files/file.fastq -l 20 -a [adapter sequence] -v -o ./clipped_fastq_files/clipped_file.fastq
+```
