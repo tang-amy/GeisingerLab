@@ -48,7 +48,8 @@ ftp 130.64.74.72
 >ftp close
 ```
 ### Decompress Data
-The sequencing data from TUCF are typically compressed in `.gz` format. We can unpack these files using the `gzip` command. 
+The sequencing data from TUCF are typically compressed in `.gz` format. We can unpack these files using the `gunzip` command. 
+Usage for individual files:
 ```bash
 # create a new folder for unzipped files
 mkdir unzipped_fastq_files
@@ -57,6 +58,8 @@ gunzip -k ./gz/[file.fastq.gz]
 mv ./gz/file.fastq ./unzipped_fastq_files/file.fastq
 ```
 ### Remove Barcodes with Fastx-tool
+Once the fastq files are available, we will remove the adaptors from the reads and discard reads that are too short (less than 20 bp for example). 
+Usage for individual files:
 ```bash
 # create a new folder for clipped fastq files
 mkdir unzipped_fastq_files
@@ -66,7 +69,7 @@ mkdir unzipped_fastq_files
 fastx_clipper -v -l 20 -a [adapter sequence] -i ./unzipped_fastq_files/file.fastq -o ./clipped_fastq_files/clipped_file.fastq
 ```
 ### Batch Unzip and Clip
-To unzip and clip all the fastq.gz files in batch, use bash script [batch_unzip_clip_fastq.sh](https://github.com/tang-amy/GeisingerLab/blob/master/Chip-Seq_Analysis/src/batch_unzip_clip_fastq.sh). For a given directory (default is current directory if no input entered), this script generates two folders `unzipped_fastq_files` and `clipped_fastq_files` in the parent directory, unzips files in the given directory and move them to `unzipped_fastq_files`, then clip the adaptors from the fastq files, saving output as `clipped_file.fastq` in `clipped_fastq_files`.
+To unzip and clip all the fastq.gz files in batch, use bash script [batch_unzip_clip_fastq.sh](https://github.com/tang-amy/GeisingerLab/blob/master/Chip-Seq_Analysis/src/batch_unzip_clip_fastq.sh). For a given directory (default is current directory if no input entered), this script generates two folders `unzipped_fastq_files` and `clipped_fastq_files` in the parent directory, unzips files in the given directory and move them to `unzipped_fastq_files`, then clip the adaptors from the fastq files, saving output as `clipped_file.fastq` in `clipped_fastq_files`. This process may take a while depending on your computer specs.
 
 ```bash
 # make sure the path to the script is correct
