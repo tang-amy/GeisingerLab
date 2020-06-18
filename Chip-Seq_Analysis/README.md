@@ -66,7 +66,7 @@ mkdir unzipped_fastq_files
 fastx_clipper -v -l 20 -a [adapter sequence] -i ./unzipped_fastq_files/file.fastq -o ./clipped_fastq_files/clipped_file.fastq
 ```
 ### Batch Unzip and Clip
-To unzip and clip all the fastq.gz files in batch, use the unzip-clip_fastq.sh. 
+To unzip and clip all the fastq.gz files in batch, use bash script [batch_unzip_clip_fastq.sh](https://github.com/tang-amy/GeisingerLab/blob/master/Chip-Seq_Analysis/src/batch_unzip_clip_fastq.sh). 
 
 ## Sequence Alignment with Bowtie 1
 
