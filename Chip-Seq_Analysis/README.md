@@ -13,7 +13,7 @@ This is a collection of scripts for analyzing chip-seq data using various bioinf
 ## Folder Structure Used
 ```bash
 +-- Chip-Seq_Data
-|   +-- gunzipped-FASTQ
+|   +-- gunzipped-FASTQ (gz)
     |   +-- BfmR-Chip-28_example1_r001.fastq.gz
     |   +-- BfmR-Chip-29_example2_r001.fastq.gz
     |   +-- BfmR-Chip-49_example3_r001.fastq.gz
@@ -66,7 +66,26 @@ mkdir unzipped_fastq_files
 fastx_clipper -v -l 20 -a [adapter sequence] -i ./unzipped_fastq_files/file.fastq -o ./clipped_fastq_files/clipped_file.fastq
 ```
 ### Batch Unzip and Clip
-To unzip and clip all the fastq.gz files in batch, use bash script [batch_unzip_clip_fastq.sh](https://github.com/tang-amy/GeisingerLab/blob/master/Chip-Seq_Analysis/src/batch_unzip_clip_fastq.sh). 
+To unzip and clip all the fastq.gz files in batch, use bash script [batch_unzip_clip_fastq.sh](https://github.com/tang-amy/GeisingerLab/blob/master/Chip-Seq_Analysis/src/batch_unzip_clip_fastq.sh). For a given directory (default is current directory if no input entered), this script generates two folders `unzipped_fastq_files` and `clipped_fastq_files` in the parent directory, unzips files in the given directory and move them to `unzipped_fastq_files`, then clip the adaptors from the fastq files, saving output as `clipped_file.fastq` in `clipped_fastq_files`.
+
+```bash
+# make sure the path to the script is correct
+bash batch_unzip_clip_fastq.sh ./gz
+# the following message will prompt, enter the sequence (no quotation marks or brackets) following the message
+Please enter adaptor sequence:
+# list files in the unzipped_fastq_files folder
+ls unzipped_fastq_files
+# list files in the check the clipped_fastq_files folder
+ls clipped_fastq_files
+```
+Note that the script uses GNU `Parallel` for faster execution of all commands. If you parallel is not installed, run the following command in terminal. 
+```bash
+# check if Parallel is installed
+which parallel
+# install Parallel
+brew install parallel
+```
+If brew is not installed, check [Homebrew](https://brew.sh/) website for installation instructions.
 
 ## Sequence Alignment with Bowtie 1
 
