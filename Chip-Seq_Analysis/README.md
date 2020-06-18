@@ -82,7 +82,7 @@ ls unzipped_fastq_files
 # list files in the check the clipped_fastq_files folder
 ls clipped_fastq_files
 ```
-Note that the script uses GNU `Parallel` for faster execution of all commands. If you parallel is not installed, run the following command in terminal. 
+Note that the script uses GNU `Parallel` for faster execution of all commands. If parallel is not installed, run the following command in terminal. 
 ```bash
 # check if Parallel is installed
 which parallel
