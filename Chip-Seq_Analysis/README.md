@@ -72,6 +72,7 @@ fastx_clipper -v -l 20 -a [adapter sequence] -i ./unzipped_fastq_files/file.fast
 To unzip and clip all the fastq.gz files in batch, use bash script [batch_unzip_clip_fastq.sh](https://github.com/tang-amy/GeisingerLab/blob/master/Chip-Seq_Analysis/src/batch_unzip_clip_fastq.sh). For a given directory (default is current directory if no input entered), this script generates two folders `unzipped_fastq_files` and `clipped_fastq_files` in the parent directory, unzips files in the given directory and move them to `unzipped_fastq_files`, then clip the adaptors from the fastq files, saving output as `clipped_file.fastq` in `clipped_fastq_files`. This process may take a while depending on your computer specs.
 
 ```bash
+# the unzipped_fastq_files clipped_fastq_files folders will be generated automatically, no need to creat them in advance
 # make sure the path to the script is correct
 bash batch_unzip_clip_fastq.sh ./gz
 # the following message will prompt, enter the sequence (no quotation marks or brackets) following the message
