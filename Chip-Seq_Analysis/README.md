@@ -58,7 +58,7 @@ gunzip -k ./gz/[file.fastq.gz]
 mv ./gz/file.fastq ./unzipped_fastq_files/file.fastq
 ```
 ### Remove Barcodes with Fastx-tool
-Once the fastq files are available, we will remove the adaptors from the reads and discard reads that are too short (less than 20 bp for example). 
+Once the fastq files are available, we will remove the adaptors from the reads and discard reads that are too short (less than 20 bp for example) as quality control. 
 Usage for individual files:
 ```bash
 # create a new folder for clipped fastq files
@@ -92,6 +92,6 @@ brew install parallel
 If brew is not installed, check [Homebrew](https://brew.sh/) website for installation instructions.
 
 ## Sequence Alignment with Bowtie 1
-
+The sequencing data contain short reads.
 ## Find Peak with MACS2 peak caller
 ## Predict Motif using MEME-ChIP
