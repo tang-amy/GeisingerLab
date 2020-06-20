@@ -92,6 +92,17 @@ brew install parallel
 If brew is not installed, check [Homebrew](https://brew.sh/) website for installation instructions.
 
 ## Sequence Alignment with Bowtie 1
-The sequencing data contain short reads.
+The short reads in the fastq files need to be mapped to the genome (sequence alignment) prior to all downstream analyses. There are different sequence alignment softwares such as BWA and bowtie. Here we use bowtie 1. Check [here](http://bowtie-bio.sourceforge.net/manual.shtml#obtaining-bowtie) for installation instructions. Bowtie requires Bowtie index files, which are basically transformed from the genome sequence, and serve as the reference for the alignment. Bowtie index can be built with the fasta genome file using bowtie-build indexer.
+Use the following command to build the index. Note that you only need to do this once for one genome.
+```bash
+# The output is a folder containing multiple .ebwt files
+# [ebwt_base] is the prefix for the index files (e.g. NZ_CP012004)
+bowtie-build [genome.fasta] [ebwt_base]
+```
+To perform genome alignment for one fastq files:
+```bash
+bowtie -a 1
+```
+
 ## Find Peak with MACS2 peak caller
 ## Predict Motif using MEME-ChIP
