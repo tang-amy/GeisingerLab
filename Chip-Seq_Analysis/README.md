@@ -97,12 +97,14 @@ Use the following command to build the index. Note that you only need to do this
 ```bash
 # [genome.fasta] can be downloaded from NCBI database
 # The output is a folder containing multiple .ebwt files
-# [ebwt_base] is the prefix for the index files (e.g. NZ_CP012004)
+# [ebwt_base] is the prefix for the index files (e.g. Ab17978)
 bowtie-build [genome.fasta] [ebwt_base]
 ```
 To perform genome alignment for one fastq files:
 ```bash
-bowtie -m 1 -n 1 --best -y [ebwt index] [input] [output]
+# Ab17978 is the prefix for index files
+# output is .sam file
+bowtie -m 1 -n 1 --best -y -S Ab17978/Ab17978 [input] [output]
 ```
 
 ## Find Peak with MACS2 peak caller
