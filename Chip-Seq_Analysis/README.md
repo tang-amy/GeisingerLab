@@ -123,7 +123,7 @@ which samtools
 samtools sort [input.sam] -o [output.bam]
 ```
 ### Batch Bowtie and Sort
-For sequence alignment of multiple fastq files, use batch_bowtie.sh. For a given directory, this script generates two folders `mapped_SAM_files` and `sorted_BAM_files` in the parent directory and maps the fastq reads to the reference. It also moves the SAM output files from bowtie to `mapped_SAM_files`, sorts them with `samtools sort` and save the output as `file_sorted.bam` in `sorted_BAM_files`.
+For sequence alignment of multiple fastq files, use [batch_bowtie.sh](https://github.com/tang-amy/GeisingerLab/blob/master/Chip-Seq_Analysis/src/batch_bowtie.sh). For a given directory, this script generates two folders `mapped_SAM_files` and `sorted_BAM_files` in the parent directory and maps the fastq reads to the reference. It also moves the SAM output files from bowtie to `mapped_SAM_files`, sorts them with `samtools sort` and save the output as `file_sorted.bam` in `sorted_BAM_files`.
 
 ```bash
 # the output folders will be generated automatically, no need to creat them in advance
