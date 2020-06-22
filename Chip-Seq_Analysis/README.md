@@ -117,6 +117,9 @@ bowtie -m 1 -n 1 --best -y -S Ab17978/Ab17978 [input.fastq] [output.sam]
 ### Convert to Sorted BAM file
 The output from bowtie is [SAM file format](http://www.htslib.org/doc/sam.html). For the ease of downstream analyses, we need to sort the reads, and save the results as BAM file format, which is a binary version of SAM. SAM files can be sorted by `samtools sort`.
 ```bash
+# make sure samtools is installed
+which samtools
+# sort the sam file and save output as bam file
 samtools sort [input.sam] -o [output.bam]
 ```
 ### Batch Bowtie and Sort
