@@ -19,6 +19,8 @@ OUT=$(dirname ${DIR})/$(echo "scale=1; (${READS}/1000)" | bc)k_downsampled_BAM_f
 for seed in 2 5 9
 do
   mkdir -p ${OUT}/seed${seed} ${OUT}/seed${seed}/input;
+  printf "Created folder ${OUT}/seed${seed}.\n"
+  printf "Created folder ${OUT}/seed${seed}/input.\n"
   for file in $DIR/*.bam
   do
     read_count=$(samtools view ${file} | wc -l);
