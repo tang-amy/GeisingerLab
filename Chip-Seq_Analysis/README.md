@@ -135,4 +135,6 @@ ls sorted_BAM_files
 ```
 
 ## Find Peak with MACS2 peak caller
+### Downsample BAM reads
+### Run MACS2
 ## Predict Motif using MEME-ChIP
