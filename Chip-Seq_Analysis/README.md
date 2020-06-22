@@ -58,6 +58,8 @@ Usage for individual files:
 ```bash
 # create a new folder for unzipped files
 mkdir unzipped_fastq_files
+# brackets mean the full path to a file
+# do not include the brackets when typing the commands
 gunzip -k ./gz/[file.fastq.gz]
 # move unzipped file to the folder
 mv ./gz/file.fastq ./unzipped_fastq_files/file.fastq
@@ -102,19 +104,23 @@ The short reads in the fastq files need to be mapped to the genome (sequence ali
 Use the following command to build the index. Note that you only need to do this once for one genome.
 ```bash
 # [genome.fasta] can be downloaded from NCBI database
-# The output is a folder containing multiple .ebwt files
 # [ebwt_base] is the prefix for the index files (e.g. Ab17978)
 bowtie-build [genome.fasta] [ebwt_base]
+# the output is a folder (Ab17978) containing multiple .ebwt files that share the prefix Ab17978
 ```
 To perform genome alignment for one fastq files:
 ```bash
 # Ab17978 is the prefix for index files
 # output is .sam file
-bowtie -m 1 -n 1 --best -y -S Ab17978/Ab17978 [input] [output]
+bowtie -m 1 -n 1 --best -y -S Ab17978/Ab17978 [input.fastq] [output.sam]
 ```
 ### Convert to Sorted BAM file
-The output from bowtie is [SAM file format](http://www.htslib.org/doc/sam.html).
+The output from bowtie is [SAM file format](http://www.htslib.org/doc/sam.html). For the ease of downstream analyses, we need to sort the reads, and save the results as BAM file format, which is a binary version of SAM. SAM files can be sorted by 'samtools sort'.
+'''bash
+samtools sort [input.sam] [output.bam]
+'''
 ### Batch Bowtie and Sort
+For sequence alignment of multiple fastq files, use batch_bowtie.sh. This script 
 
 ## Find Peak with MACS2 peak caller
 ## Predict Motif using MEME-ChIP
