@@ -1,5 +1,8 @@
 #!/bin/bash
 
+## Yunfei Dai
+## 06/21/2020
+
 DIR=${1?Error: "enter directory of fastq files"}
 REF=${2?Error: "enter directory of reference files (.ebwt), e.g. Ab17978/Ab17978"}
 SAM_OUTPUT="$(dirname $DIR)/mapped_SAM_files"
