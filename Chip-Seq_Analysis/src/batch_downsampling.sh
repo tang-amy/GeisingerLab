@@ -14,7 +14,7 @@ Comment
 
 DIR=${1?Error: "requires directory of bam files"}
 read -p "Please enter the target read number:" READS
-OUT=$(dirname ${DIR})/$(echo "scale=1; (${READS}/1000)" | bc)k_downsampled_BAM_files
+OUT=$(dirname ${DIR})/$(echo "scale=0; (${READS}/1000)" | bc)k_downsampled_BAM_files
 
 for seed in 2 5 9
 do
