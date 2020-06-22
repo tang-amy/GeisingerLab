@@ -86,7 +86,7 @@ bash batch_unzip_clip_fastq.sh ./gz
 Please enter adaptor sequence:
 # list files in the unzipped_fastq_files folder
 ls unzipped_fastq_files
-# list files in the check the clipped_fastq_files folder
+# list files in the clipped_fastq_files folder
 ls clipped_fastq_files
 ```
 Note that the script uses GNU `Parallel` for faster execution of all commands. If parallel is not installed, run the following command in terminal. 
@@ -115,12 +115,21 @@ To perform genome alignment for one fastq files:
 bowtie -m 1 -n 1 --best -y -S Ab17978/Ab17978 [input.fastq] [output.sam]
 ```
 ### Convert to Sorted BAM file
-The output from bowtie is [SAM file format](http://www.htslib.org/doc/sam.html). For the ease of downstream analyses, we need to sort the reads, and save the results as BAM file format, which is a binary version of SAM. SAM files can be sorted by 'samtools sort'.
-'''bash
-samtools sort [input.sam] [output.bam]
-'''
+The output from bowtie is [SAM file format](http://www.htslib.org/doc/sam.html). For the ease of downstream analyses, we need to sort the reads, and save the results as BAM file format, which is a binary version of SAM. SAM files can be sorted by `samtools sort`.
+```bash
+samtools sort [input.sam] -o [output.bam]
+```
 ### Batch Bowtie and Sort
-For sequence alignment of multiple fastq files, use batch_bowtie.sh. This script 
+For sequence alignment of multiple fastq files, use batch_bowtie.sh. For a given directory, this script generates two folders `mapped_SAM_files` and `sorted_BAM_files` in the parent directory and maps the fastq reads to the reference. It also moves the SAM output files from bowtie to `mapped_SAM_files`, sorts them with `samtools sort` and save the output as `file_sorted.bam` in `sorted_BAM_files`.
+
+```bash
+# the output folders will be generated automatically, no need to creat them in advance
+bash batch_bowtie.sh [clipped_fastq] [Ab17978/Ab17978]
+# list files in the mapped_SAM_files folder
+ls mapped_SAM_files
+# list files in the sorted_BAM_files folder
+ls sorted_BAM_files
+```
 
 ## Find Peak with MACS2 peak caller
 ## Predict Motif using MEME-ChIP
