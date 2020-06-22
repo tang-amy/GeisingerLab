@@ -1,4 +1,4 @@
-# Analyzing Chip-Seq Data
+# Analyze Chip-Seq Data
 This is a collection of scripts for analyzing chip-seq data using various bioinformatic tools, such as `macs2` and `meme-suite`.
 ## Requirements
 + Python3 with the following packages installed. Follow these [instructions](https://packaging.python.org/tutorials/installing-packages/) on how to install python packages.
@@ -135,6 +135,11 @@ ls sorted_BAM_files
 ```
 
 ## Find Peak with MACS2 peak caller
+### Install MACS2
+Follow these instructions on [how to install MACS2](https://github.com/macs3-project/MACS/blob/master/INSTALL.md). "Install from source" is recommended.
 ### Downsample BAM reads
+
+### Batch downsampling
+[batch_downsampling.sh](https://github.com/tang-amy/GeisingerLab/blob/master/Chip-Seq_Analysis/src/batch_downsampling.sh)
 ### Run MACS2
 ## Predict Motif using MEME-ChIP
