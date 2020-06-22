@@ -8,7 +8,7 @@
   3 downsampled bam files containing n (default is 100,000) reads are created, using 3 seed numbers (2,5,9)
   exact read number from each downsampled files are counted and writted into downsampling_log.txt
 
-  Usasge (order of arguments matters!):
+  Usasge:
   bash batch_downsampling.sh [INPUT Directory] 
 Comment
 
