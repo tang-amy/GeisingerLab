@@ -12,6 +12,7 @@ UNZIPPED="$(dirname $DIR)/unzipped_fastq_files"
 CLIPPED="$(dirname $DIR)/clipped_fastq_files"
 mkdir -p $UNZIPPED $CLIPPED
 
+# unzip all .gz files in $DIR
 parallel gunzip -k {} ::: $DIR/*.gz
 printf "Finished unzipping files, now clipping adaptors.\n"
 printf "Adapator sequence $ADAPTOR will be removed from reads.\n"
@@ -19,5 +20,6 @@ for file in $DIR/*.txt
 do mv $file $UNZIPPED
 done
 
+# clips adaptors from *.fastq files in #UNZIPPED
 parallel fastx_clipper -v -l 20 -a $ADAPTOR -i {} -o ${CLIPPED}/clipped_{} ::: $UNZIPPED/*.fastq
 printf "Finished clipping adaptors.\n"
