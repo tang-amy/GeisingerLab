@@ -6,7 +6,7 @@ This is a collection of scripts for analyzing chip-seq data using various bioinf
   + numpy
   + biopython (Bio)
 + [FASTX-Toolkit](http://hannonlab.cshl.edu/fastx_toolkit/index.html)
-+ [Samtools](http://www.htslib.org/)(see also: https://github.com/samtools/samtools)
++ [Samtools](http://www.htslib.org/) (see also: https://github.com/samtools/samtools)
 + [Bowtie](http://bowtie-bio.sourceforge.net/index.shtml) (version > 1.2.2)
 + [MACS2](https://github.com/macs3-project/MACS)
 + [MEME-ChIP](http://meme-suite.org/tools/meme-chip)
@@ -96,7 +96,8 @@ brew install parallel
 ```
 If brew is not installed, check [Homebrew](https://brew.sh/) website for installation instructions.
 
-## Sequence Alignment with Bowtie 1
+## Sequence Alignment
+### Sequence Alignment with Bowtie1
 The short reads in the fastq files need to be mapped to the genome (sequence alignment) prior to all downstream analyses. There are different sequence alignment softwares such as BWA and bowtie. Here we use bowtie 1. Check [here](http://bowtie-bio.sourceforge.net/manual.shtml#obtaining-bowtie) for installation instructions. Bowtie requires Bowtie index files, which are basically transformed from the genome sequence, and serve as the reference for the alignment. Bowtie index can be built with the fasta genome file using bowtie-build indexer.
 Use the following command to build the index. Note that you only need to do this once for one genome.
 ```bash
@@ -111,6 +112,9 @@ To perform genome alignment for one fastq files:
 # output is .sam file
 bowtie -m 1 -n 1 --best -y -S Ab17978/Ab17978 [input] [output]
 ```
+### Convert to Sorted BAM file
+The output from bowtie is [SAM file format](http://www.htslib.org/doc/sam.html).
+### Batch Bowtie and Sort
 
 ## Find Peak with MACS2 peak caller
 ## Predict Motif using MEME-ChIP
