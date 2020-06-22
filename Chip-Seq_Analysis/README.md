@@ -6,7 +6,7 @@ This is a collection of scripts for analyzing chip-seq data using various bioinf
   + numpy
   + biopython (Bio)
 + [FASTX-Toolkit](http://hannonlab.cshl.edu/fastx_toolkit/index.html)
-+ [Samtools](http://www.htslib.org/)
++ [Samtools](http://www.htslib.org/)(see also: https://github.com/samtools/samtools)
 + [Bowtie](http://bowtie-bio.sourceforge.net/index.shtml) (version > 1.2.2)
 + [MACS2](https://github.com/macs3-project/MACS)
 + [MEME-ChIP](http://meme-suite.org/tools/meme-chip)
