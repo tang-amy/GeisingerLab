@@ -6,6 +6,7 @@ This is a collection of scripts for analyzing chip-seq data using various bioinf
   + numpy
   + biopython (Bio)
 + [FASTX-Toolkit](http://hannonlab.cshl.edu/fastx_toolkit/index.html)
++ [Samtools](http://www.htslib.org/)
 + [Bowtie](http://bowtie-bio.sourceforge.net/index.shtml) (version > 1.2.2)
 + [MACS2](https://github.com/macs3-project/MACS)
 + [MEME-ChIP](http://meme-suite.org/tools/meme-chip)
@@ -25,10 +26,14 @@ This is a collection of scripts for analyzing chip-seq data using various bioinf
     |   +-- clipped_BfmR-Chip-28_example1_r001.fastq
     |   +-- clipped_BfmR-Chip-29_example2_r001.fastq
     |   +-- clipped_BfmR-Chip-49_example3_r001.fastq
-|   +-- bowtie_mapped_files
-    |   +-- BfmR-Chip-28_example1_r001.bam
-    |   +-- BfmR-Chip-29_example2_r001.bam
-    |   +-- BfmR-Chip-49_example3_r001.bam
+|   +-- mapped_SAM_files
+    |   +-- BfmR-Chip-28_example1_r001.sam
+    |   +-- BfmR-Chip-29_example2_r001.sam
+    |   +-- BfmR-Chip-49_example3_r001.sam
+|   +-- sorted_BAM_files
+    |   +-- sorted_BfmR-Chip-28_example1_r001.bam
+    |   +-- sorted_BfmR-Chip-29_example2_r001.bam
+    |   +-- sorted_BfmR-Chip-49_example3_r001.bam
 ```
 ## Process Raw Data
 ### Access Sequencing Data from TUCF Server in Terminal
