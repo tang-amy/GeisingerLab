@@ -33,7 +33,7 @@ def make_read_counter(samfile):
         strand = int(linelist[2]) & 0b00010000
         coordinate = int(linelist[4])
         length = len(linelist[10])
-        if strand == 0: # + strand << flag for reverse complement is on
+        if strand == 0: # + strand << flag for reverse complement is off
             coordinate += length
         else: # - strand << flag for reverse complement is on
             coordinate -= 2 # shift the coordinate to the beginning of the TA site
