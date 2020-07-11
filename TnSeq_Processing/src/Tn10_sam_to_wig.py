@@ -37,14 +37,14 @@ def make_sam_dict(samfilename):
                 thisstrand = "+" # + strand << flag for reverse complement is off
             else:
                 thisstrand = "-" # - strand << flag for reverse complement is on
-            thiscoordinate = int(linelist[3])
+            thispos = int(linelist[3])
             thislen = len(linelist[9])
             # adjustment for - strand
             if thisstrand == "-":
                 thispos = thispos + thislen
             # adding this alignment to the dictionary
             if thispos in samdict:
-                 samdict[thispos] += 1
+                samdict[thispos] += 1
             else:
                 samdict[thispos] = 1
     return(samdict)
