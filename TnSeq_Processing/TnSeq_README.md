@@ -34,13 +34,13 @@ fastx-clipper -l 20 -a "adapter_sequence" -i inFile -o OutFile
 mkdir -p GenomeName
 bowtie-build -f reference.fasta GenomeName/GenomeName
 ```
-3. Map FASTQ files with Bowtie to genome. Use [run_bowtie_batch.sh](https://github.com/tang-amy/GeisingerLab/blob/master/TnSeq_Processing/src/run_bowtie_batch.sh) to map all files in the given directory to the given Bowtie reference. The script will create a map_files folder for the outputted MAP files (renamed SAM files) to live in.
+3. Map FASTQ files with Bowtie to genome. Use [run_bowtie_batch.sh](https://github.com/tang-amy/GeisingerLab/blob/master/TnSeq_Processing/src/run_bowtie_batch.sh) to map all files in the given directory to the given Bowtie reference. The script will create a map_files folder for the outputted MAP files (default Bowtie output file type) to live in. To map FASTQ files to the genome and get SAM output, include the -S or --sam flag when running Bowtie. More information about file output type/Bowtie can be found [here] (http://bowtie-bio.sourceforge.net/manual.shtml#sam-bowtie-output).
 ```bash
 # to run the batch script
 ./run_bowtie_batch.sh clipped_fastq_dir reference_files
 
 # to run on a single file
-bowtie -m 1 -n 1 --best -y -S BowtieReference/BowtieReference yourfastqfile.fastq outputFile.map
+bowtie -m 1 -n 1 --best -y BowtieReference/BowtieReference yourfastqfile.fastq outputFile.map
 ```
 4. Create the WIG files from the MAP files using either [map_to_wig.py](https://github.com/tang-amy/GeisingerLab/blob/master/TnSeq_Processing/src/map_to_wig.py) or [batch_map2wig.py](https://github.com/tang-amy/GeisingerLab/blob/master/TnSeq_Processing/src/batch_map2wig.py). Use full names for the pathing to the input/output files/directories or run in the appropriate directory. Note: batch_map2wig.py requries map_to_wig.py.
 ```bash
