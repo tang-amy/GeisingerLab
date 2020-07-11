@@ -21,7 +21,7 @@ options.add_option("-S","--sam",dest="samfile",
                    help="input .map file")
 options.add_option("-o","--outfile",dest="outputfile",
                    help="output .wig file")
-options.add_option("-s", dest="strain", 
+options.add_option("-s", dest="strain", default='NZ_CP012004', 
                    help="strain name")
 
 def make_sam_dict(samfilename):
