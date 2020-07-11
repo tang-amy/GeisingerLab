@@ -32,13 +32,13 @@ def make_sam_dict(samfilename):
     for i in flines:
         linelist = i.split()
         if len(linelist) > 3 and 'NZ_CP012004' in linelist:
-            strand = int(linelist[2]) & 0b00010000
+            strand = int(linelist[1]) & 0b00010000
             if strand == 0:
                 thisstrand = "+" # + strand << flag for reverse complement is off
             else:
                 thisstrand = "-" # - strand << flag for reverse complement is on
-            thiscoordinate = int(linelist[4])
-            thislen = len(linelist[10])
+            thiscoordinate = int(linelist[3])
+            thislen = len(linelist[9])
             # adjustment for - strand
             if thisstrand == "-":
                 thispos = thispos + thislen
