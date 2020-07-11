@@ -14,12 +14,10 @@ import re
 options = OptionParser(usage='%prog -i [input(empty) wig file] -m [input map] -o [output wig file]',
                        description=
                        """
-Specify input map file, output wig file, and strain name.
-Add the option "--old" to specify the old format for map files
-(e.g. output of bowtie 1).
+Specify input sam file, output wig file, and strain name.
                          """)
 
-options.add_option("-m","--map",dest="mapfile",
+options.add_option("-S","--sam",dest="samfile",
                    help="input .map file")
 options.add_option("-o","--outfile",dest="outputfile",
                    help="output .wig file")
