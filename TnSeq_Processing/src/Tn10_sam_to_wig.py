@@ -31,21 +31,22 @@ def make_sam_dict(samfilename):
     f.close()
     for i in flines:
         linelist = i.split()
-        strand = int(linelist[2]) & 0b00010000
-        if strand == 0:
-            thisstrand = "+" # + strand << flag for reverse complement is off
-        else:
-            thisstrand = "-" # - strand << flag for reverse complement is on
-        thiscoordinate = int(linelist[4])
-        thislen = len(linelist[10])
-        # adjustment for - strand
-        if thisstrand == "-":
-            thispos = thispos + thislen
-        # adding this alignment to the dictionary
-        if thispos in samdict:
-            samdict[thispos] += 1
-        else:
-            samdict[thispos] = 1
+        if len(linelist) > 3 and 'NZ_CP012004' in linelist:
+            strand = int(linelist[2]) & 0b00010000
+            if strand == 0:
+                thisstrand = "+" # + strand << flag for reverse complement is off
+            else:
+                thisstrand = "-" # - strand << flag for reverse complement is on
+            thiscoordinate = int(linelist[4])
+            thislen = len(linelist[10])
+            # adjustment for - strand
+            if thisstrand == "-":
+                thispos = thispos + thislen
+            # adding this alignment to the dictionary
+            if thispos in samdict:
+                 samdict[thispos] += 1
+            else:
+                samdict[thispos] = 1
     return(samdict)
 
 def write_wig_file(strainname, infile, outfile):
