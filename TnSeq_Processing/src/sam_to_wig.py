@@ -30,14 +30,15 @@ def make_read_counter(samfile):
     f.close()
     for i in flines:
         linelist = i.split()
-        strand = int(linelist[1]) & 0b00010000
-        coordinate = int(linelist[3])
-        length = len(linelist[9])
-        if strand == 0: # + strand << flag for reverse complement is off
-            coordinate += length
-        else: # - strand << flag for reverse complement is on
-            coordinate -= 2 # shift the coordinate to the beginning of the TA site
-        reads_counter[coordinate] += 1
+        if len(linelist) > 10:
+          strand = int(linelist[1]) & 0b00010000
+          coordinate = int(linelist[3])
+          length = len(linelist[9])
+          if strand == 0: # + strand << flag for reverse complement is off
+              coordinate += length
+          else: # - strand << flag for reverse complement is on
+              coordinate -= 2 # shift the coordinate to the beginning of the TA site
+          reads_counter[coordinate] += 1
     return dict(reads_counter)
 
 def get_ta(strain):
