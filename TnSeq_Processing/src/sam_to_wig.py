@@ -30,7 +30,14 @@ def make_read_counter(samfile):
     f.close()
     for i in flines:
         linelist = i.split()
-        if len(linelist) > 10:
+        # Skip header lines in sam file
+        if '@HD' in line list:
+          pass
+        elif '@SQ' in line list:
+          pass
+        elif '@PG' in line list:
+          pass
+        else:
           strand = int(linelist[1]) & 0b00010000
           coordinate = int(linelist[3])
           length = len(linelist[9])
