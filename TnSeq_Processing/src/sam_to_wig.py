@@ -31,11 +31,11 @@ def make_read_counter(samfile):
     for i in flines:
         linelist = i.split()
         # Skip header lines in sam file
-        if '@HD' in line list:
+        if '@HD' in linelist:
           pass
-        elif '@SQ' in line list:
+        elif '@SQ' in linelist:
           pass
-        elif '@PG' in line list:
+        elif '@PG' in linelist:
           pass
         else:
           strand = int(linelist[1]) & 0b00010000
