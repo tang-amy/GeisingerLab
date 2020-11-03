@@ -45,6 +45,8 @@ This example shows how to download data from the TUCF server.
 ftp 130.64.74.72
 # Go to directory containing sequencing data (no need to type ftp)
 >ftp cd [server directory]
+# Switch to binary mode
+>ftp binary
 # Turn off promt mode so that you don't have to enter "yes" for every file to download
 >ftp prompt
 # Retrieve all files in current directory using mget command
