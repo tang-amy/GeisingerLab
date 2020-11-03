@@ -18,7 +18,7 @@ mkdir -p $UNZIPPED $CLIPPED
 parallel gunzip -k {} ::: $DIR/*.gz
 printf "Finished unzipping files, now clipping adaptors.\n"
 printf "Adapator sequence $ADAPTOR will be removed from reads.\n"
-for file in $DIR/*.txt
+for file in $DIR/*.fastq
 do mv $file $UNZIPPED
 done
 
