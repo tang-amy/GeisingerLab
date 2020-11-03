@@ -23,5 +23,7 @@ do mv $file $UNZIPPED
 done
 
 # clips adaptors from *.fastq files in #UNZIPPED
-parallel fastx_clipper -v -l 20 -d 0 -Q 33 -a $ADAPTOR -i {} -o ${CLIPPED}/clipped_{} ::: $UNZIPPED/*.fastq
+cd $UNZIPPED
+parallel fastx_clipper -v -l 20 -d 0 -Q 33 -a $ADAPTOR -i {} -o ${CLIPPED}/clipped_{} ::: *.fastq
 printf "Finished clipping adaptors.\n"
+cd $DIR
