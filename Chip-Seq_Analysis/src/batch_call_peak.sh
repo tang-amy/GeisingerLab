@@ -8,7 +8,7 @@ DIR=${1?Error: "enter directory of fastq files"}
 #mkdir -p ${OUT}/narrowPeak ${OUT}/xls ${OUT}/bed
 
 for i in 1 2 3
-        do for file in JBA71FLAG_BEADS_${i}_*.bam
+        do for file in ${DIR}/JBA71FLAG_BEADS_${i}_*.bam
                 do fname=$(basename $file)    
                 #oname=${OUT}/${fname%%.sorted.bam};
                 input=${DIR}/JBA71_INPUT_${i}_*.bam
