@@ -9,7 +9,7 @@ DIR=${1?Error: "enter directory of fastq files"}
 
 for i in 1 2 3
         do for file in JBA71FLAG_BEADS_${i}_*.bam
-                fname=$(basename $file);
+                do fname=$(basename $file);
                 #oname=${OUT}/${fname%%.sorted.bam};
                 input=${DIR}/JBA71_INPUT_${i}_*.bam;
                 echo $fname;
