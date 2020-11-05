@@ -9,12 +9,12 @@ OUT=${2?Error: "provide output directory name"}
 
 for i in 1 2 3
         do for file in ${DIR}/JBA71FLAG_BEADS_${i}_*.bam
-                do fname=$(basename $file)    
+                do fname=$(basename $file); 
                 oname=${OUT}/${fname%%.sorted.bam};
-                input=${DIR}/JBA71_INPUT_${i}_*.bam
-                echo $fname
+                input=${DIR}/JBA71_INPUT_${i}_*.bam;
+                echo $fname;
                 echo $oname;
-                echo $input
+                echo $input;
                 done
          done
              
