@@ -4,16 +4,16 @@
 ## 11/05/2020
 
 DIR=${1?Error: "enter directory of fastq files"}
-OUT=${2?Error: "provide output directory name"}
+#OUT=${2?Error: "provide output directory name"}
 mkdir -p ${OUT}/narrowPeak ${OUT}/xls ${OUT}/bed
 
 for i in 1 2 3
         do for file in JBA71FLAG_BEADS_${i}_*.bam
                 fname=$(basename $file);
-                oname=${OUT}/${fname%%.sorted.bam};
+                #oname=${OUT}/${fname%%.sorted.bam};
                 input=${DIR}/JBA71_INPUT_${i}_*.bam;
                 echo $fname;
-                echo $oname;
+                #echo $oname;
                 echo $input;
                 done
          done
