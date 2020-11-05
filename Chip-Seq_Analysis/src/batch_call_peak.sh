@@ -5,7 +5,7 @@
 
 DIR=${1?Error: "enter directory of fastq files"}
 #OUT=${2?Error: "provide output directory name"}
-mkdir -p ${OUT}/narrowPeak ${OUT}/xls ${OUT}/bed
+#mkdir -p ${OUT}/narrowPeak ${OUT}/xls ${OUT}/bed
 
 for i in 1 2 3
         do for file in JBA71FLAG_BEADS_${i}_*.bam
