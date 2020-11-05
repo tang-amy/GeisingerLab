@@ -18,13 +18,11 @@ for i in 1 2 3
                 done
          done
              
-'''
-macs2 callpeak -t $file -c $input -g 3.8e6 \
--n $oname.input_28-$i.ext200 \
---nomodel --extsize 200 >> ${OUT}/macs2_log.txt 2>&1;
-done    
+#macs2 callpeak -t $file -c $input -g 3.8e6 \
+#-n $oname.input_28-$i.ext200 \
+#--nomodel --extsize 200 >> ${OUT}/macs2_log.txt 2>&1;
+#done    
 
-mv ${OUT}/*.narrowPeak ${OUT}/narrowPeak
-mv ${OUT}/*.xls ${OUT}/xls
-mv ${OUT}/*.bed ${OUT}/bed
-'''
+#mv ${OUT}/*.narrowPeak ${OUT}/narrowPeak
+#mv ${OUT}/*.xls ${OUT}/xls
+#mv ${OUT}/*.bed ${OUT}/bed
