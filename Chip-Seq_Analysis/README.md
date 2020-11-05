@@ -144,4 +144,13 @@ Follow these instructions on [how to install MACS2](https://github.com/macs3-pro
 ### Batch downsampling
 [batch_downsampling.sh](https://github.com/tang-amy/GeisingerLab/blob/master/Chip-Seq_Analysis/src/batch_downsampling.sh)
 ### Run MACS2
+```bash
+macs2 callpeak -t $file -c $input -g 3.8e6 \
+-n $oname.input_28-$i.ext200 \
+--nomodel --extsize 200 >> $macs2_log.txt 2>&1
+```
+To call peaks from data of a folder in batch, use [batch_call_peak.sh](https://github.com/tang-amy/GeisingerLab/blob/master/Chip-Seq_Analysis/src/batch_call_peak.sh).
+
+To call peaks from downsampled datasets, use [batch_call_peak_downsampled.sh](https://github.com/tang-amy/GeisingerLab/blob/master/Chip-Seq_Analysis/src/batch_call_peak_downsampled.sh)
+
 ## Predict Motif using MEME-ChIP
