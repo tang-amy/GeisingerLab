@@ -23,6 +23,6 @@ done
 # sort bam files
 for file in ${SAM_OUTPUT}/*.sam
 do fname=$(basename ${file})
-samtools sort $file -o ${BAM_OUTPUT}/${fname/.sam/_sorted.bam}
+samtools sort $file -o ${BAM_OUTPUT}/${fname/.sam/.sorted.bam}
 done
 printf "Finished sorting SAM files.\n"

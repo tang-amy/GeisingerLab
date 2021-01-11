@@ -18,7 +18,7 @@ OUT=$(dirname ${DIR})/$(echo "scale=0; (${READS}/1000)" | bc)k_downsampled_BAM_f
 
 for seed in 2 5 9
 do
-  mkdir -p ${OUT}/seed${seed} ${OUT}/seed${seed}/input;
+  mkdir -p ${OUT}/seed${seed};
   printf "Created folder ${OUT}/seed${seed}.\n"
   printf "Created folder ${OUT}/seed${seed}/input.\n"
   for file in $DIR/*.bam
@@ -33,7 +33,7 @@ do
     echo ${fname} >> ${OUT}/downsampling_${rt}M_log.txt;
     echo "s${seed}_${rt}M: $(samtools view $ofile | wc -l) reads" >> ${OUT}/downsampling_${rt}M_log.txt;
     done
-  mv ${OUT}/seed${seed}/*Input*.bam ${OUT}/seed${seed}/input/
+  #mv ${OUT}/seed${seed}/*Input*.bam ${OUT}/seed${seed}/input/
   done
 
 printf "Finished downsampling. \n"
