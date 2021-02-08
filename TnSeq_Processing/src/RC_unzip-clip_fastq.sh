@@ -11,7 +11,7 @@ mkdir -p $UNZIPPED $CLIPPED
 
 # unzip all .gz files in $DIR
 # removed -k option of gunzip to adapt to RC
-parallel gunzip -d {} ::: $DIR/*.gz
+parallel gzip -d {} ::: $DIR/*.gz
 printf "Finished unzipping files, now clipping adaptors.\n"
 printf "Adapator sequence $ADAPTOR will be removed from reads.\n"
 for file in $DIR/*.fastq
