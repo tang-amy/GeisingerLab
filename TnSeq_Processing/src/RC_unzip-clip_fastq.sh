@@ -10,6 +10,7 @@ CLIPPED="$(dirname $DIR)/clipped_fastq_files"
 mkdir -p $UNZIPPED $CLIPPED
 
 # unzip all .gz files in $DIR
+# removed -k option of gunzip to adapt to RC
 parallel gunzip {} ::: $DIR/*.gz
 printf "Finished unzipping files, now clipping adaptors.\n"
 printf "Adapator sequence $ADAPTOR will be removed from reads.\n"
