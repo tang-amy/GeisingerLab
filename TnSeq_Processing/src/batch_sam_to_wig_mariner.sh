@@ -14,7 +14,7 @@ parallel python ~/GeisingerLab/TnSeq_Processing/src/sam_to_wig.py -g ${REF} -i {
 printf "Finished converting SAM files to WIG files.\n"
 
 for file in ${DIR}/*.wig
-do fname=(basename ${file})
+do fname=$(basename ${file})
 mv $file ${OUTPUT}/${fname}
 done
 
