@@ -38,9 +38,9 @@ def make_read_counter(samfile):
         elif '@PG' in linelist:
           pass
         else:
-          strand = int(linelist[2]) & 0b00010000
-          coordinate = int(linelist[4])
-          length = len(linelist[10])
+          strand = int(linelist[1]) & 0b00010000
+          coordinate = int(linelist[3])
+          length = len(linelist[9])
           if strand == 0: # + strand << flag for reverse complement is off
               coordinate += length
           else: # - strand << flag for reverse complement is on
