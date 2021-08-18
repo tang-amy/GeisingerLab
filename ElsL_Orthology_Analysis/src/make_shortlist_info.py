@@ -1,6 +1,13 @@
 ## Yunfei Dai
 ## 08/16/2021
 
+"""
+This script takes a list of protein (WP_) accessions (version) as input, and outputs their detailed information including length, source organism, and CDD domain predictions.
+
+Usage:
+python make_shortlist_info.py [infile] [outfile] [CDD table]
+"""
+
 from sys import argv
 from Bio import Entrez
 Entrez.email = "dai.yun@northeastern.edu"
