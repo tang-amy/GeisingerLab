@@ -33,7 +33,9 @@ with open(shortlist, 'r') as prot_list:
         seqid = summary[0]['GBSeq_other-seqids']
         organism = summary[0]['GBSeq_organism']
         taxonomy = summary[0]['GBSeq_taxonomy']
-        print('>' + prot + '\n')
+
+        '''
+        # further parse information in "GBSeq_comment"
         for key in summary[0].keys():
             if key == "GBSeq_comment":
                 [print(i) for i in summary[0][key].split(';')]
@@ -42,5 +44,5 @@ with open(shortlist, 'r') as prot_list:
                     [print(key2, " : ", record[key2]) for key2 in record.keys()]
             else:
                 print(key, " : ", summary[0][key])
-        print('\n')
+        '''
 
