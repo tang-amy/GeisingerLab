@@ -1,6 +1,21 @@
 ## Yunfei Dai
 ## 2021/06/23
 
+
+"""
+This script takes a list of protein fasta sequences as input, and filters these protein sequences based on their length and whether they contain any signal sequence. 
+
+Predictions for signal peptides are generated from prediction tools including SignalIP5.0 and Phobius.
+http://www.cbs.dtu.dk/services/SignalP/
+https://phobius.sbc.su.se/
+
+Predictions for functional domains are generated from CDD domain prediction tool.
+https://www.ncbi.nlm.nih.gov/Structure/cdd/cdd.shtml
+
+Usage:
+
+python [Filtering.py] [] []
+"""
 import pandas as pd
 from matplotlib import pyplot as plt
 import numpy as np
@@ -8,6 +23,7 @@ from Bio import SeqIO, Entrez
 import re
 from sys import argv
 
+# Default is "off" - the script by default won't generate a histogram of protein lengths, unless user uses "on".
 try:
     plot_switch = argv[1]
 except IndexError:
