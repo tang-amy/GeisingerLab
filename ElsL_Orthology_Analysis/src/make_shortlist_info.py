@@ -34,11 +34,6 @@ except IndexError:
 # Read CDD table as pandas dataframe
 df_CDD_domains = pd.read_csv(CDD_domains, sep='\t', index_col=False)
 df_CDD_domains.rename(columns={"Short name": "domain_name"}, inplace=True)
-# Since one protein can have multiple records in CDD domain, the following two lines ensures that indexs are unique
-#df_CDD_domains = df_CDD_domains.groupby(df_CDD_domains.Query)['domain_name'].apply(",".join).reset_index()
-#df_CDD_domains.set_index('Query', inplace=True)
-
-# Get protein info from ncbi using efetch
 
 
 with open(shortlist, 'r') as prot_list:
@@ -46,6 +41,7 @@ with open(shortlist, 'r') as prot_list:
     record = []
     out_data = []
     for line in prot_list:
+        # Get protein info from ncbi using efetch
         prot = line.strip()
         handle = Entrez.efetch(db="protein", id=prot, retmode="xml")
         summary = Entrez.read(handle) 
@@ -57,6 +53,7 @@ with open(shortlist, 'r') as prot_list:
         taxonomy = summary[0]['GBSeq_taxonomy']
         record = [accession, acc_version, length, ''.join(seqid), organism, taxonomy] 
         counter = 0
+        # Get info from CDD prediction result
         for entry in df_CDD_domains.index.tolist():
             if prot in df_CDD_domains.Query[entry]:
                 counter += 1
@@ -67,10 +64,12 @@ with open(shortlist, 'r') as prot_list:
                 domain = df_CDD_domains.at[entry, 'domain_name']
                 cdd_info = domain + '; eval='+str(evalue)
                 record.append(cdd_info)
-        out_data.append(record) 
+        out_data.append(record)
+    # write data into output file
     df_output = pd.DataFrame(out_data)
     df_output.to_csv(outfile, header=title, sep='\t', index=False)
-# Write title in the first line of the output
+    
+    
 '''
         # further parse information in "GBSeq_comment"
         for key in summary[0].keys():
