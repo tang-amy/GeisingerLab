@@ -41,10 +41,10 @@ df_CDD_domains.rename(columns={"Short name": "domain_name"}, inplace=True)
 # Get protein info from ncbi using efetch
 
 
-with open(shortlist, 'r') as prot_list, open(outfile, 'w+') as output:
+with open(shortlist, 'r') as prot_list:
     title= ['Accession', 'Accession_version', 'Length', 'SeqID', 'Organism', 'Taxonomy']
     record = []
-    writer = csv.writer(output, delimiter='\t')
+    out_data = []
     for line in prot_list:
         prot = line.strip()
         handle = Entrez.efetch(db="protein", id=prot, retmode="xml")
@@ -67,17 +67,10 @@ with open(shortlist, 'r') as prot_list, open(outfile, 'w+') as output:
                 domain = df_CDD_domains.at[entry, 'domain_name']
                 cdd_info = domain + '; eval='+str(evalue)
                 record.append(cdd_info)
-        writer.writerow(record)
-
+        out_data.append(record) 
+    df_output = pd.DataFrame(out_data)
+    df_output.to_csv(outfile, header=title, sep='\t', index=False)
 # Write title in the first line of the output
-with open(outfile, 'r') as f:
-    r = csv.reader(f)
-    data = [line for line in r]
-with open(outfile, 'w') as f:
-    writer = csv.writer(f, delimiter='\t')
-    writer.writerow(title)
-    [writer.writerow(line) for line in data]
-
 '''
         # further parse information in "GBSeq_comment"
         for key in summary[0].keys():
