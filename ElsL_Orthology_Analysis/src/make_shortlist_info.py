@@ -10,6 +10,7 @@ python make_shortlist_info.py [infile] [CDD table] [outfile]
 Note: the infile should only contain protein accessions (WP_xxxxxx.x)
 """
 
+import csv
 import pandas as pd
 from sys import argv
 from Bio import Entrez
@@ -21,7 +22,7 @@ except IndexError:
     shortlist = "/scratch/dai.yun/2021July_ElsL_PhylogeneticAnalysis/refseq_GT7JRFP8013_blast/test_prot.txt"
 
 try:
-    CDD_domains = = argv[2]
+    CDD_domains = argv[2]
 except IndexError:
     print("Please provide CDD info!")
     
@@ -31,15 +32,19 @@ except IndexError:
     outfile = "/scratch/dai.yun/2021July_ElsL_PhylogeneticAnalysis/refseq_GT7JRFP8013_blast/test_output.txt"
 
 # Read CDD table as pandas dataframe
-df_CDD_domains = pd.read_csv(CDD_domains, sep='\t')
+df_CDD_domains = pd.read_csv(CDD_domains, sep='\t', index_col=False)
 df_CDD_domains.rename(columns={"Short name": "domain_name"}, inplace=True)
 # Since one protein can have multiple records in CDD domain, the following two lines ensures that indexs are unique
-df_CDD_domains = df_CDD_domains.groupby(df_CDD_domains.Query)['domain_name'].apply(",".join).reset_index()
-df_CDD_domains.set_index('Query', inplace=True)
-print(df_CDD_domains.head())
+#df_CDD_domains = df_CDD_domains.groupby(df_CDD_domains.Query)['domain_name'].apply(",".join).reset_index()
+#df_CDD_domains.set_index('Query', inplace=True)
 
 # Get protein info from ncbi using efetch
-with open(shortlist, 'r') as prot_list:
+
+
+with open(shortlist, 'r') as prot_list, open(outfile, 'w+') as output:
+    title= ['Accession', 'Accession_version', 'Length', 'SeqID', 'Organism', 'Taxonomy']
+    record = []
+    writer = csv.writer(output, delimiter='\t')
     for line in prot_list:
         prot = line.strip()
         handle = Entrez.efetch(db="protein", id=prot, retmode="xml")
@@ -50,8 +55,30 @@ with open(shortlist, 'r') as prot_list:
         seqid = summary[0]['GBSeq_other-seqids']
         organism = summary[0]['GBSeq_organism']
         taxonomy = summary[0]['GBSeq_taxonomy']
+        record = [accession, acc_version, length, ''.join(seqid), organism, taxonomy] 
+        counter = 0
+        for entry in df_CDD_domains.index.tolist():
+            if prot in df_CDD_domains.Query[entry]:
+                counter += 1
+                CDD_title = ('CDD_record_'+str(counter))
+                if CDD_title not in title:
+                    title.append(CDD_title)
+                evalue = df_CDD_domains.at[entry, 'E-Value']
+                domain = df_CDD_domains.at[entry, 'domain_name']
+                cdd_info = domain + '; eval='+str(evalue)
+                record.append(cdd_info)
+        writer.writerow(record)
 
-        '''
+# Write title in the first line of the output
+with open(outfile, 'r') as f:
+    r = csv.reader(f)
+    data = [line for line in r]
+with open(outfile, 'w') as f:
+    writer = csv.writer(f, delimiter='\t')
+    writer.writerow(title)
+    [writer.writerow(line) for line in data]
+
+'''
         # further parse information in "GBSeq_comment"
         for key in summary[0].keys():
             if key == "GBSeq_comment":
@@ -61,5 +88,5 @@ with open(shortlist, 'r') as prot_list:
                     [print(key2, " : ", record[key2]) for key2 in record.keys()]
             else:
                 print(key, " : ", summary[0][key])
-        '''
+'''
 
