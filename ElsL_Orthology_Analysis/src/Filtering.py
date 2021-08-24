@@ -21,31 +21,49 @@ from matplotlib import pyplot as plt
 import numpy as np
 from Bio import SeqIO, Entrez
 import re
+from optparse import OptionParser
 from sys import argv
 
+options = OptionParser()
+options.add_option("-i", "--infile", dest="infile",
+                   help="input is fasta file containing rpotein sequences")
+options.add_option("-p", "--sigIP_pos", dest="pos",
+                   help="Signal prediction results (Gram-positive)")
+options.add_option("-n", "--sigIP_neg", dest="neg",
+                   help="Signal prediction results (Gram-negative)")
+options.add_option("-b", "--phobius", dest="phob",
+                   help="phobius prediction results")
+options.add_option("-c", "--cdd", dest="cdd",
+                   help="CDD domain prediction results (.csv)")
+
 # Default is "off" - the script by default won't generate a histogram of protein lengths, unless user uses "on".
+
 try:
     plot_switch = argv[1]
 except IndexError:
     plot_switch = "off"
 
+opts, args = options.parse_args()
 # 3) Did Batch Entrez to get the FASTA sequences from the WP_ id's
-fasta_sequence = "/Users/yunfei/20210623_ElsL_Ortholog_Analysis/GT9TM664013_blastp/GT9TM664013_blast.fasta"
-
+    fasta_sequence = opts.infile
 # 4) Used the FASTA sequences as input into SignalP web server --
 # did Gram-negative setting first, then Gram-positive setting;
 # downloaded the results for each
-SignalIP_pos = "/Users/yunfei/20210623_ElsL_Ortholog_Analysis/GT9TM664013_blastp/GT9TM664013_blast-SIGNALP-GP--output_protein_type.txt"
-SignalIP_neg = "/Users/yunfei/20210623_ElsL_Ortholog_Analysis/GT9TM664013_blastp/GT9TM664013_blast-SIGNALP-GN--output_protein_type.txt"
-
+    SignalIP_pos = opts.pos
+    SignalIP_neg = opts.neg
 # 5)  Used the FASTA sequences as input into Phobius web server (short output mode)
-Phobius = "/Users/yunfei/20210623_ElsL_Ortholog_Analysis/GT9TM664013_blastp/GT9TM664013_phobius.txt"
+    Phobius = opts.phob
 
 # 6) Also used the FASTA sequences as input into CDD search (batch-CD search).
 # [This way we have info that lets us exclude known PG-binding domains ("PG_binding_"; "LysM")]
 
-CDD_domains = "/Users/yunfei/20210623_ElsL_Ortholog_Analysis/GT9TM664013_blastp/GT9TM664013_CDDhits_standard.csv"
+    CDD_domains = opts.cdd
 
+
+opts, args = options.parse_args()
+    fasta_sequence = opts.infile
+    
+    
 df_phobius = pd.read_csv(Phobius, sep=r"\s+", skiprows=0, index_col='SEQUENCE_ID')
 df_signalIP_pos = pd.read_csv(SignalIP_pos, sep='\t', skiprows=1, index_col='# ID')
 df_signalIP_pos.index.names = ["ID"]
