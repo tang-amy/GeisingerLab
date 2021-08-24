@@ -35,13 +35,15 @@ options.add_option("-b", "--phobius", dest="phob",
                    help="phobius prediction results")
 options.add_option("-c", "--cdd", dest="cdd",
                    help="CDD domain prediction results (.csv)")
-
-# Default is "off" - the script by default won't generate a histogram of protein lengths, unless user uses "on".
-
-try:
-    plot_switch = argv[1]
-except IndexError:
-    plot_switch = "off"
+options.add_option("-t", "--tmhmm", dest="tmhmm",
+                   help="TMHMM prediction results")
+options.add_option("-x", "--predisin", dest="predisin",
+                   help="predisi prediction results (Gram-negative)")
+options.add_option("-y", "--predisip", dest="predisip",
+                   help="predisi prediction results (Gram-positive)")
+options.add_option("-h", "--histogram", dest="histogram", default="off",
+                   help="option to plot histogram, default is off")
+                  
 
 opts, args = options.parse_args()
 # 3) Did Batch Entrez to get the FASTA sequences from the WP_ id's
@@ -53,16 +55,13 @@ opts, args = options.parse_args()
     SignalIP_neg = opts.neg
 # 5)  Used the FASTA sequences as input into Phobius web server (short output mode)
     Phobius = opts.phob
-
 # 6) Also used the FASTA sequences as input into CDD search (batch-CD search).
 # [This way we have info that lets us exclude known PG-binding domains ("PG_binding_"; "LysM")]
-
     CDD_domains = opts.cdd
-
-
-opts, args = options.parse_args()
-    fasta_sequence = opts.infile
-    
+    TMHMM = opts.tmhmm
+    predisi_GN = opts.perdisip
+    predisi_GP = opts.predisin
+    plot_switch = opts.histogram  # Default is "off" - the script by default won't generate a histogram of protein lengths, unless user uses "on".
     
 df_phobius = pd.read_csv(Phobius, sep=r"\s+", skiprows=0, index_col='SEQUENCE_ID')
 df_signalIP_pos = pd.read_csv(SignalIP_pos, sep='\t', skiprows=1, index_col='# ID')
@@ -110,10 +109,6 @@ for hit in subset_signalIP:
                 subset_CDD.append(hit)
 
 # Additional filters
-TMHMM = "/Users/yunfei/20210623_ElsL_Ortholog_Analysis/GT9TM664013_blastp/GT9TM664013_TMHMM_result.txt"
-predisi_GN = "/Users/yunfei/20210623_ElsL_Ortholog_Analysis/GT9TM664013_blastp/GT9TM664013_predisi_GN.txt"
-predisi_GP = "/Users/yunfei/20210623_ElsL_Ortholog_Analysis/GT9TM664013_blastp/GT9TM664013_predisi_GP.txt"
-
 df_TMHMM = pd.read_csv(TMHMM, sep='\t', skiprows=1,
                        names=['ID', 'len', 'ExpAA', 'First', 'PreHel', 'Topology'], index_col='ID')
 df_predisi_GN = pd.read_csv(predisi_GN, sep='\t', skiprows=7, index_col='FASTA-ID')
