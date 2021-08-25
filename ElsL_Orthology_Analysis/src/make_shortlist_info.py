@@ -53,7 +53,7 @@ with open(shortlist, 'r') as prot_list:
         taxonomy = summary[0]['GBSeq_taxonomy'].split(";")
         superkingdom = taxonomy[0]
         phylum = taxonomy[1]
-        tax_class = taxnomy[2]
+        tax_class = taxonomy[2]
         order = taxonomy[3]
         family = taxonomy[4]
         genus = taxonomy[5]
