@@ -48,22 +48,22 @@ options.add_option("-o", "--outfile", dest="outfile",
 
 opts, args = options.parse_args()
 # 3) Did Batch Entrez to get the FASTA sequences from the WP_ id's
-    fasta_sequence = opts.infile
+fasta_sequence = opts.infile
 # 4) Used the FASTA sequences as input into SignalP web server --
 # did Gram-negative setting first, then Gram-positive setting;
 # downloaded the results for each
-    SignalIP_pos = opts.pos
-    SignalIP_neg = opts.neg
+SignalIP_pos = opts.pos
+SignalIP_neg = opts.neg
 # 5)  Used the FASTA sequences as input into Phobius web server (short output mode)
-    Phobius = opts.phob
+Phobius = opts.phob
 # 6) Also used the FASTA sequences as input into CDD search (batch-CD search).
 # [This way we have info that lets us exclude known PG-binding domains ("PG_binding_"; "LysM")]
-    CDD_domains = opts.cdd
-    TMHMM = opts.tmhmm
-    predisi_GN = opts.perdisip
-    predisi_GP = opts.predisin
-    plot_switch = opts.histogram  # Default is "off" - the script by default won't generate a histogram of protein lengths, unless user uses "on".
-    outfile = opts.outfile
+CDD_domains = opts.cdd
+TMHMM = opts.tmhmm
+predisi_GN = opts.perdisip
+predisi_GP = opts.predisin
+plot_switch = opts.histogram  # Default is "off" - the script by default won't generate a histogram of protein lengths, unless user uses "on".
+outfile = opts.outfile
 
 df_phobius = pd.read_csv(Phobius, sep=r"\s+", skiprows=0, index_col='SEQUENCE_ID')
 df_signalIP_pos = pd.read_csv(SignalIP_pos, sep='\t', skiprows=1, index_col='# ID')
