@@ -84,7 +84,8 @@ for hit in ID_list:
 subset_signalIP = []  # subset of subset_phobius that also does not have SP/TAT/LIPO from SignalIP Prediction (823 hits)
 for hit in subset_phobius:
     ID = hit.replace('|', '_')
-    if df_signalIP_pos.Prediction[ID] == "OTHER" and df_signalIP_neg.Prediction[ID] == "OTHER":
+    if (df_signalIP_pos.Prediction[ID] == "OTHER" and df_signalIP_pos.OTHER[ID] > 0.75 and 
+        df_signalIP_neg.Prediction[ID] == "OTHER" and df_signalIP_neg.OTHER[ID] > 0.75):
         subset_signalIP.append(hit)
 
 """
@@ -162,7 +163,7 @@ for hit in subset_exclude_predisi_TMHMM:
 for hit in subset_exclude_predisi_TMHMM:
     protein_accession = hit
     size = len(seq_dict[hit])
-    if size <= 225:
+    if 105 <= size <= 200:
         subset_size_excluded_225.append(hit)
         outF.write(hit+"\n")
 outF.close()
