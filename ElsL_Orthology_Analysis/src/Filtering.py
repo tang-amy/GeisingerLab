@@ -43,7 +43,8 @@ options.add_option("-y", "--predisip", dest="predisip",
                    help="predisi prediction results (Gram-positive)")
 options.add_option("-h", "--histogram", dest="histogram", default="off",
                    help="option to plot histogram, default is off")
-                  
+options.add_option("-o", "--outfile", dest="outfile",
+                   help="specify the output file directory")
 
 opts, args = options.parse_args()
 # 3) Did Batch Entrez to get the FASTA sequences from the WP_ id's
@@ -62,7 +63,8 @@ opts, args = options.parse_args()
     predisi_GN = opts.perdisip
     predisi_GP = opts.predisin
     plot_switch = opts.histogram  # Default is "off" - the script by default won't generate a histogram of protein lengths, unless user uses "on".
-    
+    outfile = opts.outfile
+
 df_phobius = pd.read_csv(Phobius, sep=r"\s+", skiprows=0, index_col='SEQUENCE_ID')
 df_signalIP_pos = pd.read_csv(SignalIP_pos, sep='\t', skiprows=1, index_col='# ID')
 df_signalIP_pos.index.names = ["ID"]
@@ -141,8 +143,7 @@ for hit in subset_exclude_predisi_TMHMM:
     predisi_TMHMM_hit_length.append(len(seq_dict[hit]))
 
 subset_size_excluded_225 = []
-outfile = "/Users/yunfei/20210623_ElsL_Ortholog_Analysis/GT9TM664013_blastp/test.txt"
-outF = open(outfile, "w+")
+
 """
 # for fasta input with description line like ">gi|490280925|ref|WP_004176841.1| L,D-transpeptidase [Nitrosospira lacus]"
 for hit in subset_exclude_predisi_TMHMM:
@@ -160,6 +161,7 @@ for hit in subset_exclude_predisi_TMHMM:
 """
 
 # for fasta input with description line like ">WP_068936422.1 L,D-transpeptidase [Acinetobacter seifertii]"
+outF = open(outfile, "a")
 for hit in subset_exclude_predisi_TMHMM:
     protein_accession = hit
     size = len(seq_dict[hit])
