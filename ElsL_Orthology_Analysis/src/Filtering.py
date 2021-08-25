@@ -41,7 +41,7 @@ options.add_option("-x", "--predisin", dest="predisin",
                    help="predisi prediction results (Gram-negative)")
 options.add_option("-y", "--predisip", dest="predisip",
                    help="predisi prediction results (Gram-positive)")
-options.add_option("-h", "--histogram", dest="histogram", default="off",
+options.add_option("-H", "--histogram", dest="histogram", default="off",
                    help="option to plot histogram, default is off")
 options.add_option("-o", "--outfile", dest="outfile",
                    help="specify the output file directory")
