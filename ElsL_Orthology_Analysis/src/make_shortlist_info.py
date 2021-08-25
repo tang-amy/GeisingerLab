@@ -54,8 +54,14 @@ with open(shortlist, 'r') as prot_list:
         superkingdom = taxonomy[0]
         phylum = taxonomy[1]
         tax_class = taxonomy[2]
-        order = taxonomy[3]
-        family = taxonomy[4]
+        try:
+            order = taxonomy[3]
+        except IndexError:
+            order = ""
+        try:
+            family = taxonomy[4]
+        except IndexError:
+            family = ""
         try:
             genus = taxonomy[5]
         except IndexError:
