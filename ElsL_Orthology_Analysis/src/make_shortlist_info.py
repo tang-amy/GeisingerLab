@@ -37,7 +37,7 @@ df_CDD_domains.rename(columns={"Short name": "domain_name"}, inplace=True)
 
 
 with open(shortlist, 'r') as prot_list:
-    title= ['Accession', 'Accession_version', 'Length', 'SeqID', 'Organism', 'Taxonomy']
+    title= ['Accession', 'Accession_version', 'Length', 'SeqID', 'Organism', 'Superkingdom', 'Phylum', 'Class', 'Order', 'Family', 'Genus']
     record = []
     out_data = []
     for line in prot_list:
@@ -50,8 +50,14 @@ with open(shortlist, 'r') as prot_list:
         acc_version = summary[0]['GBSeq_accession-version']
         seqid = summary[0]['GBSeq_other-seqids']
         organism = summary[0]['GBSeq_organism']
-        taxonomy = summary[0]['GBSeq_taxonomy']
-        record = [accession, acc_version, length, ''.join(seqid), organism, taxonomy] 
+        taxonomy = summary[0]['GBSeq_taxonomy'].split(";")
+        superkingdom = taxonomy[0]
+        phylum = taxonomy[1]
+        tax_class = taxnomy[2]
+        order = taxonomy[3]
+        family = taxonomy[4]
+        genus = taxonomy[5]
+        record = [accession, acc_version, length, ''.join(seqid), organism, superkingdom, phylum, tax_class, order, family, genus] 
         counter = 0
         # Get info from CDD prediction result
         for entry in df_CDD_domains.index.tolist():
