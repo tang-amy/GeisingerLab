@@ -60,7 +60,7 @@ Phobius = opts.phob
 # [This way we have info that lets us exclude known PG-binding domains ("PG_binding_"; "LysM")]
 CDD_domains = opts.cdd
 TMHMM = opts.tmhmm
-predisi_GN = opts.perdisip
+predisi_GN = opts.predisip
 predisi_GP = opts.predisin
 plot_switch = opts.histogram  # Default is "off" - the script by default won't generate a histogram of protein lengths, unless user uses "on".
 outfile = opts.outfile
