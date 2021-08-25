@@ -56,7 +56,10 @@ with open(shortlist, 'r') as prot_list:
         tax_class = taxonomy[2]
         order = taxonomy[3]
         family = taxonomy[4]
-        genus = taxonomy[5]
+        try:
+            genus = taxonomy[5]
+        except IndexError:
+            genus = ""
         record = [accession, acc_version, length, ''.join(seqid), organism, superkingdom, phylum, tax_class, order, family, genus] 
         counter = 0
         # Get info from CDD prediction result
