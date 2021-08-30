@@ -12,9 +12,21 @@ https://phobius.sbc.su.se/
 Predictions for functional domains are generated from CDD domain prediction tool.
 https://www.ncbi.nlm.nih.gov/Structure/cdd/cdd.shtml
 
-Usage:
+Usage example:
 
-python [Filtering.py] [] []
+Filtering performed on 08/24/2021
+only kept proteins between 105 aa - 200 aa
+
+python /home/dai.yun/GeisingerLab/ElsL_Orthology_Analysis/src/Filtering.py \
+-i /scratch/dai.yun/2021July_ElsL_PhylogeneticAnalysis/refseq_GT7JRFP8013_blast/GT9TM664013_blast.fasta \
+-p /scratch/dai.yun/2021July_ElsL_PhylogeneticAnalysis/refseq_GT7JRFP8013_blast/prediction_results_blastp/GT9TM664013_blast-SIGNALP-GP--output_protein_type.txt \
+-n /scratch/dai.yun/2021July_ElsL_PhylogeneticAnalysis/refseq_GT7JRFP8013_blast/prediction_results_blastp/GT9TM664013_blast-SIGNALP-GN--output_protein_type.txt \
+-b /scratch/dai.yun/2021July_ElsL_PhylogeneticAnalysis/refseq_GT7JRFP8013_blast/prediction_results_blastp/GT9TM664013_phobius.txt \
+-c /scratch/dai.yun/2021July_ElsL_PhylogeneticAnalysis/refseq_GT7JRFP8013_blast/prediction_results_blastp/GT9TM664013_CDDhits_standard.csv \
+-t /scratch/dai.yun/2021July_ElsL_PhylogeneticAnalysis/refseq_GT7JRFP8013_blast/prediction_results_blastp/GT9TM664013_TMHMM_result.txt \
+-x /scratch/dai.yun/2021July_ElsL_PhylogeneticAnalysis/refseq_GT7JRFP8013_blast/prediction_results_blastp/GT9TM664013_predisi_GN.txt \
+-y /scratch/dai.yun/2021July_ElsL_PhylogeneticAnalysis/refseq_GT7JRFP8013_blast/prediction_results_blastp/GT9TM664013_predisi_GP.txt \
+-o /scratch/dai.yun/2021July_ElsL_PhylogeneticAnalysis/refseq_GT7JRFP8013_blast/shortlist_new/GT9TM664013_shortlist_prot_acc.txt
 """
 import pandas as pd
 from matplotlib import pyplot as plt
