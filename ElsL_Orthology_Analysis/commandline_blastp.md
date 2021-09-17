@@ -21,6 +21,6 @@ cat blastp_LdcA_result_eval_1e-4_max20000_outfmt7.txt | tail -n +6 | cut -f2 > l
 Get the protein sequences for each ID in the list generated in 3.
 ```
 for line in $(cat list_blastp_LdcA_results_eval_1e-4_max20000_outfmt7.txt); 
-do efetch -db protein -id $line >> seq_blastp_LdcA_results_eval_1e-4_max20000_outfmt7.fasta; 
+do efetch -db protein -id $line -format fasta >> seq_blastp_LdcA_results_eval_1e-4_max20000_outfmt7.fasta; 
 done &
 ```
