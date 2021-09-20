@@ -24,3 +24,10 @@ for line in $(cat list_blastp_LdcA_results_eval_1e-4_max20000_outfmt7.txt);
 do efetch -db protein -id $line -format fasta >> seq_blastp_LdcA_results_eval_1e-4_max20000_outfmt7.fasta; 
 done &
 ```
+
+### 5. Obtain predictions for signal peptide, transmembrane helices, and conserved domains
+Use the fasta file from 4 as input, get prediction output files from the following databases:
+[SignalP](http://www.cbs.dtu.dk/services/SignalP/): short output (no figures)
+[predisi](http://www.predisi.de/) 
+[phobius](https://phobius.sbc.su.se/): short output format
+[CDD domain](https://www.ncbi.nlm.nih.gov/Structure/bwrpsb/bwrpsb.cgi)
