@@ -31,7 +31,7 @@ Use the fasta file from 4 as input, get prediction output files from the followi
 2. [predisi](http://www.predisi.de/) 
 3. [phobius](https://phobius.sbc.su.se/): short output format
 4. [CDD domain](https://www.ncbi.nlm.nih.gov/Structure/bwrpsb/bwrpsb.cgi) \
-Note that the CDD batch search function does not allow fasta files with more than 4000 sequences. The following command splits a large fasta file into smaller ones.
+#### Note that the CDD batch search function does not allow fasta files with more than 4000 sequences. The following command splits a large fasta file into smaller ones.
 ```
 awk -v size=3000 -v pre=seq_blast_LdcA_results_eval_1e-4_max20000_outfmt7 -v pad=5 '/^>/{n++;if(n%size==1){close(f);f=sprintf("%s.%0"pad"d",pre,n)}}{print>>f}' seq_blastp_LdcA_results_eval_1e-4_max20000_outfmt7.fasta
 ```
