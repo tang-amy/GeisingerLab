@@ -31,7 +31,7 @@ Use the fasta file from 4 as input, get prediction output files from the followi
 1. [SignalP](http://www.cbs.dtu.dk/services/SignalP/): short output (no figures)
 2. [predisi](http://www.predisi.de/) 
 3. [phobius](https://phobius.sbc.su.se/): short output format
-4. [CDD domain](https://www.ncbi.nlm.nih.gov/Structure/bwrpsb/bwrpsb.cgi) \
+4. [CDD domain](https://www.ncbi.nlm.nih.gov/Structure/bwrpsb/bwrpsb.cgi) 
 
 Note that the CDD batch search function does not allow fasta files with more than 4000 sequences. The following command splits a large fasta file into smaller ones.
 ```
