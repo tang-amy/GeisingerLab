@@ -28,7 +28,7 @@ done &
 ### 5. Obtain predictions for signal peptide, transmembrane helices, and conserved domains
 Use the fasta file from 4 as input, get prediction output files from the following databases:
 
-1. [SignalP](http://www.cbs.dtu.dk/services/SignalP/): short output (no figures)
+1. [SignalP](http://www.cbs.dtu.dk/services/SignalP/): short output (no figures). Use [mirror site](https://services.healthtech.dtu.dk/service.php?SignalP) if the original site is overloaded.
 2. [predisi](http://www.predisi.de/) 
 3. [phobius](https://phobius.sbc.su.se/): short output format
 4. [CDD domain](https://www.ncbi.nlm.nih.gov/Structure/bwrpsb/bwrpsb.cgi) 
