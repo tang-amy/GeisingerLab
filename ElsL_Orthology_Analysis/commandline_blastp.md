@@ -12,7 +12,7 @@ If `update_blastdb.pl` does not work (this happens when a firewall is in place),
 blastp -db refseq_select_prot -query LdcA.fasta -evalue 0.0001 -max_target_seqs 20000 -outfmt 7 -out blastp_LdcA_result_eval_1e-4_max20000_outfmt7.txt &
 ```
 ### 3. Extract protein IDs from BLASTp result
-Next, save the protein IDs in a separate file.
+Next, save the protein IDs in a separate file. In the example below, the first record starts at line 6 (1-5 being info and header lines) - if your file is different, change the parameter for `tail` command.
 ```
 cat blastp_LdcA_result_eval_1e-4_max20000_outfmt7.txt | tail -n +6 | cut -f2 > list_blastp_LdcA_results_eval_1e-4_max20000_outfmt7.txt
 ```
