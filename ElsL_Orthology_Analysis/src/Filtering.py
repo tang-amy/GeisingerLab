@@ -212,7 +212,7 @@ if plot_switch == "on":
     plt.hist(all_seq_lengths, bins='auto', alpha=0.5, label="all sequences")
     plt.hist(CDD_hit_length, bins='auto', alpha=0.5, label="subset_CDD_and_SigIP")
     plt.hist(predisi_TMHMM_hit_length, bins='auto', alpha=0.5, label="subset_CDD_SigIP_TMHMM_and_predisi")
-    plt.hist(size_excluded_lengths, bins='auto', alpha=0.5, label="size_excluded_225 (final shortlist)")
+    plt.hist(size_excluded_lengths, bins='auto', alpha=0.5, label="size_excluded (final shortlist)")
 
     plt.xlabel("Sequence Length")
     plt.ylabel("Count")
@@ -220,5 +220,5 @@ if plot_switch == "on":
     plt.show()
 print("Total hits: " + str(len(all_seq_lengths)))
 print("Hits passing all SP filters: " + str(len(subset_exclude_predisi_TMHMM)))
-print("Hits shorter than max cutoff: " + str(len(size_excluded_225_lengths)))
+print("Hits shorter than max cutoff: " + str(len(size_excluded_lengths)))
 
