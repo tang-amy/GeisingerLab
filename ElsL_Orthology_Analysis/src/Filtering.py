@@ -53,6 +53,10 @@ options.add_option("-x", "--predisin", dest="predisin",
                    help="predisi prediction results (Gram-negative)")
 options.add_option("-y", "--predisip", dest="predisip",
                    help="predisi prediction results (Gram-positive)")
+options.add_option("--min", dest="min_length", default=0,
+                   help="minimum sequence length to keep")
+options.add_option("--max", dest="max_length", default=2000,
+                   help="maximum sequence length to keep")
 options.add_option("-H", "--histogram", dest="histogram", default="off",
                    help="option to plot histogram, default is off")
 options.add_option("-o", "--outfile", dest="outfile",
@@ -74,6 +78,8 @@ CDD_domains = opts.cdd
 TMHMM = opts.tmhmm
 predisi_GN = opts.predisip
 predisi_GP = opts.predisin
+min_legnth = opts.min_length
+max_length = opts.max_length
 plot_switch = opts.histogram  # Default is "off" - the script by default won't generate a histogram of protein lengths, unless user uses "on".
 outfile = opts.outfile
 
@@ -154,7 +160,7 @@ predisi_TMHMM_hit_length = []
 for hit in subset_exclude_predisi_TMHMM:
     predisi_TMHMM_hit_length.append(len(seq_dict[hit]))
 
-subset_size_excluded_225 = []
+subset_size_excluded = []
 
 """
 # for fasta input with description line like ">gi|490280925|ref|WP_004176841.1| L,D-transpeptidase [Nitrosospira lacus]"
@@ -163,7 +169,7 @@ for hit in subset_exclude_predisi_TMHMM:
     protein_accession = hit.split("|")[3]
     size = len(seq_dict[hit])
     if size <= 225:
-        subset_size_excluded_225.append(hit)
+        subset_size_excluded.append(hit)
         for entry in df_CDD_domains.index.tolist():
             if hit in entry:
                 species = re.findall(r"\[(.*?)\]", entry)[0]
@@ -177,22 +183,22 @@ outF = open(outfile, "a")
 for hit in subset_exclude_predisi_TMHMM:
     protein_accession = hit
     size = len(seq_dict[hit])
-    if 105 <= size <= 200:
-        subset_size_excluded_225.append(hit)
+    if min_length <= size <= max_length:
+        subset_size_excluded.append(hit)
         outF.write(hit+"\n")
 outF.close()
 
 size_excluded_225_lengths = []
-for hit in subset_size_excluded_225:
+for hit in subset_size_excluded:
     length = len(seq_dict[hit])
-    size_excluded_225_lengths.append(length)
+    size_excluded_lengths.append(length)
 
 if plot_switch == "on":
     plt.figure(figsize=(8,6))
     plt.hist(all_seq_lengths, bins='auto', alpha=0.5, label="all sequences")
     plt.hist(CDD_hit_length, bins='auto', alpha=0.5, label="subset_CDD_and_SigIP")
     plt.hist(predisi_TMHMM_hit_length, bins='auto', alpha=0.5, label="subset_CDD_SigIP_TMHMM_and_predisi")
-    plt.hist(size_excluded_225_lengths, bins='auto', alpha=0.5, label="size_excluded_225 (final shortlist)")
+    plt.hist(size_excluded_lengths, bins='auto', alpha=0.5, label="size_excluded_225 (final shortlist)")
 
     plt.xlabel("Sequence Length")
     plt.ylabel("Count")
