@@ -84,6 +84,8 @@ max_length = opts.max_length
 plot_switch = opts.histogram  # Default is "off" - the script by default won't generate a histogram of protein lengths, unless user uses "on".
 outfile = opts.outfile
 
+print(min_length)
+
 df_phobius = pd.read_csv(Phobius, sep=r"\s+", skiprows=0, index_col='SEQUENCE_ID')
 df_signalIP_pos = pd.read_csv(SignalIP_pos, sep='\t', skiprows=1, index_col='# ID')
 df_signalIP_pos.index.names = ["ID"]
