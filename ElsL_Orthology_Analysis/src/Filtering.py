@@ -26,6 +26,8 @@ python /home/dai.yun/GeisingerLab/ElsL_Orthology_Analysis/src/Filtering.py \
 -t /scratch/dai.yun/2021July_ElsL_PhylogeneticAnalysis/refseq_GT7JRFP8013_blast/prediction_results_blastp/GT9TM664013_TMHMM_result.txt \
 -x /scratch/dai.yun/2021July_ElsL_PhylogeneticAnalysis/refseq_GT7JRFP8013_blast/prediction_results_blastp/GT9TM664013_predisi_GN.txt \
 -y /scratch/dai.yun/2021July_ElsL_PhylogeneticAnalysis/refseq_GT7JRFP8013_blast/prediction_results_blastp/GT9TM664013_predisi_GP.txt \
+--min 105
+--max 200
 -o /scratch/dai.yun/2021July_ElsL_PhylogeneticAnalysis/refseq_GT7JRFP8013_blast/shortlist_new/GT9TM664013_shortlist_prot_acc.txt
 """
 import pandas as pd
