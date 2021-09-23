@@ -105,8 +105,8 @@ for hit in ID_list:
 subset_signalIP = []  # subset of subset_phobius that also does not have SP/TAT/LIPO from SignalIP Prediction (823 hits)
 for hit in subset_phobius:
     ID = hit.replace('|', '_')
-    if (df_signalIP_pos.Prediction[ID] == "OTHER" and df_signalIP_pos.OTHER[ID] > 0.75 and 
-        df_signalIP_neg.Prediction[ID] == "OTHER" and df_signalIP_neg.OTHER[ID] > 0.75):
+    if (df_signalIP_pos.Prediction[ID] == "OTHER" and float(df_signalIP_pos.OTHER[ID]) > 0.75 and 
+        df_signalIP_neg.Prediction[ID] == "OTHER" and float(df_signalIP_neg.OTHER[ID]) > 0.75):
         subset_signalIP.append(hit)
 
 """
