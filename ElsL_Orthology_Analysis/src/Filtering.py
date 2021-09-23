@@ -133,8 +133,8 @@ for hit in subset_signalIP:
                 subset_CDD.append(hit)
 
 # Additional filters
-df_TMHMM = pd.read_csv(TMHMM, sep='\t', skiprows=1,
-                       names=['ID', 'len', 'ExpAA', 'First', 'PreHel', 'Topology'], index_col='ID')
+df_TMHMM = pd.read_csv(TMHMM, delimiter=r"\s+", skiprows=1,
+                       names=['ID', 'len', 'ExpAA', 'First', 'PreHel', 'Topology'], index_col='ID', engine='python')
 with open(predisi_GN, 'r') as fp_GN:
     search_word = "Truncation"
     if search_word in fp_GN.read():
