@@ -118,7 +118,8 @@ def get_CDD_domains(query):
             domains.append(df_CDD_domains.domain_name[entry])
     return domains
 """
-print(df_CDD_domains.head())
+
+df_CDD_domains['Query'] = df_CDD_domains['Query'].astype(str)
 df_CDD_domains = df_CDD_domains.groupby(df_CDD_domains.Query)['domain_name'].apply(",".join).reset_index()
 df_CDD_domains.set_index('Query', inplace=True)
 
