@@ -99,7 +99,7 @@ ID_list = df_phobius.index.tolist()  # this is the list of 1000 hits
 # -a PG_binding domain from 6
 subset_phobius = []  # subset that does not have an SP or TM from phobius (836 hits)
 for hit in ID_list:
-    if df_phobius.TM[hit] == 0 & df_phobius.SP[hit] == "0":
+    if str(df_phobius.TM[hit]) == "0" and str(df_phobius.SP[hit]) == "0":
         subset_phobius.append(hit)
 
 subset_signalIP = []  # subset of subset_phobius that also does not have SP/TAT/LIPO from SignalIP Prediction (823 hits)
