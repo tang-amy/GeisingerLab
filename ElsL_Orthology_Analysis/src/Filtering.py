@@ -188,7 +188,7 @@ for hit in subset_exclude_predisi_TMHMM:
         outF.write(hit+"\n")
 outF.close()
 
-size_excluded_225_lengths = []
+size_excluded_lengths = []
 for hit in subset_size_excluded:
     length = len(seq_dict[hit])
     size_excluded_lengths.append(length)
@@ -206,5 +206,5 @@ if plot_switch == "on":
     plt.show()
 print("Total hits: " + str(len(all_seq_lengths)))
 print("Hits passing all SP filters: " + str(len(subset_exclude_predisi_TMHMM)))
-print("Hits shorter than 225aa: " + str(len(size_excluded_225_lengths)))
+print("Hits shorter than max cutoff: " + str(len(size_excluded_225_lengths)))
 
