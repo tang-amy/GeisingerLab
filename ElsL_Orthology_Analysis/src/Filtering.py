@@ -136,13 +136,13 @@ for hit in subset_signalIP:
 df_TMHMM = pd.read_csv(TMHMM, sep='\t', skiprows=1,
                        names=['ID', 'len', 'ExpAA', 'First', 'PreHel', 'Topology'], index_col='ID')
 with open(predisi_GN, 'r') as fp_GN:
-    if "Truncation" in fp_GN:
+    if "Truncation" in fp_GN.read():
       df_predisi_GN = pd.read_csv(predisi_GN, sep='\t', skiprows=7, index_col='FASTA-ID')
     else:
       df_predisi_GN = pd.read_csv(predisi_GN, sep='\t', index_col='FASTA-ID')
 
 with open(predisi_GP, 'r') as fp_GP:
-    if "Truncation" in fp_GP:
+    if "Truncation" in fp_GP.read():
         df_predisi_GP = pd.read_csv(predisi_GP, sep='\t', skiprows=7, index_col='FASTA-ID')
     else:
         df_predisi_GP = pd.read_csv(predisi_GP, sep='\t', index_col='FASTA-ID')
