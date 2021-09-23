@@ -38,4 +38,7 @@ Note that the CDD batch search function does not allow fasta files with more tha
 awk -v size=4000 -v pre=seq_blastp_LdcA_results_eval_1e-4_max20000_outfmt7 -v pad=5 '/^>/{n++;if(n%size==1){close(f);f=sprintf("%s.%0"pad"d",pre,n)}}{print>>f}' seq_blastp_LdcA_results_eval_1e-4_max20000_outfmt7.fasta
 ```
 
-Use the `cat` command to concatenate 
+Use the `cat` command to concatenate multiple prediction outputs of smaller fasta files into one file.
+```
+cat file1 file2 > file_total
+```
