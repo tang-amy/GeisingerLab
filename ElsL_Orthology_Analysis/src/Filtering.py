@@ -174,6 +174,7 @@ for seq_record in seq_dict:
 
 CDD_hit_length = []
 for hit in subset_CDD:
+    print(hit)
     CDD_hit_length.append(len(seq_dict[hit]))
 
 predisi_TMHMM_hit_length = []
