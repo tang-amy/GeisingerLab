@@ -142,9 +142,9 @@ df_TMHMM = pd.read_csv(TMHMM, delimiter=r"\s+", skiprows=1,
 with open(predisi_GN, 'r') as fp_GN:
     search_word = "Truncation"
     if search_word in fp_GN.read():
-      df_predisi_GN = pd.read_csv(predisi_GN, delimiter=r"[ ]{2,}", skiprows=7, index_col='FASTA-ID', engine='python')
+        df_predisi_GN = pd.read_csv(predisi_GN, delimiter=r"[ ]{2,}", skiprows=7, index_col='FASTA-ID', engine='python')
     else:
-      df_predisi_GN = pd.read_csv(predisi_GN, delimiter=r"[ ]{2,}", skiprows=0, index_col='FASTA-ID', engine='python')
+        df_predisi_GN = pd.read_csv(predisi_GN, delimiter=r"[ ]{2,}", skiprows=0, index_col='FASTA-ID', engine='python')
 
 with open(predisi_GP, 'r') as fp_GP:
     search_word = "Truncation"
