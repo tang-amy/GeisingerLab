@@ -149,9 +149,10 @@ with open(predisi_GN, 'r') as fp_GN:
 with open(predisi_GP, 'r') as fp_GP:
     search_word = "Truncation"
     if search_word in fp_GP.read():
-        df_predisi_GP = pd.read_csv(predisi_GP, delimiter=r"[ ]{2,}", skiprows=7, index_col='FASTA-ID', engine='python')
+        # regular expression to recognize either a tab or multiple spaces as delimiter
+        df_predisi_GP = pd.read_csv(predisi_GP, delimiter=r"([ ]{2,})|(\t)", skiprows=7, index_col='FASTA-ID', engine='python')
     else:
-        df_predisi_GP = pd.read_csv(predisi_GP, delimiter=r"[ ]{2,}", skiprows=0, index_col='FASTA-ID', engine='python')
+        df_predisi_GP = pd.read_csv(predisi_GP, delimiter=r"([ ]{2,})|(\t)", skiprows=0, index_col='FASTA-ID', engine='python') 
 
 subset_exclude_predisi_TMHMM = []
 for hit in subset_CDD:
