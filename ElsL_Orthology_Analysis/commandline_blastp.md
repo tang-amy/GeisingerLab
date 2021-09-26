@@ -43,3 +43,20 @@ Use the `cat` command to concatenate multiple prediction outputs of smaller fast
 ```
 cat file1 file2 > file_total
 ```
+
+### 6. Exclude hits that does not meet certain structural/size criteria
+
+Use `Filtering.py` to apply selected filters based on predicted domain/sequence features.
+
+```
+python /home/dai.yun/GeisingerLab/ElsL_Orthology_Analysis/src/Filtering.py \
+-i /scratch/dai.yun/2021July_ElsL_LDC_PhylogeneticAnalysis/ldcA_phylogenetics/ldcA_blastp/seq_blastp_LdcA_results_eval_1e-4_max20000_outfmt7.fasta \
+-p /scratch/dai.yun/2021July_ElsL_LDC_PhylogeneticAnalysis/ldcA_phylogenetics/ldcA_blastp/predictions/signalp-GP-seq_blast_LdcA_results_eval_1e-4_max20000_outfmt7.txt \
+-n /scratch/dai.yun/2021July_ElsL_LDC_PhylogeneticAnalysis/ldcA_phylogenetics/ldcA_blastp/predictions/signalp-GN-seq_blast_LdcA_results_eval_1e-4_max20000_outfmt7.txt \
+-b /scratch/dai.yun/2021July_ElsL_LDC_PhylogeneticAnalysis/ldcA_phylogenetics/ldcA_blastp/predictions/phobius_seq_blastp_LdcA_results_eval_1e-4_max20000_outfmt7.txt \
+-c /scratch/dai.yun/2021July_ElsL_LDC_PhylogeneticAnalysis/ldcA_phylogenetics/ldcA_blastp/predictions/CDD_domain_seq_blastp_LdcA_results_eval_1e-4_max20000_outfmt7.txt \
+-t /scratch/dai.yun/2021July_ElsL_LDC_PhylogeneticAnalysis/ldcA_phylogenetics/ldcA_blastp/predictions/TMHMM_seq_blastp_LdcA_results_eval_1e-4_max20000_outfmt7.txt \
+-x /scratch/dai.yun/2021July_ElsL_LDC_PhylogeneticAnalysis/ldcA_phylogenetics/ldcA_blastp/predictions/predisi_GN_seq_blastp_LdcA_results_eval_1e-4_max20000_outfmt7.txt \
+-y /scratch/dai.yun/2021July_ElsL_LDC_PhylogeneticAnalysis/ldcA_phylogenetics/ldcA_blastp/predictions/predisi_GP_seq_blastp_LdcA_results_eval_1e-4_max20000_outfmt7.txt \
+-o /scratch/dai.yun/2021July_ElsL_LDC_PhylogeneticAnalysis/ldcA_phylogenetics/ldcA_blastp/predictions/shortlist_prot_acc_seq_blastp_LdcA_results_eval_1e-4_max20000_outfmt7.txt
+```
