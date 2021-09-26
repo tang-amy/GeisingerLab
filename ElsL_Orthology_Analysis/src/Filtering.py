@@ -89,7 +89,11 @@ df_signalIP_pos = pd.read_csv(SignalIP_pos, sep='\t', skiprows=1, index_col='# I
 df_signalIP_pos.index.names = ["ID"]
 df_signalIP_neg = pd.read_csv(SignalIP_neg, sep='\t', skiprows=1, index_col='# ID')
 df_signalIP_neg.index.names = ["ID"]
-df_CDD_domains = pd.read_csv(CDD_domains, sep='\t')
+with open(CDD_domains, 'r') as CDD_infile:
+    if "#Batch CD-search tool" in CDD_infile.read():
+        df_CDD_domains = pd.read_csv(CDD_domains, skiprows=7, sep='\t')
+    else:
+        df_CDD_domains = pd.read_csv(CDD_domains, sep='\t')
 df_CDD_domains.rename(columns={"Short name": "domain_name"}, inplace=True)
 
 ID_list = df_phobius.index.tolist()  # this is the list of 1000 hits
