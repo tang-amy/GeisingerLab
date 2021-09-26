@@ -30,7 +30,7 @@ Use the fasta file from 4 as input, get prediction output files from the followi
 
 1. [SignalP](http://www.cbs.dtu.dk/services/SignalP/): short output (no figures). Use [mirror site](https://services.healthtech.dtu.dk/service.php?SignalP) if the original site is overloaded.
 2. [predisi](http://www.predisi.de/) (GN and GP results seem to be the same) Do not trim the header lines - `Filtering.py` will do that.
-3. [phobius](https://phobius.sbc.su.se/): short output format (make sure to wait until the results page finishes loading, otherwise you will end up with incomplete result). The first column header should be manually changed from `SEQENCE ID` to `SEQUENCE_ID`.
+3. [phobius](https://phobius.sbc.su.se/): short output format (make sure to wait until the results page finishes loading, otherwise you will end up with incomplete result). The first column header must be manually changed from `SEQENCE ID` to `SEQUENCE_ID`.
 4. [CDD domain](https://www.ncbi.nlm.nih.gov/Structure/bwrpsb/bwrpsb.cgi) 
 5. [TMHMM](https://services.healthtech.dtu.dk/service.php?TMHMM-2.0)
 
