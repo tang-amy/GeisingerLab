@@ -16,7 +16,6 @@ Next, save the protein IDs in a separate file. In the example below, the first r
 ```
 cat blastp_LdcA_result_eval_1e-4_max20000_outfmt7.txt | tail -n +6 | cut -f2 > list_blastp_LdcA_results_eval_1e-4_max20000_outfmt7.txt
 ```
-(When concatenating files, make sure all descriptor lines before the column hearder are removed.)
 
 ### 4. Get protein sequences from NCBI
 Get the protein sequences for each ID in the list generated in 3.
@@ -44,6 +43,8 @@ Use the `cat` command to concatenate multiple prediction outputs of smaller fast
 ```
 cat file1 file2 > file_total
 ```
+(When concatenating files, make sure all descriptor lines before the column hearder are removed.)
+
 
 ### 6. Exclude hits that does not meet certain structural/size criteria
 
