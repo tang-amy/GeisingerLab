@@ -51,9 +51,18 @@ with open(shortlist, 'r') as prot_list:
         seqid = summary[0]['GBSeq_other-seqids']
         organism = summary[0]['GBSeq_organism']
         taxonomy = summary[0]['GBSeq_taxonomy'].split(";")
-        superkingdom = taxonomy[0]
-        phylum = taxonomy[1]
-        tax_class = taxonomy[2]
+        try:
+            superkingdom = taxonomy[0]
+        except IndexError:
+            superkingdom = ""
+        try:
+            phylum = taxonomy[1]
+        except IndexError:
+            phylum = ""
+        try:
+            tax_class = taxonomy[2]
+        except IndexError:
+            tax_class = ""
         try:
             order = taxonomy[3]
         except IndexError:
