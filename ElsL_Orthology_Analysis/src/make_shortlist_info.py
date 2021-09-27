@@ -32,7 +32,11 @@ except IndexError:
     outfile = "/scratch/dai.yun/2021July_ElsL_PhylogeneticAnalysis/refseq_GT7JRFP8013_blast/test_output.txt"
 
 # Read CDD table as pandas dataframe
-df_CDD_domains = pd.read_csv(CDD_domains, sep='\t', index_col=False)
+with open(CDD_domains, 'r') as CDD_infile:
+    if "#Batch CD-search tool" in CDD_infile.read():
+        df_CDD_domains = pd.read_csv(CDD_domains, skiprows=7, sep='\t', index_col=False)
+    else:
+        df_CDD_domains = pd.read_csv(CDD_domains, sep='\t', index_col=False)
 df_CDD_domains.rename(columns={"Short name": "domain_name"}, inplace=True)
 
 
