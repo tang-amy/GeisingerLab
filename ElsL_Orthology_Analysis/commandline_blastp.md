@@ -61,3 +61,12 @@ python /home/dai.yun/GeisingerLab/ElsL_Orthology_Analysis/src/Filtering.py \
 -o /scratch/dai.yun/2021July_ElsL_LDC_PhylogeneticAnalysis/ldcA_phylogenetics/ldcA_blastp/predictions/shortlist_prot_acc_seq_blastp_LdcA_results_eval_1e-4_max20000_outfmt7.txt
 ```
 Note that `Filtering.py` the following python packages to be installed. Check package version if errors occur. 
+
+### 7. Creat info table for the shortlist of proteins from NCBI.
+For output generated in 6, use `make_shortlist_info.py` to extract taxonomy information from NCBI.
+```
+python /home/dai.yun/GeisingerLab/ElsL_Orthology_Analysis/src/make_shortlist_info.py \
+/scratch/dai.yun/2021July_ElsL_LDC_PhylogeneticAnalysis/ldcA_phylogenetics/ldcA_blastp/predictions/shortlist_prot_acc_seq_blastp_LdcA_results_eval_1e-4_max20000_outfmt7.txt \
+/scratch/dai.yun/2021July_ElsL_LDC_PhylogeneticAnalysis/ldcA_phylogenetics/ldcA_blastp/predictions/CDD_domain_seq_blastp_LdcA_results_eval_1e-4_max20000_outfmt7.txt \
+/scratch/dai.yun/2021July_ElsL_LDC_PhylogeneticAnalysis/ldcA_phylogenetics/ldcA_blastp/predictions/shortlist_info_seq_blastp_LdcA_results_eval_1e-4_max20000_outfmt7.txt
+```
