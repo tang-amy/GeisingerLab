@@ -24,7 +24,7 @@ except Exception:
 def get_length(seq_info, seq_type):
     if seq_type == "fasta":
         # Read fasta file that contains protein sequences
-        fasta_sequences = SeqIO.parse(open(fasta_sequence), 'fasta')
+        fasta_sequences = SeqIO.parse(open(seq_info), 'fasta')
         seq_dict = {rec.id : rec.seq for rec in fasta_sequences}
         seq_lengths = []
         for seq_record in seq_dict:
