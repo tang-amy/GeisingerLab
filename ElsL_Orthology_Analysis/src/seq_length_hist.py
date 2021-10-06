@@ -37,7 +37,7 @@ def get_length(seq_info, seq_type):
 def main():
     seq_lengths = get_length(infile, infile_type)
     plt.figure(figsize=(8,6))
-    plt.hist(seq_lengths, bins='auto', alpha=0.5, label="all sequences")
+    plt.hist(seq_lengths, bins='auto', alpha=0.5, label=infile)
     plt.xlabel("Sequence Length")
     plt.ylabel("Count")
     plt.legend(loc="upper right")
