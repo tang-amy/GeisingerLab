@@ -2,8 +2,9 @@
 ## 10/06/2021
 
 from sys import argv
-from Bio import SeqIO, Entrez
+from Bio import SeqIO
 from matplotlib import pyplot as plt
+import pandas as pd
 
 try:
     infile = argv[1]
@@ -15,14 +16,32 @@ try:
 except Exception:
     outfile = "output_histogram.pdf"
 
-    
-plt.figure(figsize=(8,6))
-plt.hist(all_seq_lengths, bins='auto', alpha=0.5, label="all sequences")
-plt.hist(CDD_hit_length, bins='auto', alpha=0.5, label="subset_CDD_and_SigIP")
-plt.hist(predisi_TMHMM_hit_length, bins='auto', alpha=0.5, label="subset_CDD_SigIP_TMHMM_and_predisi")
-plt.hist(size_excluded_lengths, bins='auto', alpha=0.5, label="size_excluded (final shortlist)")
+try:
+    infile_type = argv[3]
+except Exception:
+    infile_type = "info_table"
 
-plt.xlabel("Sequence Length")
-plt.ylabel("Count")
-plt.legend(loc="upper right")
-plt.show()
+def get_length(seq_info, seq_type):
+    if seq_type == "fasta":
+        # Read fasta file that contains protein sequences
+        fasta_sequences = SeqIO.parse(open(fasta_sequence), 'fasta')
+        seq_dict = {rec.id : rec.seq for rec in fasta_sequences}
+        seq_lengths = []
+        for seq_record in seq_dict:
+            seq_lengths.append(len(seq_dict[seq_record]))      
+    else:
+        df_info = pd.read_csv(infile, sep='\t')
+        seq_lengths = df_info["Length"].tolist()
+    return seq_lengths
+
+def main():
+    seq_lengths = get_length(infile, infile_type)
+    plt.figure(figsize=(8,6))
+    plt.hist(all_seq_lengths, bins='auto', alpha=0.5, label="all sequences")
+    plt.xlabel("Sequence Length")
+    plt.ylabel("Count")
+    plt.legend(loc="upper right")
+    plt.savefig(outfile, format='pdf')
+    
+if __name__ == '__main__':
+    main()
