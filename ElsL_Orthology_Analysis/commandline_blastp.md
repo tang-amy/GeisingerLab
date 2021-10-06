@@ -72,3 +72,17 @@ python /home/dai.yun/GeisingerLab/ElsL_Orthology_Analysis/src/make_shortlist_inf
 /scratch/dai.yun/2021July_ElsL_LDC_PhylogeneticAnalysis/ldcA_phylogenetics/ldcA_blastp/predictions/CDD_domain_seq_blastp_LdcA_results_eval_1e-4_max20000_outfmt7.txt \
 /scratch/dai.yun/2021July_ElsL_LDC_PhylogeneticAnalysis/ldcA_phylogenetics/ldcA_blastp/predictions/shortlist_info_seq_blastp_LdcA_results_eval_1e-4_max20000_outfmt7.txt
 ```
+
+### 8. Plot distribution of sequence lengths on a histogram.
+
+If the input file is the info table generated in 7, the script will directly use the protein length listed in the table.
+```
+python /home/dai.yun/GeisingerLab/ElsL_Orthology_Analysis/src/seq_length_hist.py \ /scratch/dai.yun/2021July_ElsL_LDC_PhylogeneticAnalysis/ldcA_phylogenetics/ldcA_blastp/predictions/shortlist_info_seq_blastp_LdcA_results_eval_1e-4_max20000_outfmt7.txt \ /scratch/dai.yun/2021July_ElsL_LDC_PhylogeneticAnalysis/ldcA_phylogenetics/histograms/hist_shortlist_blastp_LdcA_results_eval_1e-4_max20000_outfmt7.pdf
+```
+
+If the input file is a fasta file, use the "fasta" option so that the script will determine the length for each protein sequence.
+```
+python /home/dai.yun/GeisingerLab/ElsL_Orthology_Analysis/src/seq_length_hist.py \ /scratch/dai.yun/2021July_ElsL_LDC_PhylogeneticAnalysis/ldcV_phylogenetics/seq_blastp_LdcV_result_eval_1e-4_max20000_outfmt7.fasta \
+/scratch/dai.yun/2021July_ElsL_LDC_PhylogeneticAnalysis/ldcA_phylogenetics/histograms/hist_unfiltered_blastp_LdcV_result_eval_1e-4_max20000_outfmt7.pdf \
+fasta
+```
