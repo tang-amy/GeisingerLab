@@ -89,3 +89,10 @@ python /home/dai.yun/GeisingerLab/ElsL_Orthology_Analysis/src/seq_length_hist.py
 /scratch/dai.yun/2021July_ElsL_LDC_PhylogeneticAnalysis/ldcA_phylogenetics/histograms/hist_unfiltered_blastp_LdcV_result_eval_1e-4_max20000_outfmt7.pdf \
 fasta
 ```
+
+### 9. Obtain taxon IDs from protein accessions
+
+```
+for line in $(cat /scratch/dai.yun/2021July_ElsL_LDC_PhylogeneticAnalysis/refseq_GT7JRFP8013_blast/shortlist_new/GT9TM664013_shortlist_prot_acc_new.txt); 
+do efetch -db protein -id $line -format est | grep "taxon" | cut -d ":" -f2 | cut -d "\"" -f1; done >> taxid_ElsL_shortlist.txt &
+```
