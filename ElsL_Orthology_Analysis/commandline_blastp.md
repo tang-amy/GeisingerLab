@@ -93,6 +93,7 @@ fasta
 ### 9. Obtain taxon IDs from protein accessions
 
 ```
-for line in $(cat /scratch/dai.yun/2021July_ElsL_LDC_PhylogeneticAnalysis/refseq_GT7JRFP8013_blast/shortlist_new/GT9TM664013_shortlist_prot_acc_new.txt); 
-do efetch -db protein -id $line -format est | grep "taxon" | cut -d ":" -f2 | cut -d "\"" -f1; done >> taxid_ElsL_shortlist.txt &
+for line in $(cat /scratch/dai.yun/2021July_ElsL_LDC_PhylogeneticAnalysis/refseq_GT7JRFP8013_blast/shortlist_new/GT9TM664013_shortlist_prot_acc_new.txt); \
+do efetch -db protein -id $line -format est | grep "taxon" | cut -d ":" -f2 | cut -d "\"" -f1; \
+done >> taxid_ElsL_shortlist.txt &
 ```
