@@ -54,9 +54,9 @@ options.add_option("-x", "--predisin", dest="predisin",
                    help="predisi prediction results (Gram-negative)")
 options.add_option("-y", "--predisip", dest="predisip",
                    help="predisi prediction results (Gram-positive)")
-options.add_option("--min", dest="min_length", default=0,
+options.add_option("--min", dest="min_length", type='int', default=0,
                    help="minimum sequence length to keep")
-options.add_option("--max", dest="max_length", default=2000,
+options.add_option("--max", dest="max_length", type='int', default=2000,
                    help="maximum sequence length to keep")
 options.add_option("-H", "--histogram", dest="histogram", default="off",
                    help="option to plot histogram, default is off")
