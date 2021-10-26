@@ -34,7 +34,7 @@ def main():
     with open(infile, 'r') as records:
         title = ['Genome', 'Taxid', 'Organism', 'Superkingdom', 'Phylum', 'Class', 'Order', 'Family', 'Genus']
         record = []
-        out_dadta = []
+        out_data = []
         for line in records:
             line = line.strip().split("_")
             genome = line[0]
