@@ -1,6 +1,7 @@
 ## Yunfei Dai
 ## 2021/10/26
 
+import pandas as pd
 from Bio import Entrez
 from optparse import OptionParser
 Entrez.email = "dai.yun@northeastern.edu"
@@ -29,21 +30,53 @@ def main():
     infile = opts.infile
     outfile = opts.outfile
     reference = opts.reference
-    
     taxid_dict = get_tax_dict(reference)
-    writer = open(outfile, 'a+')
     with open(infile, 'r') as records:
+        title = ['Genome', 'Taxid', 'Organism', 'Superkingdom', 'Phylum', 'Class', 'Order', 'Family', 'Genus']
+        record = []
+        out_dadta = []
         for line in records:
             line = line.strip().split("_")
             genome = line[0]
             taxid = taxid_dict[genome] # search for ncbi taxid from taxid.map
-            handle = Entrez.efetch(db="taxonomy", id=taxid, mode='text', rettype='xml')
-            results = Entrez.read(handle)
-            for taxon in results:
-                taxid = taxon["TaxId"]
-                name = taxon["ScientificName"]
-                line_write = '\t'.join([genome, taxid, name])
-                writer.write(line_write + '\n')
+            try:
+                handle = Entrez.efetch(db="taxonomy", id=taxid, mode='text', rettype='xml')
+                results = Entrez.read(handle)
+                for taxon in results:
+                    taxid = taxon["TaxId"]
+                    rank = taxon["Rank"]
+                    name = taxon["ScientificName"]
+                    lineage = taxon["Lineage"].split(";")
+                    try:
+                        superkingdom = lineage[0]
+                    except IndexError:
+                        superkingdom = ""
+                    try:
+                        phylum = lineage[1]
+                    except IndexError:
+                        phylum = ""
+                    try:
+                        tax_class = lineage[2]
+                    except IndexError:
+                        tax_class = ""
+                    try:
+                        order = lineage[3]
+                    except IndexError:
+                        order = ""
+                    try:
+                        family = lineage[4]
+                    except IndexError:
+                        family = ""
+                    try:
+                        genus = lineage[5]
+                    except IndexError:
+                        genus = ""
+                    record = [genome, taxid, name, superkingdom, phylum, tax_class, order, family, genus]
+                    out_data.append(record)
+            except Exception:
+                pass
+        df_output = pd.DataFrame(out_data)
+        df_output.to_csv(outfile, header=title, sep='\t', index=False)
             
 if __name__ == '__main__':
     main()
