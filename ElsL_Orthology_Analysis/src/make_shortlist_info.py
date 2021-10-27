@@ -19,91 +19,90 @@ Entrez.api_key = "367c59c816ff530ba77ea374dd97bdde5709"
 
 
 def get_prot_info(prot):
-        handle = Entrez.efetch(db="protein", id=prot, retmode="xml")
-        summary = Entrez.read(handle) 
-        length = summary[0]['GBSeq_length']
-        accession = summary[0]['GBSeq_primary-accession']
-        acc_version = summary[0]['GBSeq_accession-version']
-        seqid = summary[0]['GBSeq_other-seqids']
-        organism = summary[0]['GBSeq_organism']
-        taxonomy = summary[0]['GBSeq_taxonomy'].split(";")
-        try:
-            superkingdom = taxonomy[0]
-        except IndexError:
-            superkingdom = ""
-        try:
-            phylum = taxonomy[1]
-        except IndexError:
-            phylum = ""
-        try:
-            tax_class = taxonomy[2]
-        except IndexError:
-            tax_class = ""
-        try:
-            order = taxonomy[3]
-        except IndexError:
-            order = ""
-        try:
-            family = taxonomy[4]
-        except IndexError:
-            family = ""
-        try:
-            genus = taxonomy[5]
-        except IndexError:
-            genus = ""
-        record = [accession, acc_version, length, ''.join(seqid), organism, superkingdom, phylum, tax_class, order, family, genus] 
+    handle = Entrez.efetch(db="protein", id=prot, retmode="xml")
+    summary = Entrez.read(handle) 
+    length = summary[0]['GBSeq_length']
+    accession = summary[0]['GBSeq_primary-accession']
+    acc_version = summary[0]['GBSeq_accession-version']
+    seqid = summary[0]['GBSeq_other-seqids']
+    organism = summary[0]['GBSeq_organism']
+    taxonomy = summary[0]['GBSeq_taxonomy'].split(";")
+    try:
+        superkingdom = taxonomy[0]
+    except IndexError:
+        superkingdom = ""
+    try:
+        phylum = taxonomy[1]
+    except IndexError:
+        phylum = ""
+    try:
+        tax_class = taxonomy[2]
+    except IndexError:
+        tax_class = ""
+    try:
+        order = taxonomy[3]
+    except IndexError:
+        order = ""
+    try:
+        family = taxonomy[4]
+    except IndexError:
+        family = ""
+    try:
+        genus = taxonomy[5]
+    except IndexError:
+        genus = ""
+    record = [accession, acc_version, length, ''.join(seqid), organism, superkingdom, phylum, tax_class, order, family, genus] 
 return record
         
-        
-try:
-    shortlist = argv[1]
-except IndexError:
-    shortlist = "/scratch/dai.yun/2021July_ElsL_PhylogeneticAnalysis/refseq_GT7JRFP8013_blast/test_prot.txt"
+def main():        
+    try:
+        shortlist = argv[1]
+    except IndexError:
+        shortlist = "/scratch/dai.yun/2021July_ElsL_PhylogeneticAnalysis/refseq_GT7JRFP8013_blast/test_prot.txt"
+    try:
+        CDD_domains = argv[2]
+    except IndexError:
+        print("Please provide CDD info!")
+    try:
+        outfile = argv[3]
+    except IndexError:
+        outfile = "/scratch/dai.yun/2021July_ElsL_PhylogeneticAnalysis/refseq_GT7JRFP8013_blast/test_output.txt"
 
-try:
-    CDD_domains = argv[2]
-except IndexError:
-    print("Please provide CDD info!")
+    # Read CDD table as pandas dataframe
+    with open(CDD_domains, 'r') as CDD_infile:
+        if "#Batch CD-search tool" in CDD_infile.read():
+            df_CDD_domains = pd.read_csv(CDD_domains, skiprows=7, sep='\t', index_col=False)
+        else:
+            df_CDD_domains = pd.read_csv(CDD_domains, sep='\t', index_col=False)
+    df_CDD_domains.rename(columns={"Short name": "domain_name"}, inplace=True)
+
+    with open(shortlist, 'r') as prot_list:
+        title= ['Accession', 'Accession_version', 'Length', 'SeqID', 'Organism', 'Superkingdom', 'Phylum', 'Class', 'Order', 'Family', 'Genus']
+        record = []
+        out_data = []
+        for line in prot_list:
+            # Get protein info from ncbi using efetch
+            prot = line.strip()
+            record = get_prot_info(prot)
+            counter = 0
+            # Get info from CDD prediction result
+            for entry in df_CDD_domains.index.tolist():
+                if prot in df_CDD_domains.Query[entry]:
+                    counter += 1
+                    CDD_title = ('CDD_record_'+str(counter))
+                    if CDD_title not in title:
+                        title.append(CDD_title)
+                    evalue = df_CDD_domains.at[entry, 'E-Value']
+                    domain = df_CDD_domains.at[entry, 'domain_name']
+                    cdd_info = domain + '; eval='+str(evalue)
+                    record.append(cdd_info)
+            out_data.append(record)
+        # write data into output file
+        df_output = pd.DataFrame(out_data)
+        df_output.to_csv(outfile, header=title, sep='\t', index=False)
     
-try:
-    outfile = argv[3]
-except IndexError:
-    outfile = "/scratch/dai.yun/2021July_ElsL_PhylogeneticAnalysis/refseq_GT7JRFP8013_blast/test_output.txt"
-
-# Read CDD table as pandas dataframe
-with open(CDD_domains, 'r') as CDD_infile:
-    if "#Batch CD-search tool" in CDD_infile.read():
-        df_CDD_domains = pd.read_csv(CDD_domains, skiprows=7, sep='\t', index_col=False)
-    else:
-        df_CDD_domains = pd.read_csv(CDD_domains, sep='\t', index_col=False)
-df_CDD_domains.rename(columns={"Short name": "domain_name"}, inplace=True)
-
-
-with open(shortlist, 'r') as prot_list:
-    title= ['Accession', 'Accession_version', 'Length', 'SeqID', 'Organism', 'Superkingdom', 'Phylum', 'Class', 'Order', 'Family', 'Genus']
-    record = []
-    out_data = []
-    for line in prot_list:
-        # Get protein info from ncbi using efetch
-        prot = line.strip()
-
-        counter = 0
-        # Get info from CDD prediction result
-        for entry in df_CDD_domains.index.tolist():
-            if prot in df_CDD_domains.Query[entry]:
-                counter += 1
-                CDD_title = ('CDD_record_'+str(counter))
-                if CDD_title not in title:
-                    title.append(CDD_title)
-                evalue = df_CDD_domains.at[entry, 'E-Value']
-                domain = df_CDD_domains.at[entry, 'domain_name']
-                cdd_info = domain + '; eval='+str(evalue)
-                record.append(cdd_info)
-        out_data.append(record)
-    # write data into output file
-    df_output = pd.DataFrame(out_data)
-    df_output.to_csv(outfile, header=title, sep='\t', index=False)
-    
+if __name__ == '__main__':
+    main()
     
 '''
         # further parse information in "GBSeq_comment"
@@ -116,4 +115,3 @@ with open(shortlist, 'r') as prot_list:
             else:
                 print(key, " : ", summary[0][key])
 '''
-
