@@ -15,6 +15,7 @@ import pandas as pd
 from sys import argv
 from Bio import Entrez
 Entrez.email = "dai.yun@northeastern.edu"
+Entrez.api_key = "367c59c816ff530ba77ea374dd97bdde5709"
 
 try:
     shortlist = argv[1]

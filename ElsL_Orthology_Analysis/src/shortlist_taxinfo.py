@@ -5,6 +5,7 @@ import pandas as pd
 from Bio import Entrez
 from optparse import OptionParser
 Entrez.email = "dai.yun@northeastern.edu"
+Entrez.api_key = "367c59c816ff530ba77ea374dd97bdde5709"
 
 options = OptionParser()
 options.add_option("-i", "--infile", dest="infile", help="input is a list of GT genome identifiers")
@@ -24,6 +25,40 @@ def get_tax_dict(tax_map):
             taxid_dict.update({genome: taxid})
     return taxid_dict
 
+def get_taxonomy(taxid):
+    handle = Entrez.efetch(db="taxonomy", id=taxid, mode='text', rettype='xml')
+    results = Entrez.read(handle)
+    for taxon in results:
+        taxid = taxon["TaxId"]
+        rank = taxon["Rank"]
+        name = taxon["ScientificName"]
+        lineage = taxon["Lineage"].split(";")
+        try:
+            superkingdom = lineage[0]
+        except IndexError:
+            superkingdom = ""
+        try:
+            phylum = lineage[1]
+        except IndexError:
+            phylum = ""
+        try:
+            tax_class = lineage[2]
+        except IndexError:
+            tax_class = ""
+        try:
+            order = lineage[3]
+        except IndexError:
+            order = ""
+        try:
+            family = lineage[4]
+        except IndexError:
+            family = ""
+        try:
+            genus = lineage[5]
+        except IndexError:
+            genus = ""
+        taxonomy = [name, superkingdom, phylum, tax_class, order, family, genus]
+    return taxonomy
 
 def main():
     opts, args = options.parse_args()
@@ -40,39 +75,9 @@ def main():
             genome = line[0]
             taxid = taxid_dict[genome] # search for ncbi taxid from taxid.map
             try:
-                handle = Entrez.efetch(db="taxonomy", id=taxid, mode='text', rettype='xml')
-                results = Entrez.read(handle)
-                for taxon in results:
-                    taxid = taxon["TaxId"]
-                    rank = taxon["Rank"]
-                    name = taxon["ScientificName"]
-                    lineage = taxon["Lineage"].split(";")
-                    try:
-                        superkingdom = lineage[0]
-                    except IndexError:
-                        superkingdom = ""
-                    try:
-                        phylum = lineage[1]
-                    except IndexError:
-                        phylum = ""
-                    try:
-                        tax_class = lineage[2]
-                    except IndexError:
-                        tax_class = ""
-                    try:
-                        order = lineage[3]
-                    except IndexError:
-                        order = ""
-                    try:
-                        family = lineage[4]
-                    except IndexError:
-                        family = ""
-                    try:
-                        genus = lineage[5]
-                    except IndexError:
-                        genus = ""
-                    record = [genome, taxid, name, superkingdom, phylum, tax_class, order, family, genus]
-                    out_data.append(record)
+                taxonomy = get_taxonomy(taxid)
+                record = [genome, taxid] + taxonomy
+                out_data.append(record)
             except Exception:
                 pass
         df_output = pd.DataFrame(out_data)
