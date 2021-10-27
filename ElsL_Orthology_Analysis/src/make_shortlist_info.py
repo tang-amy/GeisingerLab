@@ -17,37 +17,8 @@ from Bio import Entrez
 Entrez.email = "dai.yun@northeastern.edu"
 Entrez.api_key = "367c59c816ff530ba77ea374dd97bdde5709"
 
-try:
-    shortlist = argv[1]
-except IndexError:
-    shortlist = "/scratch/dai.yun/2021July_ElsL_PhylogeneticAnalysis/refseq_GT7JRFP8013_blast/test_prot.txt"
 
-try:
-    CDD_domains = argv[2]
-except IndexError:
-    print("Please provide CDD info!")
-    
-try:
-    outfile = argv[3]
-except IndexError:
-    outfile = "/scratch/dai.yun/2021July_ElsL_PhylogeneticAnalysis/refseq_GT7JRFP8013_blast/test_output.txt"
-
-# Read CDD table as pandas dataframe
-with open(CDD_domains, 'r') as CDD_infile:
-    if "#Batch CD-search tool" in CDD_infile.read():
-        df_CDD_domains = pd.read_csv(CDD_domains, skiprows=7, sep='\t', index_col=False)
-    else:
-        df_CDD_domains = pd.read_csv(CDD_domains, sep='\t', index_col=False)
-df_CDD_domains.rename(columns={"Short name": "domain_name"}, inplace=True)
-
-
-with open(shortlist, 'r') as prot_list:
-    title= ['Accession', 'Accession_version', 'Length', 'SeqID', 'Organism', 'Superkingdom', 'Phylum', 'Class', 'Order', 'Family', 'Genus']
-    record = []
-    out_data = []
-    for line in prot_list:
-        # Get protein info from ncbi using efetch
-        prot = line.strip()
+def get_prot_info(prot):
         handle = Entrez.efetch(db="protein", id=prot, retmode="xml")
         summary = Entrez.read(handle) 
         length = summary[0]['GBSeq_length']
@@ -81,6 +52,41 @@ with open(shortlist, 'r') as prot_list:
         except IndexError:
             genus = ""
         record = [accession, acc_version, length, ''.join(seqid), organism, superkingdom, phylum, tax_class, order, family, genus] 
+return record
+        
+        
+try:
+    shortlist = argv[1]
+except IndexError:
+    shortlist = "/scratch/dai.yun/2021July_ElsL_PhylogeneticAnalysis/refseq_GT7JRFP8013_blast/test_prot.txt"
+
+try:
+    CDD_domains = argv[2]
+except IndexError:
+    print("Please provide CDD info!")
+    
+try:
+    outfile = argv[3]
+except IndexError:
+    outfile = "/scratch/dai.yun/2021July_ElsL_PhylogeneticAnalysis/refseq_GT7JRFP8013_blast/test_output.txt"
+
+# Read CDD table as pandas dataframe
+with open(CDD_domains, 'r') as CDD_infile:
+    if "#Batch CD-search tool" in CDD_infile.read():
+        df_CDD_domains = pd.read_csv(CDD_domains, skiprows=7, sep='\t', index_col=False)
+    else:
+        df_CDD_domains = pd.read_csv(CDD_domains, sep='\t', index_col=False)
+df_CDD_domains.rename(columns={"Short name": "domain_name"}, inplace=True)
+
+
+with open(shortlist, 'r') as prot_list:
+    title= ['Accession', 'Accession_version', 'Length', 'SeqID', 'Organism', 'Superkingdom', 'Phylum', 'Class', 'Order', 'Family', 'Genus']
+    record = []
+    out_data = []
+    for line in prot_list:
+        # Get protein info from ncbi using efetch
+        prot = line.strip()
+
         counter = 0
         # Get info from CDD prediction result
         for entry in df_CDD_domains.index.tolist():
