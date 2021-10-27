@@ -19,6 +19,7 @@ Entrez.api_key = "367c59c816ff530ba77ea374dd97bdde5709"
 
 
 def get_prot_info(prot):
+    # search for taxonomy information for a given WP_ protein accession
     handle = Entrez.efetch(db="protein", id=prot, retmode="xml")
     summary = Entrez.read(handle) 
     length = summary[0]['GBSeq_length']
