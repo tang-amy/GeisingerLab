@@ -35,3 +35,7 @@ ABC = len(list(set(subset_1).intersection(subset_2, subset_3)))
 
 venn3(subsets = (Abc, aBc, ABc, abC, AbC, aBC, ABC), set_labels = ("ElsL", "LdcA", "LdcV"), alpha=0.5)
 plt.savefig(outfile, format='pdf')
+
+print(infile_1 + "and" + infile_2 + ": "  + ABc)
+print(infile_1 + "and" + infile_3 + ": "  + AbC)
+print(infile_2 + "and" + infile_3 + ": "  + aBC)
