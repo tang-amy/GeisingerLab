@@ -15,6 +15,9 @@ for (i = 0; i < list.length; i++) {
                 	BGredc(image_dir, OUT_DIR);
 }
 
+run("Bio-Formats Macro Extensions")
+setBatchMode(true);
+
 function BGredc(input, output) {
 	images = getFileList(input);
 	title = File.getNameWithoutExtension(images[0]);
