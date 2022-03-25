@@ -1,6 +1,8 @@
 // Yunfei Dai
 // 01/10/2020
 // This macro substractes background for all images open, and concatenate them into hyperstacked TIFF
+// To bypass pop-up window: Plugins -> Bio-Formats -> Bio-Formats Plugins Configuration -> Formats -> Choose "Zeiss CZI" -> Check "Windowless"
+ 
 
 IN_DIR = getDirectory("Choose a Directory");
 //The input directory contains multiple folders, each contains just czi images
