@@ -14,4 +14,9 @@ In `newfolder`, execute the following command to download from the ftp server. T
 ```
 wget -r -np -R "index.html*" ftp://130.64.74.72/RESULTFOLDER/ --user edward.geisinger --password YEmTZuz --auth-no-challenge 2>download_log.err &
 ```
-Change `RESULTFOLDER` to the actual folder name of the sequencing result. This can be found by right click the folder in the ftp server opened in Finder, and click `Get Info`. Remember to include the `/` at the end, otherwise the command may not recognize it as a folder and may attempt to download the whole server. 
+Change `RESULTFOLDER` to the actual folder name of the sequencing result. This can be found by right click the folder in the ftp server opened in Finder, and click `Get Info`. Remember to include the `/` at the end, otherwise the command may not recognize it as a folder and as a result may attempt to download the whole server. 
+
+Check the status of the download by checking the `download_log.err` file. Press `G` on the keyboard to move the the last line of the file where it shows the latest status of the download. 
+```
+less download_log.err
+```
