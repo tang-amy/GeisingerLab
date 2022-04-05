@@ -20,5 +20,17 @@ Check the status of the download by checking the `download_log.err` file. Press 
 ```
 less download_log.err
 ```
+Exit the -xfer node.
+```
+exit
+```
 
 ## Preprocess raw files for breseq analysis
+Connect to the cluster (login node).
+```
+ssh -Y username@login-00.discovery.neu.edu
+```
+Enter your NU account password when prompted. Next, redirect to the directory containing the raw files.
+```
+cd /work/geisinger/newfolder
+```
