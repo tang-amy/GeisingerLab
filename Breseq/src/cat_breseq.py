@@ -1,6 +1,10 @@
 ## Yunfei Dai
 ## 04/13/2022
 
+# This script concatenates mutation predictions from breseq results (.html)
+# Input is the parent directory that contains multiple folders, with output files for each sample.
+# Usage: python cat_breseq.py -i [breseq results] -n [gene to ignore (optional)] -o [output file (optional)]
+
 from os import path, listdir, getcwd
 from bs4 import BeautifulSoup
 from optparse import OptionParser
