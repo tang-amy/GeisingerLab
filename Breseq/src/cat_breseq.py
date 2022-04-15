@@ -58,11 +58,11 @@ def index_reader(item, table, outfile, ignore, table_type):
             if len(text) == 7:
                 seq_id = text[1]
                 position = text[2]
-                reads_cov1 = text[3]
+                read_cov1 = text[3]
                 annotation = text[4]
                 gene = text[5]
                 product = text[6]
-                result = [item, seq_id, position, read_cov1, "", "", "", freq, annotation, gene, product]
+                result = [item, seq_id, position, read_cov1, "", "", "", "", annotation, gene, product]
             elif len(text) == 12:
                 seq_id = text[2]
                 position = text[3]
