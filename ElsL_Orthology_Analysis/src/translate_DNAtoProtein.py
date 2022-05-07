@@ -24,14 +24,14 @@ def translate_inframe(infile, outfile):
     with open(outfile, "a+") as protein_fasta:
         for record in fasta_sequences:
             if record.seq[0:3]=="ATG":
-                protein_fasta.write(">"+str(record.id)+"\n")
-                protein_fasta.write(str(record.seq.translate())+"\n")
+                protein_fasta.write(">"+str(record.id) + "\n")
+                protein_fasta.write(str(record.seq.translate()) + "\n")
             elif record.seq[-3:]=="CAT":
                 rc_record = record.seq.reverse_complement()
-                protein_fasta.write(">"+str(record.id)+"\n")
-                protein_fasta.write(str(rc_record.translate())+"\n")
+                protein_fasta.write(">" + str(record.id) + "\n")
+                protein_fasta.write(str(rc_record.translate()) + "\n")
             else:
-                print(record.id+": no start codon found.")
+                print(str(record.id) + ": no start codon found.")
 
 def main():
     translate_inframe(infile, outfile)
