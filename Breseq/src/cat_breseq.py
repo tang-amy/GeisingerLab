@@ -98,8 +98,11 @@ def main():
         with open(outfile_2, 'w', newline='') as csvfile_2:
             output_writer = csv.writer(csvfile_2, delimiter='\t')
             output_writer.writerow(header_2)
-    generate_summary(infile, ignore, outfile_1, outfile_2)
-
+    try:
+        generate_summary(infile, ignore, outfile_1, outfile_2)
+    except:
+        print("exception while handling file " + infile)
+    
     print("Predicted mutations saved as: " + outfile_1  + "\n")
     print("Unassigned new junction evidece saved as: " + outfile_2 + "\n")
 
