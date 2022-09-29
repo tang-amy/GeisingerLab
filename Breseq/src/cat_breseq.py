@@ -32,7 +32,7 @@ def generate_summary(infile, ignore, outfile_1, outfile_2):
                     table_2 = tables[-1]
                     index_reader(item, table_2, outfile_2, ignore, 2)
         except:
-            print("exception while handling file " + infile)
+            print("exception while handling file " + item)
 
 # extract information from html tables
 def index_reader(item, table, outfile, ignore, table_type):
