@@ -18,18 +18,21 @@ options.add_option("-o", "--outdir", dest="outdir", default="", help="specify ou
 # generate summary results for 1) Prediction mutations; 2) Unassigned new junction evidence
 def generate_summary(infile, ignore, outfile_1, outfile_2):
     for item in listdir(infile):
-        file=path.join(infile,item)
-        if path.isdir(file)==True:
-            prediction = path.join(file,"output","index.html")	
-            with open(prediction) as fp:
-                soup = BeautifulSoup(fp, 'lxml')
-                tables = soup.find_all("table")
-                # table 1 is the predicted mutations
-                table_1 = tables[1]
-                index_reader(item, table_1, outfile_1, ignore, 1)
-                # table 2 is the unassigned new junctions
-                table_2 = tables[-1]
-                index_reader(item, table_2, outfile_2, ignore, 2)
+        try:
+            file=path.join(infile,item)
+            if path.isdir(file)==True:
+                prediction = path.join(file,"output","index.html")	
+                with open(prediction) as fp:
+                    soup = BeautifulSoup(fp, 'lxml')
+                    tables = soup.find_all("table")
+                    # table 1 is the predicted mutations
+                    table_1 = tables[1]
+                    index_reader(item, table_1, outfile_1, ignore, 1)
+                    # table 2 is the unassigned new junctions
+                    table_2 = tables[-1]
+                    index_reader(item, table_2, outfile_2, ignore, 2)
+        except:
+            print("exception while handling file " + infile)
 
 # extract information from html tables
 def index_reader(item, table, outfile, ignore, table_type):
@@ -98,10 +101,7 @@ def main():
         with open(outfile_2, 'w', newline='') as csvfile_2:
             output_writer = csv.writer(csvfile_2, delimiter='\t')
             output_writer.writerow(header_2)
-    try:
-        generate_summary(infile, ignore, outfile_1, outfile_2)
-    except:
-        print("exception while handling file " + infile)
+    generate_summary(infile, ignore, outfile_1, outfile_2)
     
     print("Predicted mutations saved as: " + outfile_1  + "\n")
     print("Unassigned new junction evidece saved as: " + outfile_2 + "\n")
