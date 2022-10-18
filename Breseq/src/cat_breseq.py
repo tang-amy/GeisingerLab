@@ -14,9 +14,11 @@ options = OptionParser()
 options.add_option("-i", "--infile", dest="infile", help="provide input directory containing .html results")
 options.add_option("-n", "--ignore", dest="ignore", default="///", help="suppress mutations mapped to specified gene")
 options.add_option("-o", "--outdir", dest="outdir", default="", help="specify output directory")
+# Yunfei 10/17/2022 Add option to accommodate other Ab genomes
+options.add_option("-g", "--genome", dest="genome", default="NZ_CP012004", help="specify name of Ab genome, default is NZ_CP012004")
 
 # generate summary results for 1) Prediction mutations; 2) Unassigned new junction evidence
-def generate_summary(infile, ignore, outfile_1, outfile_2):
+def generate_summary(infile, genome, ignore, outfile_1, outfile_2):
     for item in listdir(infile):
         try:
             file=path.join(infile,item)
@@ -27,15 +29,15 @@ def generate_summary(infile, ignore, outfile_1, outfile_2):
                     tables = soup.find_all("table")
                     # table 1 is the predicted mutations
                     table_1 = tables[1]
-                    index_reader(item, table_1, outfile_1, ignore, 1)
+                    index_reader(item, table_1, outfile_1, genome, ignore, 1)
                     # table 2 is the unassigned new junctions
                     table_2 = tables[-1]
-                    index_reader(item, table_2, outfile_2, ignore, 2)
+                    index_reader(item, table_2, outfile_2, genome, ignore, 2)
         except:
             print("exception while handling file " + item)
 
 # extract information from html tables
-def index_reader(item, table, outfile, ignore, table_type):
+def index_reader(item, table, outfile, genome, ignore, table_type):
     if table_type == 1:
         for row in table.find_all("tr")[2:]:
             text = [td.get_text() for td in row.find_all("td")]
@@ -47,7 +49,7 @@ def index_reader(item, table, outfile, ignore, table_type):
             gene = text[5]
             description = text[6]
             # Discard mutations mapped to plasmid genes
-            if seq_id == "NZ_CP012004": 
+            if seq_id == genome: 
                 if "ACX60_RS00525" not in gene:
                     if ignore not in gene:
                         result = [item, evidence, seq_id, position, mutation, annotation, gene, description]
@@ -87,6 +89,7 @@ def main():
     infile = opts.infile
     ignore = opts.ignore
     outdir = opts.outdir
+    genome = opts.genome
     header_1 = ["Sample", "Evidence", "Seq_ID", "Position", "Mutation", "Annotation", "Gene", "Description"]
     header_2 = ["Sample", "Seq_ID", "Positions", "Reads (cov)", "Reads (cov)", "Score", "Skew", "Freq", "Annotation", "Gene", "Product"]
     if path.isdir(outdir):
@@ -101,7 +104,7 @@ def main():
         with open(outfile_2, 'w', newline='') as csvfile_2:
             output_writer = csv.writer(csvfile_2, delimiter='\t')
             output_writer.writerow(header_2)
-    generate_summary(infile, ignore, outfile_1, outfile_2)
+    generate_summary(infile, genome, ignore, outfile_1, outfile_2)
     
     print("Predicted mutations saved as: " + outfile_1  + "\n")
     print("Unassigned new junction evidece saved as: " + outfile_2 + "\n")
