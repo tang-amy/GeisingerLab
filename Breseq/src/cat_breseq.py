@@ -20,21 +20,21 @@ options.add_option("-g", "--genome", dest="genome", default="NZ_CP012004", help=
 # generate summary results for 1) Prediction mutations; 2) Unassigned new junction evidence
 def generate_summary(infile, genome, ignore, outfile_1, outfile_2):
     for item in listdir(infile):
-        try:
-            file=path.join(infile,item)
-            if path.isdir(file)==True:
-                prediction = path.join(file,"output","index.html")	
-                with open(prediction) as fp:
-                    soup = BeautifulSoup(fp, 'lxml')
-                    tables = soup.find_all("table")
+        #try:
+        file=path.join(infile,item)
+        if path.isdir(file)==True:
+            prediction = path.join(file,"output","index.html")	
+            with open(prediction) as fp:
+                soup = BeautifulSoup(fp, 'lxml')
+                tables = soup.find_all("table")
                     # table 1 is the predicted mutations
-                    table_1 = tables[1]
-                    index_reader(item, table_1, outfile_1, genome, ignore, 1)
+                table_1 = tables[1]
+                index_reader(item, table_1, outfile_1, genome, ignore, 1)
                     # table 2 is the unassigned new junctions
-                    table_2 = tables[-1]
-                    index_reader(item, table_2, outfile_2, genome, ignore, 2)
-        except:
-            print("exception while handling file " + item)
+                table_2 = tables[-1]
+                index_reader(item, table_2, outfile_2, genome, ignore, 2)
+        #except:
+        print("exception while handling file " + item)
 
 # extract information from html tables
 def index_reader(item, table, outfile, genome, ignore, table_type):
