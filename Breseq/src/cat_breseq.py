@@ -41,6 +41,7 @@ def index_reader(item, table, outfile, genome, ignore, table_type):
     if table_type == 1:
         for row in table.find_all("tr")[2:]:
             text = [td.get_text() for td in row.find_all("td")]
+            print(text)
             evidence = text[0]
             seq_id = text[1]
             position = text[2]
