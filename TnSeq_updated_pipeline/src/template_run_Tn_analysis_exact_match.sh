@@ -9,8 +9,8 @@
 #SBATCH --job-name=tnseq
 #SBATCH --mem=100G
 #SBATCH --partition=short
-#SBATCH -o /work/geisingerlab/Yunfei/2021Dec_dacC_Tnseq_analysis/slurm_log/slurm_tnseq.%N.%j.out
-#SBATCH -e /work/geisingerlab/Yunfei/2021Dec_dacC_Tnseq_analysis/slurm_log/slurm_tnseq.%N.%j.err
+#SBATCH -o /work/geisingerlab/slurm_logs/slurm_tnseq.%N.%j.out
+#SBATCH -e /work/geisingerlab/slurm_logs/slurm_tnseq.%N.%j.err
 #SBATCH --mail-type=END,FAIL
 #SBATCH --mail-user=y.dai@northeastern.edu
 
