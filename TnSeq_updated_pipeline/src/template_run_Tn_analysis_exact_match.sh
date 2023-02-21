@@ -15,17 +15,17 @@
 #SBATCH --mail-user=y.dai@northeastern.edu
 
 #Loading modules and venv
-module load python/3.7.1
+module load anaconda3
 module load bowtie/1.3.0
 module load gcc/4.8.5
-source /home/dai.yun/yunfei_python_venv/bin/activate
+source activate /work/geisingerlab/conda_env/tnseq_env
 
 #Directories
 FASTA_DIR=/work/geisingerlab/Yunfei/2021Dec_dacC_Tnseq_analysis/raw_data/211203-0504H_Edward_Geisinger_transposed/fastq_Lane8
 OUT_DIR=/work/geisingerlab/Yunfei/2021Dec_dacC_Tnseq_analysis
 EMPTY_WIG=/work/geisingerlab/Yunfei/Ab_reference/17978-mff_empty.wig
-REF=/work/geisingerlab/Yunfei/Ab_reference/AB17978/AB17978
-WIG_SCRIPT=/home/dai.yun/GeisingerLab/TnSeq_Processing/src/exact-match_BC_populate_empty_wig_SAM.py
+REF=/work/geisingerlab/Yunfei/Ab_reference/Ab_all/Ab_all
+WIG_SCRIPT=/work/geisingerlab/GeisingerLab/TnSeq_Processing/src/exact-match_BC_populate_empty_wig_SAM.py
 CLIPPER=/work/geisingerlab/software/fastx_toolkit/bin/fastx_clipper
 ADAPTOR=CTGTCTCTTATACACATCTCCGAGCCCACGAGAC
 
