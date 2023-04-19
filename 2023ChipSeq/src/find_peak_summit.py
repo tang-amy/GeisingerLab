@@ -7,22 +7,25 @@ import pandas as pd
 infile = sys.argv[1]
 outfile = sys.argv[2]
 
-def get_matching_peak(coordinate, file):
+def get_matching_peak(chrom, coordinate, file):
     # from one replicate (narrowPeak), list peaks within which a coordinate is contained
+    # 18Apr2023 limit search in the same chrom
     df_replicate = pd.read_csv(file, sep='\t', header=None)
     matching_peak = []
     for index, row in df_replicate.iterrows():
+        chromosome = row[0]
         start = row[1]
         end = row[2]
         offset = row[9]
         peak_height = row[6]
         summit = start + offset
-        if start < coordinate < end:
-            matching_peak.append([start, end, offset, peak_height])
+        if chromosome == chrom:
+            if start < coordinate < end:
+                matching_peak.append([start, end, offset, peak_height])
     return matching_peak
 
 df_intervals = pd.read_csv(infile, sep='\t')
-replicates = df_intervals.columns.tolist()[-3:]
+replicates = df_intervals.columns.tolist()[5:] #changed from [-3:] to [5:] to allow only 2 replicate
 
 common_intervals = []
 for index, row in df_intervals.iterrows():
@@ -35,8 +38,8 @@ for index, row in df_intervals.iterrows():
         offsets = []
         enrichment = []
         for rep in replicates:
-            if row[rep] == 1:
-                matching_peak = get_matching_peak(mid, rep)
+            if row[rep] == 1: # if present
+                matching_peak = get_matching_peak(chrom, mid, rep)
                 if len(matching_peak) == 1: # only proceed when there is one match
                     offsets.append(matching_peak[0][2])
                     enrichment.append(matching_peak[0][3])
