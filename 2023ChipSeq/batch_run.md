@@ -1,8 +1,9 @@
 
 17Apr2023
 To run macs2:
-sbatch 
-'''bash
+`sbatch /work/geisingerlab/Yunfei/2023_Apr_ChipSeq_Analysis/Scripts/batch_run_macs.sh`
+
+```bash
 #!/bin/bash
 
 ## Yunfei Dai
@@ -31,4 +32,4 @@ python $SCRIPT $INDIR $OUTDIR
 mv ${OUTDIR}/*.narrowPeak ${OUTDIR}/narrowPeak
 mv ${OUTDIR}/*.xls ${OUTDIR}/xls
 mv ${OUTDIR}/*.bed ${OUTDIR}/bed
-'''
+```
