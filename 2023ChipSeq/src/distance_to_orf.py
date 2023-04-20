@@ -78,7 +78,7 @@ def make_histogram(infile, outfile, distance_plot, gene_dict, start_codon_dict):
         summit = peak['average_summit']
         match_info = nearest_orf(summit, gene_dict, start_codon_dict, chrom)
         distance = match_info[-1]
-        fold_enrich = peak['averge_enrichment'] # typo in previous script "averge_enrichment"
+        fold_enrich = peak['average_enrichment']
         if is_intra(summit, gene_dict, chrom):
             match_info.append('intragenic')
             distance_list_intragenic.append(distance)
