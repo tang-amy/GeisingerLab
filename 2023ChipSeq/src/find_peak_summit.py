@@ -24,9 +24,11 @@ def get_matching_peak(chrom, coordinate, file):
                 matching_peak.append([start, end, offset, peak_height])
     return matching_peak
 
-df_intervals = pd.read_csv(infile, sep='\t')
-replicates = df_intervals.columns.tolist()[5:] #changed from [-3:] to [5:] to allow only 2 replicate
+with open(infile, 'r') as f: #get file name from df can cause error because df column names cannot be the same
+    header = f.readline().strip().split('\t') 
+replicates = header[5:] #changed from [-3:] to [5:] to allow only 2 replicate
 
+df_intervals = pd.read_csv(infile, sep='\t')
 common_intervals = []
 for index, row in df_intervals.iterrows():
     chrom = row['chrom']
