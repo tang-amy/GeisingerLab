@@ -26,9 +26,14 @@ def parse_gb(gb):
             locus_tag = feat.qualifiers['locus_tag']
             locus_tag = ";".join(locus_tag)
             location = feat.location
-            start_pos = int(location.start)
-            end_pos = int(location.end)
             strand = int(location.strand)
+            # flip start and end if gene is on negative strand
+            if strand == 1:
+                start_pos = int(location.start)
+                end_pos = int(location.end)
+            elif strand == -1:
+                start_pos = int(location.end)
+                end_pos = int(location.start)
             dict.update({start_pos: (locus_tag, start_pos, end_pos, strand)})
     return dict
 
