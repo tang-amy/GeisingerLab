@@ -51,6 +51,6 @@ for index, row in df_intervals.iterrows():
         offsets = [str(i) for i in offsets]
         enrichment = ['{0:.2f}'.format(j) for j in enrichment]
         common_intervals.append([chrom, start, end, ';'.join(offsets), new_summit, ';'.join(enrichment), avg_enrichment])
-header = ['chrom', 'start', 'end', 'original_peak_offset', 'average_summit', 'original_enrichment', 'averge_enrichment']
+header = ['chrom', 'start', 'end', 'original_peak_offset', 'average_summit', 'original_enrichment', 'average_enrichment']
 df_common_intervals = pd.DataFrame(common_intervals, columns = header)
 df_common_intervals.to_csv(outfile, sep='\t')
