@@ -39,12 +39,12 @@ def parse_gb(gb):
 
 def is_intra(summit, dict, chrom):
     # return whether a peak summit is within any CDS region
-    match = False
+    match = False # intergenic
     for key, value in dict[chrom].items():
         start = value[1]
         end = value[2]
         if start <= summit <= end: # genes can overlap, thus there might be more than 1 hit
-            match = True
+            match = True # coding
             break
     return match
 
