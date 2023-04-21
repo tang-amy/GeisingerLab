@@ -75,9 +75,9 @@ def nearest_orf(summit, gene_dict, start_codon_dict, chrom):
     # distance is negative: for a peak left to a start codon on the - strand
     # distance means "distance from start codon"
     if strand ==  1:
-        distance_to_match = nearest_match - summit
-    elif strand == -1:
         distance_to_match = summit - nearest_match
+    elif strand == -1:
+        distance_to_match = nearest_match - summit
     match_info = [accession, start, end, strand, summit, distance_to_match]
     return match_info 
 
@@ -112,7 +112,7 @@ def make_histogram(infile, outfile, distance_plot, gene_dict, start_codon_dict):
     fig, ax = plt.subplots()
     ax.hist(distance_list_coding, bins=bins, alpha=0.5, label='coding')
     ax.hist(distance_list_intergenic, bins=bins, alpha=0.5, label='intergenic')
-    ax.set_xlabel('Distance to nearest start codon (nt)')
+    ax.set_xlabel('Distance from nearest start codon (nt)')
     ax.set_ylabel('Count')
     ax.set_xlim(-500,500) # 23Mar2023 changed x axis limit to (-500, 500)
     ax.legend()
