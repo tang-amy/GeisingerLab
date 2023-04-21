@@ -75,9 +75,9 @@ def nearest_orf(summit, gene_dict, start_codon_dict, chrom):
     # distance is negative: for a peak left to a start codon on the - strand
     # distance means "distance from start codon"
     if strand ==  1:
-        distance_to_match = nearest_match - summit
-    elif strand == -1:
         distance_to_match = summit - nearest_match
+    elif strand == -1:
+        distance_to_match = nearest_match - summit
     match_info = [accession, start, end, strand, summit, distance_to_match]
     return match_info 
 
