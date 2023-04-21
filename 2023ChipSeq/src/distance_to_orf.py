@@ -68,7 +68,16 @@ def nearest_orf(summit, gene_dict, start_codon_dict, chrom):
     start = dict_annotation[nearest_match][1]
     end = dict_annotation[nearest_match][2]
     strand = dict_annotation[nearest_match][3]
-    distance_to_match = summit - nearest_match # negative if peak is upstream to start codon
+    # 21Apr2023 changed the calculation of distance so that:
+    # distance is positive: for a peak left to a start codon on the + strand
+    # distance is negative: for a peak right to a start codon on the + strand
+    # distance is positive: for a peak right to a start codon on the - starnd
+    # distance is negative: for a peak left to a start codon on the - strand
+    # distance means "distance from start codon"
+    if strand ==  1:
+        distance_to_match = nearest_match - peak
+    elif strand == -1:
+        distance_to_match = peak - nearest_match
     match_info = [accession, start, end, strand, summit, distance_to_match]
     return match_info 
 
@@ -76,7 +85,7 @@ def make_histogram(infile, outfile, distance_plot, gene_dict, start_codon_dict):
     # make histogram, and output stats to a tsv file
     df_peak = pd.read_csv(infile, sep='\t')
     distance_list_intergenic = []
-    distance_list_intragenic = []
+    distance_list_coding = []
     match_stats = []
     for index, peak in df_peak.iterrows():
         chrom = peak['chrom']
@@ -85,8 +94,8 @@ def make_histogram(infile, outfile, distance_plot, gene_dict, start_codon_dict):
         distance = match_info[-1]
         fold_enrich = peak['average_enrichment']
         if is_intra(summit, gene_dict, chrom):
-            match_info.append('intragenic')
-            distance_list_intragenic.append(distance)
+            match_info.append('coding')
+            distance_list_coding.append(distance)
         else:
             match_info.append('intergenic')
             distance_list_intergenic.append(distance)
@@ -99,9 +108,9 @@ def make_histogram(infile, outfile, distance_plot, gene_dict, start_codon_dict):
     df_out.to_csv(outfile, sep='\t', index=True)
     
     # 23Mar2023 changed default bin size to 20
-    bins = np.arange(np.min(distance_list_intragenic), np.max(distance_list_intragenic), 20)
+    bins = np.arange(np.min(distance_list_coding), np.max(distance_list_coding), 20)
     fig, ax = plt.subplots()
-    ax.hist(distance_list_intragenic, bins=bins, alpha=0.5, label='intragenic')
+    ax.hist(distance_list_coding, bins=bins, alpha=0.5, label='coding')
     ax.hist(distance_list_intergenic, bins=bins, alpha=0.5, label='intergenic')
     ax.set_xlabel('Distance to nearest start codon (nt)')
     ax.set_ylabel('Count')
@@ -113,7 +122,7 @@ def make_histogram(infile, outfile, distance_plot, gene_dict, start_codon_dict):
     plt.savefig(distance_plot)
 '''
     # add a 'best fit' line
-    mu1, sigma1 = norm.fit(distance_list_intragenic)
+    mu1, sigma1 = norm.fit(distance_list_coding)
     y1 = mlab.normpdf(bins, mu1, sigma1)
     ax.plot(bins, y1, 'b--', linewidth=1)
     
