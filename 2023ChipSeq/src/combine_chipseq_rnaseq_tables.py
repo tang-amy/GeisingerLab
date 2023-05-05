@@ -13,8 +13,8 @@ def read_rnaseq_table(file):
 
 def main():
 
-    infile = "/work/geisingerlab/Yunfei/2023_Apr_ChipSeq_Analysis/MACS2_output_500k_ext200_input28-2/peak_stat_21APR2023_distance_corrected/BfmR-ChIP-49_seed1.nearest_orf.tsv"
-    outfile = "/work/geisingerlab/Yunfei/2023_Apr_ChipSeq_Analysis/test_mastertable.tsv"
+    infile = sys.argv[1]
+    outfile = sys.argv[2]
     
     rnaseq_table = {}
     rnaseq_table.update({"BfmRS_WT" : read_rnaseq_table(rnaseq_bfmRS)})
@@ -37,7 +37,7 @@ def main():
                     df_chipseq.loc[row, new_column_name] = df_rnaseq.loc[row,k]
                 except:
                     pass
-    print(df_chipseq)
+    df_chipseq.to_csv(outfile, sep='\t')
 
 if __name__ == "__main__":
         main()
