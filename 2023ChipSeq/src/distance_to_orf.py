@@ -4,7 +4,6 @@
 import os, re, sys
 import pandas as pd, numpy as np
 from matplotlib import pyplot as plt
-#import matplotlib.mlab as mlab
 from Bio import SeqIO
 from scipy.stats import norm
 from bisect import bisect_left
@@ -78,7 +77,7 @@ def nearest_orf(summit, gene_dict, start_codon_dict, chrom):
         distance_to_match = summit - nearest_match
     elif strand == -1:
         distance_to_match = nearest_match - summit
-    match_info = [accession, start, end, strand, summit, distance_to_match]
+    match_info = [accession, chrom, start, end, strand, summit, distance_to_match]
     return match_info 
 
 def make_histogram(infile, outfile, distance_plot, gene_dict, start_codon_dict):
@@ -103,7 +102,7 @@ def make_histogram(infile, outfile, distance_plot, gene_dict, start_codon_dict):
         match_stats.append(match_info)
     
     # write output to csv
-    col_names = ['locus_tag', 'start', 'end', 'strand', 'summit_pos', 'distance_to_match', 'match_type', 'average_fold_enrichment']
+    col_names = ['locus_tag', 'chrom', 'start', 'end', 'strand', 'summit_pos', 'distance_to_match', 'match_type', 'average_fold_enrichment']
     df_out = pd.DataFrame(match_stats, columns=col_names)
     df_out.to_csv(outfile, sep='\t', index=True)
     
