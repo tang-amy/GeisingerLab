@@ -3,26 +3,26 @@ import pandas as pd
 import numpy as np
 
 
-def call_effect(status_code, conditions):
+def call_effect(condition_code, conditions):
     record = conditions.loc[
-        (conditions['RS vs WT'] == status_code[0]) & 
-        (conditions['R vs WT'] == status_code[1]) & 
-        (conditions['S vs WT'] == status_code[2])
+        (conditions['RS vs WT'] == condition_code[0]) & 
+        (conditions['R vs WT'] == condition_code[1]) & 
+        (conditions['S vs WT'] == condition_code[2])
         ]
     general_call = record['general call'].item()
     specific_call = record['specific call'].item()
     effect = [general_call, specific_call]
     return effect
 
-def get_status_code(significant, fold_change):
+def get_condition_code(significant, fold_change):
     if significant == 'yes':
         if fold_change > 0:
-            status_code = 1
+            condition_code = 1
         else: # fold change < 0
-            status_code = -1
+            condition_code = -1
     else:
-        status_code = 0
-    return status_code
+        condition_code = 0
+    return condition_code
 
 def main():
     infile = sys.argv[1]
@@ -36,20 +36,20 @@ def main():
     conditions = conditions.drop_duplicates()
 
     df_mastertable = pd.read_csv(infile, sep='\t')
-    df_mastertable['status_code'] = df_mastertable.apply(
-        lambda x: (get_status_code(x['BfmRS_WT_significant'], x['BfmRS_WT_log2(fold_change)']), 
-                get_status_code(x['BfmR_WT_significant'], x['BfmR_WT_log2(fold_change)']), 
-                get_status_code(x['BfmS_WT_significant'], x['BfmS_WT_log2(fold_change)'])
+    df_mastertable['condition_code'] = df_mastertable.apply(
+        lambda x: (get_condition_code(x['BfmRS_WT_significant'], x['BfmRS_WT_log2(fold_change)']), 
+                get_condition_code(x['BfmR_WT_significant'], x['BfmR_WT_log2(fold_change)']), 
+                get_condition_code(x['BfmS_WT_significant'], x['BfmS_WT_log2(fold_change)'])
                 ),
                 axis = 1)
 
     df_mastertable['general call'] = df_mastertable.apply(
-        lambda x: call_effect(x['status_code'], conditions)[0],
+        lambda x: call_effect(x['condition_code'], conditions)[0],
         axis = 1
     )
 
     df_mastertable['specific call'] = df_mastertable.apply(
-        lambda x: call_effect(x['status_code'], conditions)[1],
+        lambda x: call_effect(x['condition_code'], conditions)[1],
         axis = 1
     )
     df_mastertable.to_csv(outfile, index=False)
