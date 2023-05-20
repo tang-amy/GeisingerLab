@@ -4,6 +4,7 @@ import numpy as np
 
 
 def call_effect(condition_code, conditions):
+    # based on condition code, make general / specific call
     record = conditions.loc[
         (conditions['RS vs WT'] == condition_code[0]) & 
         (conditions['R vs WT'] == condition_code[1]) & 
@@ -15,6 +16,10 @@ def call_effect(condition_code, conditions):
     return effect
 
 def get_condition_code(significant, fold_change):
+    # generate condition code based on fold change and significance
+    # yes, pos = 1
+    # yes, neg = -1
+    # no = 0
     if significant == 'yes':
         if fold_change > 0:
             condition_code = 1
@@ -29,25 +34,25 @@ def main():
     outfile = sys.argv[2]
 
     condition_table = "/work/geisingerlab/Yunfei/2023_Apr_ChipSeq_Analysis/RNAseq_Chipseq_mastertable/repressed_or_activated.txt"
-    # yes, pos = 1
-    # yes, neg = -1
-    # no = 0
+
     conditions = pd.read_csv(condition_table, sep='\t', index_col=None)
     conditions = conditions.drop_duplicates()
 
     df_mastertable = pd.read_csv(infile, sep='\t')
+    
+    # generate new column: condition code
     df_mastertable['condition_code'] = df_mastertable.apply(
         lambda x: (get_condition_code(x['BfmRS_WT_significant'], x['BfmRS_WT_log2(fold_change)']), 
                 get_condition_code(x['BfmR_WT_significant'], x['BfmR_WT_log2(fold_change)']), 
                 get_condition_code(x['BfmS_WT_significant'], x['BfmS_WT_log2(fold_change)'])
                 ),
                 axis = 1)
-
+    # generate new column: general call
     df_mastertable['general call'] = df_mastertable.apply(
         lambda x: call_effect(x['condition_code'], conditions)[0],
         axis = 1
     )
-
+    #generate new column: specific call
     df_mastertable['specific call'] = df_mastertable.apply(
         lambda x: call_effect(x['condition_code'], conditions)[1],
         axis = 1
