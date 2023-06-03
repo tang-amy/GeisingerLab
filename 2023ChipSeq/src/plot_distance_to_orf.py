@@ -3,8 +3,8 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns 
 
-infile = "/work/geisingerlab/Yunfei/2023_Apr_ChipSeq_Analysis/RNAseq_ChipSeq_sorted_20May2023/BfmR-ChIP-49_seed1.master_table.sorted.20May2023.tsv"
-outfile = "/work/geisingerlab/Yunfei/2023_Apr_ChipSeq_Analysis/RNAseq_ChipSeq_sorted_20May2023/BfmR-ChIP-49_seed1.intergenic.distplot.percentbygroup_split.png"
+infile = sys.argv[1]
+outfile = sys.argv[2]
 
 df = pd.read_csv(infile, sep='\t')
 df_subset = df.loc[(df['general call'] == 'activated' ) | (df['general call'] == 'repressed') ]
