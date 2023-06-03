@@ -42,9 +42,15 @@ def is_intra(summit, dict, chrom):
     for key, value in dict[chrom].items():
         start = value[1]
         end = value[2]
-        if start <= summit <= end: # genes can overlap, thus there might be more than 1 hit
-            match = True # coding
-            break
+        chrom = value[3]
+        if chrom == 1:
+            if start <= summit <= end: # genes can overlap, thus there might be more than 1 hit
+                match = True # coding
+                break
+        elif chrom == -1:
+            if end <= summit <= start: # on the negative strand gene positions are [end, start]
+                match = True # coding
+                break
     return match
 
 def nearest_orf(summit, gene_dict, start_codon_dict, chrom):
