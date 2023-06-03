@@ -122,7 +122,8 @@ def make_histogram(infile, outfile, distance_plot, gene_dict, start_codon_dict):
     ax.set_xlim(-500,500) # 23Mar2023 changed x axis limit to (-500, 500)
     ax.legend()
     ax.set_title(os.path.basename(infile))
-    ax.spines[['right','top']].set_visible(False)
+    ax.spines['right'].set_visible(False)
+    ax.spines['top'].set_visible(False)
     fig.tight_layout()
     plt.savefig(distance_plot)
 '''
