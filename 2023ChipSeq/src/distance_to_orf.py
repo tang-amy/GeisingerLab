@@ -140,10 +140,10 @@ def make_histogram(infile, outfile, distance_plot, gene_dict, start_codon_dict):
 def main():
     # input is .intersect.bed (from multiinter)
     infile = sys.argv[1]
-    outfile = sys.argv[2]
-    distance_plot = sys.argv[3]
+    annotations = sys.argv[2]
+    outfile = sys.argv[3]
+    distance_plot = sys.argv[4]
 
-    annotations = "/work/geisingerlab/Yunfei/2022_Nov_ChipSeq_Analysis/References/annotations"
     genome = os.path.join(annotations, "NZ_CP012004.1.gb")
     pAb1 = os.path.join(annotations, "pAb1.gb")
     pAb2 = os.path.join(annotations, "pAb2.gb")
