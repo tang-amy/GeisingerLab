@@ -31,9 +31,8 @@ def get_condition_code(significant, fold_change):
 
 def main():
     infile = sys.argv[1]
-    outfile = sys.argv[2]
-
-    condition_table = "/work/geisingerlab/Yunfei/2023_Apr_ChipSeq_Analysis/RNAseq_Chipseq_mastertable/repressed_or_activated.txt"
+    condition_table = sys.argv[2]
+    outfile = sys.argv[3]
 
     conditions = pd.read_csv(condition_table, sep='\t', index_col=None)
     conditions = conditions.drop_duplicates()
