@@ -56,7 +56,7 @@ def main():
         lambda x: call_effect(x['condition_code'], conditions)[1],
         axis = 1
     )
-    df_mastertable.to_csv(outfile, index=False)
+    df_mastertable.to_csv(outfile, sep='\t', index=False)
 
 if __name__ == "__main__":
     main()
