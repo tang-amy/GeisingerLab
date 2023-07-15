@@ -6,13 +6,15 @@
 
 # EXCEPTIONS
 
-# languages
+# scripts
 !*.R
 !*.py
 !*.sh
 !*.Rmd
 !*.md
 !*.bash
+!*.nf
+!Dockerfile
 
 # reference files
 !*.txt
