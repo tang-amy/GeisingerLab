@@ -1,6 +1,3 @@
-## Yunfei Dai
-## 2021/12/08
-
 #!/bin/bash
 #SBATCH --array=0-12%13
 #SBATCH --ntasks=13
