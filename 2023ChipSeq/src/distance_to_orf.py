@@ -128,8 +128,7 @@ def make_histogram(infile, outfile, distance_plot, gene_dict, start_codon_dict):
     plt.savefig(distance_plot)
 
 def main():
-    # input is .intersect.bed (from multiinter)
-    infile = sys.argv[1]
+    infile = sys.argv[1] # input is .intersect.bed (from multiinter)
     annotations = sys.argv[2] # directory containing .gb files
     outfile = sys.argv[3]
     distance_plot = sys.argv[4]
