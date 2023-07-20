@@ -128,7 +128,7 @@ def make_histogram(infile, outfile, distance_plot, gene_dict, start_codon_dict):
     plt.savefig(distance_plot)
 
 def main():
-    infile = sys.argv[1] # input is .intersect.bed (from multiinter)
+    infile = sys.argv[1] # input is .average_summit.bed (output from find_peak_summit.py)
     annotations = sys.argv[2] # directory containing .gb files
     outfile = sys.argv[3]
     distance_plot = sys.argv[4]
