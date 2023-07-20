@@ -126,16 +126,6 @@ def make_histogram(infile, outfile, distance_plot, gene_dict, start_codon_dict):
     ax.spines['top'].set_visible(False)
     fig.tight_layout()
     plt.savefig(distance_plot)
-'''
-    # add a 'best fit' line
-    mu1, sigma1 = norm.fit(distance_list_coding)
-    y1 = mlab.normpdf(bins, mu1, sigma1)
-    ax.plot(bins, y1, 'b--', linewidth=1)
-    
-    mu2, sigma2 = norm.fit(distance_list_intergenic)
-    y2 = mlab.normpdf(bins, mu2, sigma2)
-    ax.plot(bins, y2, 'r--', linewidth=1)
-'''
 
 def main():
     # input is .intersect.bed (from multiinter)
@@ -144,24 +134,24 @@ def main():
     outfile = sys.argv[3]
     distance_plot = sys.argv[4]
 
-    genome = os.path.join(annotations, "NZ_CP012004.1.gb")
-    pAb1 = os.path.join(annotations, "pAb1.gb")
-    pAb2 = os.path.join(annotations, "pAb2.gb")
-    pAb3 = os.path.join(annotations, "pAb3.gb")
-
-    dict_genome = parse_gb(genome)
-    dict_pAb1 = parse_gb(pAb1)
-    dict_pAb2 = parse_gb(pAb2)
-    dict_pAb3 = parse_gb(pAb3)
-    gene_dict = {'NZ_CP012004.1': dict_genome, 'NC_009083.1': dict_pAb1, 'NC_009084.1': dict_pAb2, 'NZ_CP012005.1': dict_pAb3}
-
+    def make_orf_list(annotations, chrom):
+        # for each .gb file, return a dict of parsed genes and list of start codons
+        gb = os.path.join(annotations, chrom)
+        dict_chrom = parse_gb(gb)
+        start_codon_list = sorted(list(dict_chrom.keys()))
+        return dict_chrom, start_codon_list
+    
+    gene_dict = {}
     start_codon_dict = {}
-    for key in gene_dict:
-        start_codon_list = sorted(list(gene_dict[key].keys()))
-        start_codon_dict.update({key: start_codon_list})
+    for chrom in ['NZ_CP012004.1.gb',
+                  'pAb1.gb',
+                  'pAb2.gb',
+                  'pAb3.gb']:
+        dict_chrom, start_codon_list = make_orf_list(annotations, chrom)
+        gene_dict.update({chrom: dict_chrom})
+        start_codon_dict.update({chrom : start_codon_list})
 
     make_histogram(infile, outfile, distance_plot, gene_dict, start_codon_dict)
-
 
 if __name__ == "__main__":
     main()
