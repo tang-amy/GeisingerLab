@@ -143,9 +143,9 @@ def main():
     gene_dict = {}
     start_codon_dict = {}
     for chrom in ['NZ_CP012004.1.gb',
-                  'pAb1.gb',
-                  'pAb2.gb',
-                  'pAb3.gb']:
+                  'pAb1',
+                  'pAb2',
+                  'pAb3']:
         dict_chrom, start_codon_list = make_orf_list(annotations, chrom)
         gene_dict.update({chrom: dict_chrom})
         start_codon_dict.update({chrom : start_codon_list})
