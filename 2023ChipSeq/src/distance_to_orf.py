@@ -135,7 +135,7 @@ def main():
 
     def make_orf_list(annotations, chrom):
         # for each .gb file, return a dict of parsed genes and list of start codons
-        gb = os.path.join(annotations, chrom)
+        gb = os.path.join(annotations, chrom + '.gb')
         dict_chrom = parse_gb(gb)
         start_codon_list = sorted(list(dict_chrom.keys()))
         return dict_chrom, start_codon_list
