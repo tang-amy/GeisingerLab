@@ -87,11 +87,11 @@ class NearestORF:
         match_info = [self.summit, 0, accession, self.chrom, start, end, ORF_strand, distance_to_match, 0] # last column: intergenic distance to last match
         return match_info
 
-    def find_next_ORFs(self, ORF_list_to_search, strand):
+    def find_next_ORFs(self, ORF_list_to_search, strand, nearest_match_info):
         # for a given match, search for the next nearest ORFs and output in a list
         # the search will be in one direction based on the strand info
         counter = 0
-        next_ORFs = []
+        all_ORF_match = [nearest_match_info]
         for next_match_index in ORF_list_to_search:
             counter += 1
             next_match_strand = self.dict_annotation[next_match_index][3]
@@ -100,22 +100,20 @@ class NearestORF:
                 match_info[1] = counter # Update Nth nearest ORF
                 next_match_distance = match_info[7]
                 if abs(next_match_distance) <= 1000:
-                    if len(next_ORFs) > 0:
-                        last_ORF_pos = next_ORFs[-1][4] # start position of last ORF match
-                        intergenic_distance = match_info[4] - last_ORF_pos # calculate intergenic distance
-                        match_info[8] = intergenic_distance
-                    next_ORFs.append(match_info)
+                    last_ORF_pos = all_ORF_match[-1][4] # start position of last ORF match
+                    intergenic_distance = abs(match_info[4] - last_ORF_pos) # calculate intergenic distance
+                    match_info[8] = intergenic_distance # update intergenic distance
+                    all_ORF_match.append(match_info)
                 else:
                     break
             else:
                 break
-        return next_ORFs
+        return all_ORF_match
 
     def nearest_orf(self):
         nearest_match_index, nearest_match = self.find_nearest_start_codon()
         nearest_match_info = self.get_match_info(nearest_match, self.dict_annotation[nearest_match][3])
         nearest_match_strand = self.dict_annotation[nearest_match][3]
-        all_match = [nearest_match_info]
         if  nearest_match_strand == 1:  # If nearest ORF is on + strand, search right
             ORF_list = self.start_codon_list[(nearest_match_index + 1):]
         elif nearest_match_strand == -1:  # If nearest ORF is on - strand, search left
@@ -123,10 +121,8 @@ class NearestORF:
                 ORF_list = self.start_codon_list[:nearest_match_index-1][::-1]  # List is reversed
             else: # if summit position is the same as first ORF, include this position in ORF_list
                 ORF_list = self.start_codon_list[:nearest_match_index][::-1]
-        next_ORFs = self.find_next_ORFs(ORF_list, self.dict_annotation[nearest_match][3])    
-
-        all_match += next_ORFs
-        return all_match
+        all_ORF_match = self.find_next_ORFs(ORF_list, self.dict_annotation[nearest_match][3], nearest_match_info)    
+        return all_ORF_match
     
 def make_match_table(infile, outfile, gene_dict, start_codon_dict):
     # write ORF matches to a tsv file
