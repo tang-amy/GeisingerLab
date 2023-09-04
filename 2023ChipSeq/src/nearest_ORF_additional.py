@@ -1,7 +1,11 @@
+#! /usr/bin/python3
 
-import os, re, sys
-import pandas as pd, numpy as np
-from matplotlib import pyplot as plt
+## This script searches for ORFs within 1000 bp of peak position
+## Input is bed file with averaged peak sumit positions (average_summit.bed)
+
+import os
+import pandas as pd
+from sys import argv
 from Bio import SeqIO
 from scipy.stats import norm
 from bisect import bisect_left
@@ -32,17 +36,6 @@ def make_orf_list(annotations, chrom):
     dict_chrom = parse_gb(gb)
     start_codon_list = sorted(list(dict_chrom.keys()))
     return dict_chrom, start_codon_list
-
-annotations = "/Users/yunfei/2023_ChipSeq/annotations"
-gene_dict = {}
-start_codon_dict = {}
-for fname, chrom in {'NZ_CP012004.1':'NZ_CP012004.1', 
-                     'pAb1' : 'NC_009083.1', 
-                     'pAb2' : 'NC_009084.1', 
-                     'pAb3' : 'NZ_CP012005.1'}.items():
-    dict_chrom, start_codon_list = make_orf_list(annotations, fname)
-    gene_dict.update({chrom: dict_chrom})
-    start_codon_dict.update({chrom : start_codon_list})
 
 def is_intra(summit, dict, chrom):
     # return whether a peak summit is within any CDS region
@@ -132,8 +125,8 @@ class NearestORF:
         all_match += next_ORFs
         return all_match
     
-def make_match_table(infile, outfile, distance_plot, gene_dict, start_codon_dict):
-    # output ORF matches to a tsv file
+def make_match_table(infile, outfile, gene_dict, start_codon_dict):
+    # write ORF matches to a tsv file
     df_peak = pd.read_csv(infile, sep='\t')
     distance_list_intergenic = []
     distance_list_coding = []
@@ -155,8 +148,8 @@ def make_match_table(infile, outfile, distance_plot, gene_dict, start_codon_dict
             match_info.append(fold_enrich)
             match_stats.append(match_info)
     
-    # write output to csv
-    # add 'Nth nearest ORF'
+    # write output to tsv
+    # add column 'Nth nearest ORF'
     col_names = ['summit_pos', 'Nth nearest ORF', 'locus_tag', 'chrom', 'start', 'end', 'strand', 'distance_to_match', 'match_type', 'average_fold_enrichment']
     df_out = pd.DataFrame(match_stats, columns=col_names)
     df_out = df_out.sort_values(by = ['summit_pos', 'Nth nearest ORF'], ascending = [True, True])
@@ -164,10 +157,21 @@ def make_match_table(infile, outfile, distance_plot, gene_dict, start_codon_dict
     df_out.to_csv(outfile, sep='\t', index=False)
     
 def main():
-    infile = "/Users/yunfei/2023_ChipSeq/average_peak_summit/BfmR-ChIP-49_seed1.average_summit.bed"
-    outdir = "/Users/yunfei/2023_ChipSeq/peak_stat_next_ORFs"
-    outfile = os.path.join(outdir, 'test.tsv')
-    distance_plot = os.path.join(outdir, 'test.tiff')
+    infile = argv[1]
+    outfile = argv[2]
+    annotations = argv[3] # directory containing gb files 
+
+    gene_dict = {}
+    start_codon_dict = {}
+    for fname, chrom in {'NZ_CP012004.1':'NZ_CP012004.1', 
+                        'pAb1' : 'NC_009083.1', 
+                        'pAb2' : 'NC_009084.1', 
+                        'pAb3' : 'NZ_CP012005.1'}.items():
+        dict_chrom, start_codon_list = make_orf_list(annotations, fname)
+        gene_dict.update({chrom: dict_chrom})
+        start_codon_dict.update({chrom : start_codon_list})
+
+    make_match_table(infile, outfile, gene_dict, start_codon_dict)
 
 if __name__ == "__main__":
     main()
