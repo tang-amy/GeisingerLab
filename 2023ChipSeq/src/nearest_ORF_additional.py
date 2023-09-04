@@ -84,7 +84,7 @@ class NearestORF:
             distance_to_match = self.summit - match_ORF
         elif strand == -1:
             distance_to_match = match_ORF - self.summit
-        match_info = [self.summit, 0, accession, self.chrom, start, end, ORF_strand, distance_to_match]
+        match_info = [self.summit, 0, accession, self.chrom, start, end, ORF_strand, distance_to_match, 0] # last column: intergenic distance to last match
         return match_info
 
     def find_next_ORFs(self, ORF_list_to_search, strand):
@@ -100,6 +100,10 @@ class NearestORF:
                 match_info[1] = counter # Update Nth nearest ORF
                 next_match_distance = match_info[7]
                 if abs(next_match_distance) <= 1000:
+                    if len(next_ORFs) > 0:
+                        last_ORF_pos = next_ORFs[-1][4] # start position of last ORF match
+                        intergenic_distance = match_info[4] - last_ORF_pos # calculate intergenic distance
+                        match_info[8] = intergenic_distance
                     next_ORFs.append(match_info)
                 else:
                     break
@@ -150,7 +154,7 @@ def make_match_table(infile, outfile, gene_dict, start_codon_dict):
     
     # write output to tsv
     # add column 'Nth nearest ORF'
-    col_names = ['summit_pos', 'Nth nearest ORF', 'locus_tag', 'chrom', 'start', 'end', 'strand', 'distance_to_match', 'match_type', 'average_fold_enrichment']
+    col_names = ['summit_pos', 'Nth nearest ORF', 'locus_tag', 'chrom', 'start', 'end', 'strand', 'distance_to_match', 'intergenic_distance', 'match_type', 'average_fold_enrichment']
     df_out = pd.DataFrame(match_stats, columns=col_names)
     df_out = df_out.sort_values(by = ['summit_pos', 'Nth nearest ORF'], ascending = [True, True])
     print(df_out.head())
