@@ -116,7 +116,6 @@ class NearestORF:
         nearest_match_info = self.get_match_info(nearest_match, self.dict_annotation[nearest_match][3])
         nearest_match_strand = self.dict_annotation[nearest_match][3]
         all_match = [nearest_match_info]
-
         if  nearest_match_strand == 1:  # If nearest ORF is on + strand, search right
             ORF_list = self.start_codon_list[(nearest_match_index + 1):]
         elif nearest_match_strand == -1:  # If nearest ORF is on - strand, search left
@@ -124,7 +123,7 @@ class NearestORF:
                 ORF_list = self.start_codon_list[:nearest_match_index-1][::-1]  # List is reversed
             else: # if summit position is the same as first ORF, include this position in ORF_list
                 ORF_list = self.start_codon_list[:nearest_match_index][::-1]
-        next_ORFs = self.find_next_ORFs(ORF_list, self.dict_annotation[nearest_match][3])
+        next_ORFs = self.find_next_ORFs(ORF_list, self.dict_annotation[nearest_match][3])    
 
         all_match += next_ORFs
         return all_match
@@ -157,7 +156,6 @@ def make_match_table(infile, outfile, gene_dict, start_codon_dict):
     col_names = ['summit_pos', 'Nth nearest ORF', 'locus_tag', 'chrom', 'start', 'end', 'strand', 'distance_to_match', 'intergenic_distance', 'match_type', 'average_fold_enrichment']
     df_out = pd.DataFrame(match_stats, columns=col_names)
     df_out = df_out.sort_values(by = ['summit_pos', 'Nth nearest ORF'], ascending = [True, True])
-    print(df_out.head())
     df_out.to_csv(outfile, sep='\t', index=False)
     
 def main():
