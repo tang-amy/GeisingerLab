@@ -9,13 +9,6 @@ from bisect import bisect_left
 def parse_gb(gb):
     # get all sequence records for the specified genbank file
     recs = [rec for rec in SeqIO.parse(gb, "genbank")]
-    # print the number of sequence records that were extracted
-    # print(len(recs))
-    # print annotations for each sequence record
-    for rec in recs:
-        annotation_type = rec.annotations
-    # print the gene sequence feature summary information for each feature in each
-    # sequence record
     dict = {}
     for rec in recs:
         feats = [feat for feat in rec.features if feat.type == "gene"]
@@ -126,23 +119,55 @@ class NearestORF:
         nearest_match_info = self.get_match_info(nearest_match, self.dict_annotation[nearest_match][3])
         nearest_match_strand = self.dict_annotation[nearest_match][3]
         all_match = [nearest_match_info]
-        print(nearest_match_index, nearest_match)
 
         if  nearest_match_strand == 1:  # If nearest ORF is on + strand, search right
             ORF_list = self.start_codon_list[(nearest_match_index + 1):]
         elif nearest_match_strand == -1:  # If nearest ORF is on - strand, search left
-            ORF_list = self.start_codon_list[:nearest_match_index][::-1]  # List is reversed
+            if self.summit != nearest_match:
+                ORF_list = self.start_codon_list[:nearest_match_index-1][::-1]  # List is reversed
+            else: # if summit position is the same as first ORF, include this position in ORF_list
+                ORF_list = self.start_codon_list[:nearest_match_index][::-1]
         next_ORFs = self.find_next_ORFs(ORF_list, self.dict_annotation[nearest_match][3])
 
         all_match += next_ORFs
         return all_match
     
-infile = "/Users/yunfei/2023_ChipSeq/average_peak_summit/BfmR-ChIP-49_seed1.average_summit.bed"
-outdir = "/Users/yunfei/2023_ChipSeq/peak_stat_next_ORFs"
+def make_match_table(infile, outfile, distance_plot, gene_dict, start_codon_dict):
+    # output ORF matches to a tsv file
+    df_peak = pd.read_csv(infile, sep='\t')
+    distance_list_intergenic = []
+    distance_list_coding = []
+    match_stats = []
+    for index, peak in df_peak.iterrows():
+        chrom = peak['chrom']
+        summit = peak['average_summit']
+        fold_enrich = peak['average_enrichment']
+        orf_finder = NearestORF(summit, gene_dict, start_codon_dict, chrom)
+        all_ORFs = orf_finder.nearest_orf()
+        for match_info in all_ORFs:
+            distance = match_info[-1]
+            if is_intra(summit, gene_dict, chrom):
+                match_info.append('coding')
+                distance_list_coding.append(distance)
+            else:
+                match_info.append('intergenic')
+                distance_list_intergenic.append(distance)
+            match_info.append(fold_enrich)
+            match_stats.append(match_info)
+    
+    # write output to csv
+    # add 'Nth nearest ORF'
+    col_names = ['summit_pos', 'Nth nearest ORF', 'locus_tag', 'chrom', 'start', 'end', 'strand', 'distance_to_match', 'match_type', 'average_fold_enrichment']
+    df_out = pd.DataFrame(match_stats, columns=col_names)
+    df_out = df_out.sort_values(by = ['summit_pos', 'Nth nearest ORF'], ascending = [True, True])
+    print(df_out.head())
+    df_out.to_csv(outfile, sep='\t', index=False)
+    
+def main():
+    infile = "/Users/yunfei/2023_ChipSeq/average_peak_summit/BfmR-ChIP-49_seed1.average_summit.bed"
+    outdir = "/Users/yunfei/2023_ChipSeq/peak_stat_next_ORFs"
+    outfile = os.path.join(outdir, 'test.tsv')
+    distance_plot = os.path.join(outdir, 'test.tiff')
 
-os.makedirs(outdir, exist_ok=True)
-
-outfile = os.path.join(outdir, 'test.tsv')
-distance_plot = os.path.join(outdir, 'test.tiff')
-
-make_histogram(infile, outfile, distance_plot, gene_dict, start_codon_dict)
+if __name__ == "__main__":
+    main()
